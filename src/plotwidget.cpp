@@ -19,8 +19,12 @@
 */
 
 #include "plotwidget.h"
-
+#include "commons.h"
 #include <kplotwidget.h>
+#include <kplotobject.h>
+
+#include "fl/functionbase.h"
+#include "fl/function2dbase.h"
 
 using namespace Thesis::UI;
 
@@ -28,16 +32,48 @@ using namespace Thesis::UI;
 PlotWidgetProxy::PlotWidgetProxy(PlotWidgetProxy::PlotType type, QWidget *pParent ) : 
 m_PlotType(type)
 {
+    cLOG();
     if ( m_PlotType == ePlot2D ) {
-        m_pWidget = new KPlotWidget(pParent);
+        m_pKPlotWidget.reset( new KPlotWidget(pParent));
+        m_pKPlotWidget->setAntialiasing( true );
+        m_pKPlotWidget->setLimits( -0.1, 6.38, -1.1, 1.1 );
+        m_pWidget = m_pKPlotWidget;
     }
 }
 PlotWidgetProxy::~PlotWidgetProxy()
 {
+    cLOG();
 }
 
 QWidget* PlotWidgetProxy::widget()
 {
-    return m_pWidget;
+    cLOG();
+    return m_pWidget.get();
+}
+
+void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction)
+{
+    cLOG();
+    
+    if ( m_PlotType == ePlot2D && pFunction->dimensions() != 2 ) {
+        LOG("Unable to add function with dimensions:"<< pFunction->dimensions() <<" to a 2D plot " ) ; 
+        return ; 
+    }
+    
+    m_FunctionVector.push_back(boost::shared_ptr<fl::FunctionBase > ( pFunction ));
+    
+    if ( pFunction->dimensions() == 2 ) 
+    {
+        fl::Function2D::Function2DBase *pFunction2D = dynamic_cast<fl::Function2D::Function2DBase *>( pFunction ); 
+        Q_ASSERT(pFunction2D != NULL ) ; 
+        
+        KPlotObject *pPlotObject = new KPlotObject( Qt::red, KPlotObject::Lines, 2 );
+        for ( float t=0.0; t<=6.28; t+=0.04 ) {
+            LOG("Adding points : ("<<t<<" , " << pFunction2D->eval(t) ) ; 
+            pPlotObject->addPoint(t,pFunction2D->eval(t));
+        }
+        m_pKPlotWidget->addPlotObject(pPlotObject);
+        m_pKPlotWidget->update();
+    }
 }
 

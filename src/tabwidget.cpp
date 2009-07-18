@@ -50,13 +50,24 @@ void TabWidget::addTab()
 
 void TabWidget::closeTabAt(int index /*=-1*/)
 {
+    cLOG();
     int iCloseTabIndex = index==-1 ? currentIndex() : index ;
     if ( iCloseTabIndex == -1 ) {
         LOG("Unable to close tab at: "<<index);
         return ; 
     }
     QTabWidget::removeTab(iCloseTabIndex);
+}
+
+void TabWidget::addFunction(Thesis::FunctionsProxy & fProxy, int index)
+{
+    cLOG();
+    Q_UNUSED(index);
+    QWidget *pWidget = currentWidget() ; 
+    TabWidgetItem *pTabWidgetItem = qobject_cast< TabWidgetItem* >(pWidget);
+    pTabWidgetItem->plotProxy()->addFunction(fProxy.proxy());
 
 }
+
 
 

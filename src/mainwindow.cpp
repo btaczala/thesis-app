@@ -24,6 +24,7 @@
 #include "tabwidget.h"
 #include "plotwidget.h"
 #include "newcontinousfunctiondialog.h"
+#include "functionsproxy.h"
 
 #include <QStatusBar>
 #include <QMenuBar>
@@ -40,7 +41,6 @@ QMainWindow(parent, flags)
     cLOG() ;
     setWindowTitle( Thesis::Strings::applicationName );
     
-    
     createWidgets();
     createUI();
     initSignals();
@@ -48,6 +48,7 @@ QMainWindow(parent, flags)
     setStatusBarStatus(tr( "Program is ready to use" ),false);
     
     setWindowState(Qt::WindowMaximized);
+    LOG("End of ");
 }
 
 MainWindow::~MainWindow()
@@ -91,6 +92,9 @@ void MainWindow::createUI()
     setCentralWidget(m_pTabWidget);
     setWindowIcon(QIcon(":/app_icon.gif"));
     
+    if ( m_pTabWidget->count() == 0 ) 
+        m_pWorkspaceMenu->setEnabled(false);
+    
 //     m_pTabWidget->addTab(/*pProxy->widget(),"test"*/);
     
 }
@@ -127,6 +131,7 @@ void MainWindow::initSignals()
 
 void MainWindow::setStatusBarStatus(const QString& _status, bool isWorking)
 {
+    Q_UNUSED(isWorking);
     LOG(" _status=" << _status);
     m_pStatusBarWidget->setText(_status);
     m_pStatusBarWidget->setPixmap(QPixmap(":/ok.png")) ;
@@ -143,6 +148,7 @@ void Thesis::UI::MainWindow::newTab()
     cLOG() ; 
     m_pTabWidget->addTab();
     setStatusBarStatus(tr("New Workspace added"),false);
+    m_pWorkspaceMenu->setEnabled(true);
 }
 
 void Thesis::UI::MainWindow::about()
@@ -167,5 +173,17 @@ void Thesis::UI::MainWindow::newContinousFunction()
 {
     cLOG() ; 
     Thesis::UI::NewContinousFunctionDialog dialog ; 
-    dialog.exec();
+    int iRet = dialog.exec();
+    if ( iRet == QDialog::Accepted ) {
+        QString functionEquation = dialog.fuction() ; 
+        QStringList vars = dialog.variables();
+        int dimension = dialog.dimensions();
+        LOG("Created function :" << functionEquation <<" with variables:"<< vars );
+        Thesis::FunctionsProxy prx( functionEquation,vars,dimension,FunctionsProxy::eContinous ) ; 
+        m_pTabWidget->addFunction(prx);
+    }
+    else {
+        LOG("Dialog was rejected, hence no function added");
+        return ; 
+    }
 }

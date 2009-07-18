@@ -19,24 +19,107 @@
 */
 
 #include "newcontinousfunctiondialog.h"
+#include "ui_newcontinousfunction.h"
+#include "commons.h"
 
 #include <QGridLayout>
+#include <QPushButton>
+#include <QTimer>
+
 using namespace Thesis::UI;
 
 NewContinousFunctionDialog::NewContinousFunctionDialog(QWidget* parent, Qt::WindowFlags f) : 
-QDialog(parent, f),
-m_pLayout(new QGridLayout(this))
+QDialog(parent,f),
+m_pDialog( new Ui::PasswordDialog())
 {
+    cLOG() ; 
+    m_pDialog->setupUi(this);
+    m_pDialog->RangeXSpinBox->setEnabled(false);
+    m_pDialog->RangeYSpinBox->setEnabled(false);
     
-}
+    m_pDialog->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    
+    m_pTimer = new QTimer(this);
 
-void NewContinousFunctionDialog::done(int done)
-{
-    QDialog::done(done);
+    
+    connect ( m_pDialog->CustomRangeCheckBox, SIGNAL(toggled(bool)),this,SLOT(customRangeChecked(bool)));
+    connect ( m_pTimer, SIGNAL(timeout()),this,SLOT(checkIfOk()));
+    
+    m_pTimer->start(2000);
 }
 
 void NewContinousFunctionDialog::accept()
 {
+    // check if we cannot accept 
+    
     QDialog::accept();
 }
+void NewContinousFunctionDialog::done(int done)
+{
+    QDialog::done(done);
+}
+void NewContinousFunctionDialog::customRangeChecked(bool checked)
+{
+    if ( checked ) {
+        m_pDialog->RangeXSpinBox->setEnabled(true);
+        m_pDialog->RangeYSpinBox->setEnabled(true);
+    }
+    else {
+        m_pDialog->RangeXSpinBox->setEnabled(false);
+        m_pDialog->RangeYSpinBox->setEnabled(false);
+    }
+}
+void NewContinousFunctionDialog::checkIfOk()
+{
+    cLOG() ; 
+    bool bOk ;
+    
+    QString function = m_pDialog->functionLineEdit->text();
+    QString variables = m_pDialog->variableLineEdit->text() ; 
+    
+    int dimensionNumber = m_pDialog->dimensionSpinBox->value();
+    
+    if ( function.isEmpty() || variables.isEmpty() ) 
+        bOk = false ;
+    else{
+        variables.remove(',');
+        if ( dimensionNumber-1 == variables.length() ) {
+            bOk = true ; 
+            for ( int i = 0 ; i < variables.size() ; ++i ) {
+                if ( ! function.contains( variables.at(i) ) ){
+                    bOk = false ; 
+                    break ; 
+                }
+            }
+        }
+        else
+            bOk = false ; 
+    }
+    if ( bOk ) 
+        m_pDialog->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    else
+        m_pDialog->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+}
+
+const QString NewContinousFunctionDialog::fuction() const
+{
+    return m_pDialog->functionLineEdit->text() ; 
+}
+
+const QStringList Thesis::UI::NewContinousFunctionDialog::variables() const
+{
+    QString variables = m_pDialog->variableLineEdit->text() ;
+    variables.remove(',');
+    QStringList lst ; 
+    for ( int i = 0 ; i < variables.size() ; ++i ) {
+        lst.push_back(QString(variables.at(i)));
+    }
+    return lst ; 
+}
+
+int Thesis::UI::NewContinousFunctionDialog::dimensions() const
+{
+    return m_pDialog->dimensionSpinBox->value();
+}
+
 

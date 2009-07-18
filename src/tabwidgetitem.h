@@ -39,6 +39,9 @@ namespace Thesis{
                 
                 const int& numberOfPlots() const { return m_NumberOfPlots  ; }
                 void setNumberOfPlots( int _rhs ) { m_NumberOfPlots  = _rhs ; } 
+                
+                PlotWidgetProxy * plotProxy() ;
+                
             protected:
                 QString m_text ; 
                 boost::shared_ptr<PlotWidgetProxy> m_pPlotProxy ; 

@@ -24,7 +24,13 @@
 #include <QWidget>
 #include <QPointer>
 
+#include <boost/shared_ptr.hpp>
+
 class KPlotWidget ; 
+
+namespace fl{
+    class FunctionBase ; 
+}
 
 namespace Thesis {
     namespace UI {
@@ -39,9 +45,14 @@ namespace Thesis {
                 virtual ~PlotWidgetProxy();
                 
                 QWidget * widget() ;
+                
+                void addFunction ( fl::FunctionBase * pFunction ) ; 
+                
             protected:
-                QWidget * m_pWidget ; 
+                boost::shared_ptr<QWidget> m_pWidget ; 
+                boost::shared_ptr<KPlotWidget> m_pKPlotWidget ; 
                 PlotType m_PlotType ; 
+                std::vector<boost::shared_ptr<fl::FunctionBase > > m_FunctionVector  ;
         };
     }
 }

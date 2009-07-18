@@ -36,3 +36,10 @@ m_pLayout( new QHBoxLayout(this) )
 TabWidgetItem::~TabWidgetItem()
 {
 }
+
+PlotWidgetProxy* Thesis::UI::TabWidgetItem::plotProxy()
+{
+    return m_pPlotProxy.get();
+
+}
+

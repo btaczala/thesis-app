@@ -21,9 +21,14 @@
 #ifndef THESIS_UI_NEWCONTINOUSFUNCTIONDIALOG_H
 #define THESIS_UI_NEWCONTINOUSFUNCTIONDIALOG_H
 
-#include <QDialog>
 #include <QPointer>
+#include <QDialog>
+#include <boost/shared_ptr.hpp>
 
+namespace Ui{
+    class PasswordDialog ; 
+}
+class QTimer ; 
 namespace Thesis {
 
     namespace UI {
@@ -36,8 +41,15 @@ namespace Thesis {
                 virtual ~NewContinousFunctionDialog() {};
                 virtual void done(int done);
                 virtual void accept();
-            private:
-                QPointer<QLayout> m_pLayout ; 
+                const QString  fuction() const ;
+                const QStringList variables() const ; 
+                int dimensions() const ; 
+            protected:
+                boost::shared_ptr<Ui::PasswordDialog> m_pDialog ; 
+                QPointer<QTimer> m_pTimer ; 
+            private slots:
+                void customRangeChecked( bool checked ) ; 
+                void checkIfOk() ; 
         };
 
     }

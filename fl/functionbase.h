@@ -35,6 +35,7 @@ namespace fl{
             
             virtual double max() = 0 ; 
             virtual double min() = 0 ; 
+            virtual int dimensions() { return m_iDimension ; } 
             //virtual void serialize ( const std::string & _pathToFile ) = 0 ; 
         protected:
             std::string m_FunctionName ; 

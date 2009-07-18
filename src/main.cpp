@@ -26,17 +26,9 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    try{
-        
-        Q_INIT_RESOURCE(main);
-        qDebug() << Thesis::Strings::applicationVersionString() ; 
-        Thesis::UI::MainWindow wnd ;
-        throw int(4);
-        wnd.show();
-    }
-    catch(...)
-    {
-        ;
-    }
+    Q_INIT_RESOURCE(main);
+    qDebug() << Thesis::Strings::applicationVersionString() ; 
+    Thesis::UI::MainWindow wnd ;
+    wnd.show();
     return app.exec()  ; 
 }

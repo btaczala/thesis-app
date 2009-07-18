@@ -55,7 +55,10 @@ fl::FunctionBase* FunctionsProxy::proxy()
     if ( m_functionDimension ==2 ) {
         if ( m_Type == eContinous ) {
             LOG("Proxying 2d continous function");
-            pFunction = new fl::Function2D::FunctionContinous(m_functionEquation.toStdString(),"name");
+            fl::Function2D::FunctionContinous *pContFunc = new fl::Function2D::FunctionContinous(m_functionEquation.toStdString(),"name");
+            pContFunc->addVariable(m_functionVars.at(0).toStdString());
+            pFunction = dynamic_cast<fl::FunctionBase *> ( pContFunc ); 
+            
         }   
     }
     Q_ASSERT(pFunction!=NULL);

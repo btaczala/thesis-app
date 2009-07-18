@@ -24,6 +24,8 @@
 #include <QTabWidget>
 #include <boost/shared_ptr.hpp>
 
+#include "functionsproxy.h"
+
 namespace Thesis {
     namespace UI {
         class TabWidget : public QTabWidget
@@ -34,6 +36,12 @@ namespace Thesis {
                 virtual ~TabWidget();
                 void addTab() ; 
                 void closeTabAt( int index =-1 ); 
+                
+                /**
+                    \fn adds function to tab. 
+                    \param index defines to which tab add a function
+                */
+                void addFunction (FunctionsProxy & fProxy, int index=-1);
             protected:
                 int m_currentWorkspace ; 
                 std::vector<bool> m_isWorkspaceUsed ; 

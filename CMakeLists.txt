@@ -23,6 +23,9 @@ include(${QT_USE_FILE})
 
 include_directories( ${Boost_INCLUDE_DIRS} )
 include_directories("./")
+include_directories("./fl")
+include_directories("./fl/muparser")
+include_directories(${CMAKE_BINARY_DIR})
 
 add_subdirectory(fl)
 
@@ -35,6 +38,7 @@ set ( thesis_src
   src/plotwidget.cpp
   src/tabwidgetitem.cpp
   src/newcontinousfunctiondialog.cpp
+  src/functionsproxy.cpp
   ) 
 set ( thesis_hdrs 
   src/mainwindow.h
@@ -44,6 +48,7 @@ set ( thesis_hdrs
   src/plotwidget.h
   src/tabwidgetitem.h
   src/newcontinousfunctiondialog.h
+  src/functionsproxy.h	
   ) 
 set ( thesis_moc
   src/mainwindow.h
@@ -52,19 +57,21 @@ set ( thesis_moc
   src/newcontinousfunctiondialog.h
   )
 set(thesis_rsc resources/main.qrc )
+set( thesis_ui ui/newcontinousfunction.ui ) 
+
 
 qt4_wrap_cpp( thesis_moc_src ${thesis_moc} )
+qt4_wrap_ui( thesis_ui_src ${thesis_ui})
 qt4_add_resources(thesis_rsc_src ${thesis_rsc})
 
-add_executable(Thesis-app ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src})
+add_executable(Thesis-app ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src} ${thesis_ui_src})
 if(UNIX)
   set(KDEEDULIBRARY /usr/lib/libkdeeduui.so.4.3.0)
 elseif(UNIX)
   if(WIN32)
-    set(KDEEDULIBRARY /usr/lib/libkdeeduui.so.4.3.0)
+    #set(KDEEDULIBRARY /usr/lib/libkdeeduui.so.4.3.0)
+    #TODO
   endif(WIN32)
 endif(UNIX)
 
 target_link_libraries(Thesis-app ${QT_LIBRARIES} ${KDE4_KDECORE_LIBS} /usr/lib/libkdeeduui.so.4.3.0 ${QWTPLOT3D_LIBRARIES} fl) 
-
-
