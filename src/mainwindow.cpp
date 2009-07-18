@@ -90,7 +90,7 @@ void MainWindow::createUI()
     setStatusBar(m_pStatusBar);
     setMenuBar(m_pMenuBar);
     setCentralWidget(m_pTabWidget);
-    setWindowIcon(QIcon(":/app_icon.gif"));
+    setWindowIcon(QIcon(":/app_icon.png"));
     
     if ( m_pTabWidget->count() == 0 ) 
         m_pWorkspaceMenu->setEnabled(false);

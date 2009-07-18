@@ -1,15 +1,19 @@
 cmake_minimum_required(VERSION 2.6)
 PROJECT(Thesis_application)
 
+SET( APP_VERSION_MAJOR "0" )
+SET( APP_VERSION_MINOR "0" )
+SET( APP_VERSION_PATCH "1a" )
+
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 find_package(Boost REQUIRED ) 
 find_package(Qt4 REQUIRED ) 
-find_package(QwtPlot3D-qt4 REQUIRED)
+#find_package(QwtPlot3D-qt4 REQUIRED)
 
-find_package(KDE4 REQUIRED)
-include (KDE4Defaults)
-include_directories(${KDE4_INCLUDES})
+#include (KDE4Defaults)
+#include_directories(${KDE4_INCLUDES})
 
 if(UNIX)
   add_definitions( -fexceptions )
@@ -39,6 +43,11 @@ set ( thesis_src
   src/tabwidgetitem.cpp
   src/newcontinousfunctiondialog.cpp
   src/functionsproxy.cpp
+  
+  plotting/kplotaxis.cpp
+  plotting/kplotobject.cpp
+  plotting/kplotpoint.cpp
+  plotting/kplotwidget.cpp
   ) 
 set ( thesis_hdrs 
   src/mainwindow.h
@@ -49,12 +58,18 @@ set ( thesis_hdrs
   src/tabwidgetitem.h
   src/newcontinousfunctiondialog.h
   src/functionsproxy.h	
+  
+  plotting/kplotaxis.h
+  plotting/kplotobject.h
+  plotting/kplotpoint.h
+  plotting/kplotwidget.h
   ) 
 set ( thesis_moc
   src/mainwindow.h
   src/tabwidget.h
   src/tabwidgetitem.h
   src/newcontinousfunctiondialog.h
+  plotting/kplotwidget.h
   )
 set(thesis_rsc resources/main.qrc )
 set( thesis_ui ui/newcontinousfunction.ui ) 
@@ -65,13 +80,36 @@ qt4_wrap_ui( thesis_ui_src ${thesis_ui})
 qt4_add_resources(thesis_rsc_src ${thesis_rsc})
 
 add_executable(Thesis-app ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src} ${thesis_ui_src})
-if(UNIX)
-  set(KDEEDULIBRARY /usr/lib/libkdeeduui.so.4.3.0)
-elseif(UNIX)
-  if(WIN32)
-    #set(KDEEDULIBRARY /usr/lib/libkdeeduui.so.4.3.0)
-    #TODO
-  endif(WIN32)
-endif(UNIX)
+message( STATUS ${KDEEDULIBRARY})
 
-target_link_libraries(Thesis-app ${QT_LIBRARIES} ${KDE4_KDECORE_LIBS} /usr/lib/libkdeeduui.so.4.3.0 ${QWTPLOT3D_LIBRARIES} fl) 
+target_link_libraries(Thesis-app ${QT_LIBRARIES} fl) 
+
+
+IF(NOT QT_CONFIG MATCHES "static")
+	if( WIN32 )
+		Find_File(qtgui QtGui4.dll PATHS ${QT_LIBRARY_DIR} NO_DEFAULT_PATH)
+		Find_File(qtcore QtCore4.dll PATHS ${QT_LIBRARY_DIR} NO_DEFAULT_PATH)
+		Find_File(qtmain qtmain.lib PATHS ${QT_LIBRARY_DIR} NO_DEFAULT_PATH)
+		INSTALL(FILES ${qtgui} ${qtcore} ${qtmain} ${qtnetwork} DESTINATION bin )
+	ENDIF( WIN32 )
+ENDIF(NOT QT_CONFIG MATCHES "static")
+
+INSTALL(TARGETS Thesis-app
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+)
+
+INCLUDE(InstallRequiredSystemLibraries)
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Thesis application")
+SET(CPACK_PACKAGE_VENDOR "Bartosz Tacza³a")
+SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/GPL.txt")
+SET(CPACK_PACKAGE_VERSION_MAJOR ${APP_VERSION_MAJOR})
+SET(CPACK_PACKAGE_VERSION_MINOR ${APP_VERSION_MINOR})
+SET(CPACK_PACKAGE_VERSION_PATCH ${APP_VERSION_PATCH})
+SET(CPACK_PACKAGE_INSTALL_DIRECTORY "bta-thesis")
+IF(WIN32 AND NOT UNIX)
+	SET(CPACK_NSIS_DISPLAY_NAME ${CPACK_PACKAGE_INSTALL_DIRECTORY} "thesis_app")
+	SET(CPACK_NSIS_CONTACT "btaczala@wi.ps.pl")
+ENDIF(WIN32 AND NOT UNIX)
+INCLUDE(CPack)
