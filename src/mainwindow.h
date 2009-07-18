@@ -46,6 +46,7 @@ namespace Thesis {
                 void closeCurrentTab();
                 
                 void newContinousFunction();
+                void newDiscreteFunction() ; 
             private:
                 Q_DISABLE_COPY(MainWindow) ;
                 

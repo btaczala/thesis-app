@@ -61,6 +61,15 @@ fl::FunctionBase* FunctionsProxy::proxy()
             
         }   
     }
+    if ( m_functionDimension == 3 ) {
+        if ( m_Type == eContinous ) {
+            LOG("Proxying 3d continous function");
+            fl::Function3D::FunctionContinous *pContFunc = new fl::Function3D::FunctionContinous(m_functionEquation.toStdString(),"name");
+            pContFunc->addVariable(m_functionVars.at(0).toStdString());
+            pContFunc->addVariable(m_functionVars.at(1).toStdString());
+            pFunction = dynamic_cast<fl::FunctionBase *> ( pContFunc ); 
+        }
+    }
     Q_ASSERT(pFunction!=NULL);
     return pFunction ; 
 }

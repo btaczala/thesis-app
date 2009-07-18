@@ -10,7 +10,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 find_package(Boost REQUIRED ) 
 find_package(Qt4 REQUIRED ) 
-#find_package(QwtPlot3D-qt4 REQUIRED)
+find_package(QwtPlot3D-qt4 REQUIRED)
 
 #include (KDE4Defaults)
 #include_directories(${KDE4_INCLUDES})
@@ -30,6 +30,7 @@ include_directories("./")
 include_directories("./fl")
 include_directories("./fl/muparser")
 include_directories(${CMAKE_BINARY_DIR})
+include_directories(${QWTPLOT3D_INCLUDE_DIR})
 
 add_subdirectory(fl)
 
@@ -69,6 +70,7 @@ set ( thesis_moc
   src/tabwidget.h
   src/tabwidgetitem.h
   src/newcontinousfunctiondialog.h
+  src/plotwidget.h
   plotting/kplotwidget.h
   )
 set(thesis_rsc resources/main.qrc )
@@ -80,9 +82,8 @@ qt4_wrap_ui( thesis_ui_src ${thesis_ui})
 qt4_add_resources(thesis_rsc_src ${thesis_rsc})
 
 add_executable(Thesis-app ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src} ${thesis_ui_src})
-message( STATUS ${KDEEDULIBRARY})
 
-target_link_libraries(Thesis-app ${QT_LIBRARIES} fl) 
+target_link_libraries(Thesis-app ${QT_LIBRARIES} fl ${QWTPLOT3D_LIBRARIES}) 
 
 
 IF(NOT QT_CONFIG MATCHES "static")
@@ -102,7 +103,7 @@ INSTALL(TARGETS Thesis-app
 
 INCLUDE(InstallRequiredSystemLibraries)
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Thesis application")
-SET(CPACK_PACKAGE_VENDOR "Bartosz Tacza³a")
+SET(CPACK_PACKAGE_VENDOR "Bartosz Taczala")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/GPL.txt")
 SET(CPACK_PACKAGE_VERSION_MAJOR ${APP_VERSION_MAJOR})
 SET(CPACK_PACKAGE_VERSION_MINOR ${APP_VERSION_MINOR})

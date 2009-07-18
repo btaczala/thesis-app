@@ -187,3 +187,8 @@ void Thesis::UI::MainWindow::newContinousFunction()
         return ; 
     }
 }
+
+void Thesis::UI::MainWindow::newDiscreteFunction()
+{
+}
+

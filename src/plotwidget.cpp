@@ -23,6 +23,8 @@
 #include <kplotwidget.h>
 #include <kplotobject.h>
 
+#include <qwt3d_surfaceplot.h>
+
 #include "fl/functionbase.h"
 #include "fl/function2dbase.h"
 
@@ -30,15 +32,11 @@ using namespace Thesis::UI;
 
 
 PlotWidgetProxy::PlotWidgetProxy(PlotWidgetProxy::PlotType type, QWidget *pParent ) : 
-m_PlotType(type)
+m_PlotType(type),
+m_pParent(pParent)
 {
     cLOG();
-    if ( m_PlotType == ePlot2D ) {
-        m_pKPlotWidget.reset( new KPlotWidget(pParent));
-        m_pKPlotWidget->setAntialiasing( true );
-        m_pKPlotWidget->setLimits( -0.1, 6.38, -1.1, 1.1 );
-        m_pWidget = m_pKPlotWidget;
-    }
+    changeType(type);
 }
 PlotWidgetProxy::~PlotWidgetProxy()
 {
@@ -48,6 +46,7 @@ PlotWidgetProxy::~PlotWidgetProxy()
 QWidget* PlotWidgetProxy::widget()
 {
     cLOG();
+    Q_ASSERT(m_pWidget.get() != NULL ) ; 
     return m_pWidget.get();
 }
 
@@ -56,11 +55,14 @@ void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction)
     cLOG();
     
     if ( m_PlotType == ePlot2D && pFunction->dimensions() != 2 ) {
-        LOG("Unable to add function with dimensions:"<< pFunction->dimensions() <<" to a 2D plot " ) ; 
-        return ; 
+        //LOG("Unable to add function with dimensions:"<< pFunction->dimensions() <<" to a 2D plot " ) ; 
+        changeType(ePlot3D);
+    }
+    if ( m_PlotType == ePlot3D && pFunction->dimensions() !=3 ) {
+        changeType(ePlot2D);
     }
     
-    m_FunctionVector.push_back(boost::shared_ptr<fl::FunctionBase > ( pFunction ));
+    //m_FunctionVector.push_back(boost::shared_ptr<fl::FunctionBase > ( pFunction ));
     
     if ( pFunction->dimensions() == 2 ) 
     {
@@ -77,3 +79,50 @@ void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction)
     }
 }
 
+void PlotWidgetProxy::changeType(Thesis::UI::PlotWidgetProxy::PlotType newType)
+{
+    cLOG() ; 
+    if ( newType == m_PlotType && m_pWidget != NULL ) {
+        LOG("Returning without changing");
+        return ;
+    }
+    if ( m_pWidget == NULL ) {
+        if ( m_PlotType == ePlot2D ) {
+        m_pKPlotWidget.reset( new KPlotWidget(m_pParent));
+        m_pKPlotWidget->setAntialiasing( true );
+        m_pKPlotWidget->setLimits( -0.1, 6.38, -1.1, 1.1 );
+        m_pWidget = m_pKPlotWidget;
+        }
+        else 
+        {
+            m_pSurfacePlotWidget.reset ( new Qwt3D::SurfacePlot(m_pParent) ) ; 
+            m_pWidget = m_pSurfacePlotWidget;
+        }
+        return ; 
+    }
+    LOG("Start switch - our");
+    m_pWidget.reset() ;
+    m_PlotType = newType ; 
+    
+    if ( m_PlotType == ePlot2D ) {
+        LOG("setting 2d");
+        m_pKPlotWidget.reset( new KPlotWidget(m_pParent));
+        m_pKPlotWidget->setAntialiasing( true );
+        m_pKPlotWidget->setLimits( -0.1, 6.38, -1.1, 1.1 );
+        
+        m_pSurfacePlotWidget.reset();
+        
+        m_pWidget = m_pKPlotWidget;
+    }
+    else 
+    {
+        LOG("setting 3d");
+        m_pSurfacePlotWidget.reset ( new Qwt3D::SurfacePlot(m_pParent) ) ; 
+        m_pKPlotWidget.reset();
+        m_pWidget = m_pSurfacePlotWidget;
+    }
+    
+    
+    emit plotChanging();
+    emit plotChanged();
+}

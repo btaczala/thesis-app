@@ -21,21 +21,27 @@
 #ifndef THESIS_UI_PLOTWIDGET_H
 #define THESIS_UI_PLOTWIDGET_H
 
-#include <QWidget>
 #include <QPointer>
-
+#include <QObject>
 #include <boost/shared_ptr.hpp>
+#include <vector>
+
+class QWidget ; 
 
 class KPlotWidget ; 
 
 namespace fl{
     class FunctionBase ; 
 }
+namespace Qwt3D{
+    class SurfacePlot ; 
+}
 
 namespace Thesis {
     namespace UI {
-        class PlotWidgetProxy
+        class PlotWidgetProxy : public QObject
         {
+            Q_OBJECT
             public:
                 enum PlotType {
                     ePlot2D = 0,
@@ -48,11 +54,19 @@ namespace Thesis {
                 
                 void addFunction ( fl::FunctionBase * pFunction ) ; 
                 
+                void changeType( PlotType  newType) ; 
+                
             protected:
                 boost::shared_ptr<QWidget> m_pWidget ; 
-                boost::shared_ptr<KPlotWidget> m_pKPlotWidget ; 
+                boost::shared_ptr<KPlotWidget> m_pKPlotWidget ;
+                boost::shared_ptr<Qwt3D::SurfacePlot> m_pSurfacePlotWidget ; 
+                
                 PlotType m_PlotType ; 
                 std::vector<boost::shared_ptr<fl::FunctionBase > > m_FunctionVector  ;
+                QWidget * m_pParent ; 
+            signals:
+                void plotChanging() ; 
+                void plotChanged();
         };
     }
 }

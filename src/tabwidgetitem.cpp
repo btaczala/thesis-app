@@ -21,6 +21,7 @@
 #include "tabwidgetitem.h"
 #include "plotwidget.h"
 #include <QLayout>
+#include "commons.h"
 
 using namespace Thesis::UI ; 
 
@@ -30,16 +31,31 @@ QWidget(parent, f),
 m_pPlotProxy( new PlotWidgetProxy(Thesis::UI::PlotWidgetProxy::ePlot2D,this) ),
 m_pLayout( new QHBoxLayout(this) )
 {
+    cLOG();
     m_pLayout->addWidget(m_pPlotProxy->widget());
     setLayout(m_pLayout);
+    
+    connect ( m_pPlotProxy.get(), SIGNAL(plotChanging()),this,SLOT(plotAboutToChange()));
+    connect ( m_pPlotProxy.get(), SIGNAL(plotChanged()),this,SLOT(plotChaged() ) );
 }
 TabWidgetItem::~TabWidgetItem()
 {
+    cLOG();
 }
 
-PlotWidgetProxy* Thesis::UI::TabWidgetItem::plotProxy()
+PlotWidgetProxy* TabWidgetItem::plotProxy()
 {
+    cLOG();
     return m_pPlotProxy.get();
-
 }
 
+void TabWidgetItem::plotAboutToChange()
+{
+    cLOG();
+    m_pLayout->removeWidget(m_pPlotProxy->widget());
+}
+void Thesis::UI::TabWidgetItem::plotChaged()
+{
+    cLOG();
+    m_pLayout->addWidget(m_pPlotProxy->widget());
+}

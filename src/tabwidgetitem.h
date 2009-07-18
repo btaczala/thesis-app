@@ -47,6 +47,9 @@ namespace Thesis{
                 boost::shared_ptr<PlotWidgetProxy> m_pPlotProxy ; 
                 QPointer<QLayout> m_pLayout ; 
                 int m_NumberOfPlots ; 
+            private slots:
+                void plotAboutToChange() ; 
+                void plotChaged() ; 
         };
     }
 }
