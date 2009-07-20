@@ -25,10 +25,11 @@
 #include <QObject>
 #include <boost/shared_ptr.hpp>
 #include <vector>
+#include <QMap>
 
 class QWidget ; 
-
 class KPlotWidget ; 
+class KPlotObject ; 
 
 namespace fl{
     class FunctionBase ; 
@@ -49,21 +50,32 @@ namespace Thesis {
                 };
                 PlotWidgetProxy(Thesis::UI::PlotWidgetProxy::PlotType type, QWidget* pParent); 
                 virtual ~PlotWidgetProxy();
-                
                 QWidget * widget() ;
-                
                 void addFunction ( fl::FunctionBase * pFunction ) ; 
-                
                 void changeType( PlotType  newType) ; 
+                double xMin() const { return m_xMin ; }
+                double xMax() const { return m_xMax ; }
+                double yMin() const { return m_yMin ; }
+                double yMax() const { return m_yMax ; }
                 
+                void changeRange( double xstart,double xstop,double ystart,double ystop ) ;
+                
+                PlotType plotType() const { return m_PlotType ; } 
             protected:
                 boost::shared_ptr<QWidget> m_pWidget ; 
                 boost::shared_ptr<KPlotWidget> m_pKPlotWidget ;
                 boost::shared_ptr<Qwt3D::SurfacePlot> m_pSurfacePlotWidget ; 
                 
                 PlotType m_PlotType ; 
-                std::vector<boost::shared_ptr<fl::FunctionBase > > m_FunctionVector  ;
+                
+                QMap<KPlotObject*, fl::FunctionBase *> m_PlotsFunctions ; 
                 QWidget * m_pParent ; 
+                void setWidget( PlotType _type) ; 
+                
+                double m_xMin ; 
+                double m_xMax ;
+                double m_yMin ; 
+                double m_yMax ; 
             signals:
                 void plotChanging() ; 
                 void plotChanged();

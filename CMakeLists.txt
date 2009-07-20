@@ -44,6 +44,7 @@ set ( thesis_src
   src/tabwidgetitem.cpp
   src/newcontinousfunctiondialog.cpp
   src/functionsproxy.cpp
+  src/workspacesettingsdialog.cpp
   
   plotting/kplotaxis.cpp
   plotting/kplotobject.cpp
@@ -59,6 +60,7 @@ set ( thesis_hdrs
   src/tabwidgetitem.h
   src/newcontinousfunctiondialog.h
   src/functionsproxy.h	
+  src/workspacesettingsdialog.h
   
   plotting/kplotaxis.h
   plotting/kplotobject.h
@@ -71,10 +73,15 @@ set ( thesis_moc
   src/tabwidgetitem.h
   src/newcontinousfunctiondialog.h
   src/plotwidget.h
+  src/workspacesettingsdialog.h
   plotting/kplotwidget.h
+  
   )
 set(thesis_rsc resources/main.qrc )
-set( thesis_ui ui/newcontinousfunction.ui ) 
+set( thesis_ui 
+    ui/newcontinousfunction.ui 
+    ui/range.ui
+) 
 
 
 qt4_wrap_cpp( thesis_moc_src ${thesis_moc} )
@@ -82,8 +89,10 @@ qt4_wrap_ui( thesis_ui_src ${thesis_ui})
 qt4_add_resources(thesis_rsc_src ${thesis_rsc})
 
 add_executable(Thesis-app ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src} ${thesis_ui_src})
+add_executable( gen src/genFunctions.cpp)
 
 target_link_libraries(Thesis-app ${QT_LIBRARIES} fl ${QWTPLOT3D_LIBRARIES}) 
+target_link_libraries(gen ${QT_LIBRARIES} )
 
 
 IF(NOT QT_CONFIG MATCHES "static")

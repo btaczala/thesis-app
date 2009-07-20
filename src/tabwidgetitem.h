@@ -25,6 +25,8 @@
 #include <boost/shared_ptr.hpp>
 #include <QPointer>
 
+class QScrollBar;
+class QVBoxLayout ; 
 namespace Thesis{
     namespace UI{
         class PlotWidgetProxy ; 
@@ -45,7 +47,10 @@ namespace Thesis{
             protected:
                 QString m_text ; 
                 boost::shared_ptr<PlotWidgetProxy> m_pPlotProxy ; 
-                QPointer<QLayout> m_pLayout ; 
+                QPointer<QVBoxLayout> m_pLayout ;
+                QPointer<QLayout> m_pPlotAndOtherWidgets ; 
+                QPointer<QScrollBar> m_pVerticalScrollBar ; 
+                QPointer<QScrollBar> m_pHorizontalScrollBar ; 
                 int m_NumberOfPlots ; 
             private slots:
                 void plotAboutToChange() ; 

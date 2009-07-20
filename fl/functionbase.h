@@ -28,6 +28,11 @@ namespace fl{
     class FunctionBase
     {
         public:
+            enum Type{
+                eDiscrete = 0, 
+                eContinous, 
+                eMixed 
+            } ;
             FunctionBase( const std::string & _functionName ) : m_FunctionName(_functionName) {}
             virtual ~FunctionBase() {}
             const std::string & name() const { return m_FunctionName ; } 
@@ -36,25 +41,23 @@ namespace fl{
             virtual double max() = 0 ; 
             virtual double min() = 0 ; 
             virtual int dimensions() { return m_iDimension ; } 
+            virtual Type type() const { return m_Type ; }
             //virtual void serialize ( const std::string & _pathToFile ) = 0 ; 
         protected:
             std::string m_FunctionName ; 
             int m_iIdentifier ; 
             int m_iDimension ; 
-            enum Type{
-                eDiscrete = 0, 
-                eContinous, 
-                eMixed 
-            } m_Type ; 
+            Type m_Type ; 
     };
     class FunctionContinousBase
     {
         public:
-			FunctionContinousBase( const std::string & _equation ) : m_pParser( new mu::Parser() ) 
+			FunctionContinousBase( const std::string & _equation ) : m_pParser( new mu::Parser() ) ,m_bMinMaxEval(false)
 			{ 
 				m_functionEquation = _equation ; 
 				if ( !m_functionEquation.empty() )
 					m_pParser->SetExpr(m_functionEquation);
+                
 			}
             virtual ~FunctionContinousBase() {}
             const std::string & equation() const { return m_functionEquation;}
@@ -76,7 +79,11 @@ namespace fl{
             std::string m_functionEquation ; 
             std::auto_ptr<mu::Parser> m_pParser ; 
             double m_dStep ; 
-			std::map<std::string,double> m_VariableMap ; 
+            std::map<std::string,double> m_VariableMap ; 
+            
+            double m_iMin ;
+            double m_iMax ;
+            bool m_bMinMaxEval ; 
     };
 }
 

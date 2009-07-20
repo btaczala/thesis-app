@@ -35,9 +35,9 @@ namespace fl{
                 typedef std::vector<std::pair<double,double> > DomainRange ;
                 typedef DomainRange::iterator DomainRangeIterator  ;
                 
-                FunctionDiscrete(const std::vector<double> _x, const std::vector<double> _y, const std::string& _functionName = "unnamed");
+                FunctionDiscrete(const std::vector< double >& _x, const std::vector< double >& _y, const std::string& _functionName = "unnamed");
                 virtual ~FunctionDiscrete();                
-                virtual double eval( double point ) ;
+                virtual double eval( double point, bool * pCorrect ) ;
                 
                 virtual Function2DBase* integrate(double start, double stop);
                 

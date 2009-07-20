@@ -26,10 +26,22 @@
 
 #include <boost/bind.hpp>
 
+#define EPSILON 0.0001   // Define your own tolerance
+#define FLOAT_EQ(x,v) (((v - EPSILON) < x) && (x <( v + EPSILON)))
+
+
 double pair_first ( const std::pair<double,double> & pair) 
 {
     return pair.first ;
 }
+struct  is_approximately {
+    double x;
+    public:
+        is_approximately ( double what ) : x ( what ) {}
+        bool operator() ( const std::pair<double,double> & _pair ) const {
+            return FLOAT_EQ(x,_pair.first);
+        }
+};
 struct comparePairsMax{
     public:
         bool operator()( const std::pair<double,double> & pair1,const std::pair<double,double> & pair2 )
@@ -49,7 +61,7 @@ struct comparePairsMin{
         };
 };
 
-fl::Function2D::FunctionDiscrete::FunctionDiscrete(const std::vector< double > _x, const std::vector< double > _y, const std::string& _functionName): Function2DBase(_functionName)
+fl::Function2D::FunctionDiscrete::FunctionDiscrete(const std::vector< double > & _x, const std::vector< double > & _y, const std::string& _functionName): Function2DBase(_functionName)
 {
     m_Type = eDiscrete;
     for( size_t i = 0 ; i< _x.size() ; ++i ) 
@@ -59,15 +71,18 @@ fl::Function2D::FunctionDiscrete::FunctionDiscrete(const std::vector< double > _
 fl::Function2D::FunctionDiscrete::~FunctionDiscrete()
 {
 }
-double fl::Function2D::FunctionDiscrete::eval( double _xs ) 
+double fl::Function2D::FunctionDiscrete::eval( double _xs, bool * pCorrect ) 
 {
     if ( m_xy.size() == 0 ) 
         return -1 ; 
-    DomainRangeIterator it  = std::find_if ( m_xy.begin(), m_xy.end(), boost::bind( pair_first, _1) == _xs ) ; 
-    if ( it != m_xy.end() )
+    DomainRangeIterator it  = std::find_if ( m_xy.begin(), m_xy.end(), is_approximately(_xs) ) ; 
+    if ( it != m_xy.end() ) {
+        *pCorrect = true ; 
         return it->second ;
-    else
-        throw fl::FunctionException("Unable to evaluate!");
+    } else {
+        *pCorrect = false ; 
+        return -1 ; 
+    }
 }
 fl::Function2D::Function2DBase* fl::Function2D::FunctionDiscrete::integrate(double start, double stop)
 {

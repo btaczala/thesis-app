@@ -53,7 +53,7 @@ namespace fl {
         private:
             std::string m_ExceptionDesc ; 
             What m_What ; 
-	    mutable std::string m_Description ; 
+            mutable std::string m_Description ; 
     };
 }
 #endif 

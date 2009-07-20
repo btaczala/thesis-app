@@ -46,7 +46,9 @@ namespace Thesis {
                 void closeCurrentTab();
                 
                 void newContinousFunction();
-                void newDiscreteFunction() ; 
+                void newDiscreteFunctionFromFile() ; 
+                
+                void workspaceSettings() ; 
             private:
                 Q_DISABLE_COPY(MainWindow) ;
                 
@@ -80,6 +82,7 @@ namespace Thesis {
                 QPointer<QMenu> m_pFileMenu ;
                 QPointer<QMenu> m_pWorkspaceMenu ;  
                 QPointer<QMenu> m_pWorkspaceNewFunctionMenu ; 
+                QPointer<QMenu> m_pWorkspaceNewDiscreteFunctionMenu ; 
                 
                 QPointer<QMenu> m_pAboutMenu ;  
                 QPointer<TabWidget> m_pTabWidget ; 

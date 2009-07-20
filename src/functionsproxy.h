@@ -41,7 +41,8 @@ namespace Thesis {
             } ;
             typedef std::vector<std::pair<double,double> > CustomRangeContainer ; 
             FunctionsProxy( const QString & _equation, const QStringList & _vars, int _dimension,Type type,  bool bCustomRange = false, CustomRangeContainer _range =  CustomRangeContainer() ) ; 
-            FunctionsProxy(const FunctionsProxy & _rhs ) ; 
+            FunctionsProxy( const QString & fileName ) ; 
+            //FunctionsProxy(const FunctionsProxy & _rhs ) ; 
             fl::FunctionBase * proxy() ; 
         private:
             QString m_functionEquation ; 
@@ -50,6 +51,7 @@ namespace Thesis {
             bool m_bCustomRange ; 
             CustomRangeContainer m_CustomRange ; 
             Type m_Type ; 
+            QString m_functionFileNamePath ; 
              
     };
 

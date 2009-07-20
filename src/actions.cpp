@@ -67,8 +67,9 @@ void Actions::addDefaultActions()
     m_pnewContinousFunction.reset( new QAction(NULL) ) ; 
     m_pnewContinousFunction->setText(QObject::tr("New continous function") );
     
-    m_pnewDiscreteFunction.reset( new QAction(NULL) ) ; 
-    m_pnewDiscreteFunction->setText(QObject::tr("New discrete function") );
+    m_pnewDiscreteFromFile.reset( new QAction(NULL) ) ; 
+//     m_pnewDiscreteFunction
+    m_pnewDiscreteFromFile->setText(QObject::tr("New discrete function from file") );
     
     m_pnewMixedFunction.reset ( new QAction(NULL) ) ; 
     m_pnewMixedFunction->setText(QObject::tr("New mixed function") );
@@ -76,5 +77,10 @@ void Actions::addDefaultActions()
     m_pcloseWorkspace.reset( new QAction ( NULL) ) ; 
     m_pcloseWorkspace->setText( QObject::tr("Close current workspace") );
     m_pcloseWorkspace->setIcon(QIcon(":/cancel.png"));
+    
+    m_pworkspaceSettings.reset( new QAction(NULL) ) ;
+    m_pworkspaceSettings->setText( QObject::tr("Workspace settings") );
+    m_pworkspaceSettings->setIcon(QIcon(":/tool.png"));
+    
     
 }

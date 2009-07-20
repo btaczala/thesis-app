@@ -25,6 +25,8 @@
 #include "plotwidget.h"
 #include "newcontinousfunctiondialog.h"
 #include "functionsproxy.h"
+#include "workspacesettingsdialog.h"
+#include "tabwidgetitem.h"
 
 #include <QStatusBar>
 #include <QMenuBar>
@@ -32,6 +34,7 @@
 #include <kplotwidget.h>
 #include <QApplication>
 #include <QLabel>
+#include <QFileDialog>
 
 using namespace Thesis::UI;
 
@@ -68,10 +71,15 @@ void MainWindow::createUI()
     
 //     m_pWorkspaceMenu
     m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newContinousFunctionAction());
-    m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newDiscreteFunctionAction());
+//     m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newDiscreteFunctionAction());
+    m_pWorkspaceNewDiscreteFunctionMenu->addAction(Thesis::Actions::newDiscreteFromFileAction());
+    m_pWorkspaceNewFunctionMenu->addMenu(m_pWorkspaceNewDiscreteFunctionMenu);
     m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newMixedFunctionAction());
     m_pWorkspaceMenu->addMenu(m_pWorkspaceNewFunctionMenu);
+    m_pWorkspaceMenu->addSeparator();
     
+    m_pWorkspaceMenu->addAction( Thesis::Actions::workspaceSettingsAction());
+    m_pWorkspaceMenu->addSeparator();
     m_pWorkspaceMenu->addAction( Thesis::Actions::closeWorkspaceAction() );
     
     m_pAboutMenu->addAction(Thesis::Actions::aboutAction());
@@ -108,6 +116,7 @@ void MainWindow::createWidgets()
     /// WORKSPACE menu
     m_pWorkspaceMenu = new QMenu ( tr("&Workspace"), m_pMenuBar ) ; 
     m_pWorkspaceNewFunctionMenu = new QMenu ( tr("&New function") , m_pWorkspaceMenu) ; 
+    m_pWorkspaceNewDiscreteFunctionMenu = new QMenu(tr("New discrete function"),m_pWorkspaceNewFunctionMenu);
     
     
     m_pAboutMenu = new QMenu ( tr("&About"),m_pMenuBar ) ; 
@@ -122,6 +131,10 @@ void MainWindow::initSignals()
     connect ( Thesis::Actions::newTabAction(),SIGNAL(triggered()), this,SLOT(newTab()));
     
     connect( Thesis::Actions::newContinousFunctionAction(),SIGNAL(triggered()),this,SLOT(newContinousFunction()));
+    connect ( Thesis::Actions::newDiscreteFromFileAction(),SIGNAL(triggered()),this,SLOT(newDiscreteFunctionFromFile()));
+    connect ( Thesis::Actions::workspaceSettingsAction(), SIGNAL(triggered()),this,SLOT(workspaceSettings()));
+    
+    
     
     connect ( Thesis::Actions::aboutQtAction(), SIGNAL(triggered()), this, SLOT(aboutQt()));
     connect ( Thesis::Actions::aboutAction(), SIGNAL(triggered()), this, SLOT(about()));
@@ -188,7 +201,26 @@ void Thesis::UI::MainWindow::newContinousFunction()
     }
 }
 
-void Thesis::UI::MainWindow::newDiscreteFunction()
+void Thesis::UI::MainWindow::newDiscreteFunctionFromFile()
 {
+    cLOG() ; 
+    QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::homePath(),tr("Function files( *.fnt)"));
+    LOG("Opening file:" << fileName );
+    Thesis::FunctionsProxy prx ( fileName ) ; 
+    m_pTabWidget->addFunction(prx);
 }
 
+void Thesis::UI::MainWindow::workspaceSettings()
+{
+    cLOG() ; 
+    Thesis::UI::TabWidgetItem *pCurrent = qobject_cast< Thesis::UI::TabWidgetItem * >(m_pTabWidget->currentWidget() ) ; 
+    Q_ASSERT( pCurrent != NULL ) ; 
+    Thesis::UI::WorkspaceSettingsDialog dlg( pCurrent ); 
+    
+    dlg.exec();
+    if ( dlg.result() == QDialog::Accepted ) {
+        const Thesis::UI::RangeTab *pRange = dlg.rangeSettings(); 
+        pCurrent->plotProxy()->changeRange( pRange->xMin(), pRange->xMax(),pRange->yMin(), pRange->yMax() );
+    }
+
+}

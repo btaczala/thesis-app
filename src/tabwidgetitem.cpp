@@ -20,8 +20,11 @@
 
 #include "tabwidgetitem.h"
 #include "plotwidget.h"
-#include <QLayout>
 #include "commons.h"
+
+#include <QLayout>
+#include <QScrollBar>
+
 
 using namespace Thesis::UI ; 
 
@@ -29,7 +32,7 @@ using namespace Thesis::UI ;
 TabWidgetItem::TabWidgetItem(QWidget* parent, Qt::WindowFlags f) : 
 QWidget(parent, f),
 m_pPlotProxy( new PlotWidgetProxy(Thesis::UI::PlotWidgetProxy::ePlot2D,this) ),
-m_pLayout( new QHBoxLayout(this) )
+m_pLayout( new QVBoxLayout(this) )
 {
     cLOG();
     m_pLayout->addWidget(m_pPlotProxy->widget());

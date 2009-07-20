@@ -35,16 +35,29 @@ void fl::Function2D::FunctionContinous::addVariable(const std::string & varName 
 	}
 }
 
-double fl::Function2D::FunctionContinous::eval(double point)
+double fl::Function2D::FunctionContinous::eval(double point, bool *pCorrect)
 {
-    double toRet ; 
+    double toRet = -1; 
     try{
 		std::map<std::string, double>::iterator it = m_VariableMap.begin() ;
 		it->second = point ; 
 		toRet = m_pParser->Eval() ;
+        *pCorrect = true ; 
+        if ( !m_bMinMaxEval ) {
+            m_iMax = toRet ;
+            m_iMin = toRet ;
+             
+            m_bMinMaxEval = true ;
+        }
+        else{
+            if( toRet > m_iMax ) 
+                m_iMax = toRet ; 
+            if ( toRet < m_iMin ) ; 
+                m_iMin = toRet ; 
+        }
     }
     catch ( mu::Parser::exception_type & e ) {
-        throw fl::FunctionException( e.GetMsg() );
+        *pCorrect = false ; 
     }
     return toRet ; 
 }
@@ -56,12 +69,12 @@ fl::Function2D::Function2DBase* fl::Function2D::FunctionContinous::integrate(dou
 
 double fl::Function2D::FunctionContinous::max()
 {
-	return -1; 
+	return m_iMax; 
 }
 
 double fl::Function2D::FunctionContinous::min()
 {
-	return -1; 
+	return m_iMin;
 }
 
 fl::Function3D::FunctionContinous::FunctionContinous( const std::string & _equation /*= ""*/, const std::string & functionName/*= "" */ ) :

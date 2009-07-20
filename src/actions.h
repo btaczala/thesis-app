@@ -36,12 +36,14 @@ namespace Thesis {
             ~Actions() ; 
             static QAction * quitAction() { Actions * pInstance = instance() ; return pInstance->m_pquit.get() ; }
             static QAction * newTabAction() { Actions * pInstance = instance() ; return pInstance->m_pnewTab.get() ; }
-            static QAction * newDiscreteFunctionAction() { Actions * pInstance = instance() ; return pInstance->m_pnewDiscreteFunction.get() ; }
+            //static QAction * newDiscreteFunctionAction() { Actions * pInstance = instance() ; return pInstance->m_pnewDiscreteFunction.get() ; }
+            static QAction * newDiscreteFromFileAction() { Actions * pInstance = instance() ; return pInstance->m_pnewDiscreteFromFile.get() ; }
             static QAction * newMixedFunctionAction() { Actions * pInstance = instance() ; return pInstance->m_pnewMixedFunction.get() ; }
             static QAction * newContinousFunctionAction() { Actions * pInstance = instance() ; return pInstance->m_pnewContinousFunction.get() ; }
             static QAction * aboutAction() { Actions * pInstance = instance() ; return pInstance->m_pabout.get() ; }
             static QAction * aboutQtAction() { Actions * pInstance = instance() ; return pInstance->m_paboutQt.get() ; }
             static QAction * closeWorkspaceAction() { Actions * pInstance = instance() ; return pInstance->m_pcloseWorkspace.get() ; }
+            static QAction * workspaceSettingsAction() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceSettings.get() ; }
         private:
             Actions() ; 
             static Actions* instance() ;
@@ -49,12 +51,17 @@ namespace Thesis {
             void addDefaultActions() ;
             boost::shared_ptr<QAction> m_pquit ; 
             boost::shared_ptr<QAction> m_pnewTab ; 
-            boost::shared_ptr<QAction> m_pnewDiscreteFunction ; 
+            //boost::shared_ptr<QAction> m_pnewDiscreteFunction ; 
+            boost::shared_ptr<QAction> m_pnewDiscreteFromFile ; 
+
+            
             boost::shared_ptr<QAction> m_pnewMixedFunction ; 
             boost::shared_ptr<QAction> m_pnewContinousFunction ; 
             boost::shared_ptr<QAction> m_pabout ; 
             boost::shared_ptr<QAction> m_paboutQt ;
             boost::shared_ptr<QAction> m_pcloseWorkspace ; 
+            
+            boost::shared_ptr<QAction> m_pworkspaceSettings ;
 
 
             
