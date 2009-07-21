@@ -44,6 +44,7 @@ namespace Thesis {
             static QAction * aboutQtAction() { Actions * pInstance = instance() ; return pInstance->m_paboutQt.get() ; }
             static QAction * closeWorkspaceAction() { Actions * pInstance = instance() ; return pInstance->m_pcloseWorkspace.get() ; }
             static QAction * workspaceSettingsAction() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceSettings.get() ; }
+            static QAction * newMixedFromFileAction() { Actions * pInstance = instance() ; return pInstance->m_pnewMixedFromFile.get() ; }
         private:
             Actions() ; 
             static Actions* instance() ;
@@ -51,8 +52,8 @@ namespace Thesis {
             void addDefaultActions() ;
             boost::shared_ptr<QAction> m_pquit ; 
             boost::shared_ptr<QAction> m_pnewTab ; 
-            //boost::shared_ptr<QAction> m_pnewDiscreteFunction ; 
             boost::shared_ptr<QAction> m_pnewDiscreteFromFile ; 
+            boost::shared_ptr<QAction> m_pnewMixedFromFile ; 
 
             
             boost::shared_ptr<QAction> m_pnewMixedFunction ; 

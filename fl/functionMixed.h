@@ -26,30 +26,30 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "function2dbase.h"
 
 namespace fl{
-	namespace Function2D{
-		class FunctionMixed : public fl::Function2D::Function2DBase
-		{
-			public:
-				struct FunctionRange{
-					boost::shared_ptr< fl::Function2D::Function2DBase> m_spFunction ; 
-					double m_start ; 
-					double m_stop ; 
-				};
-			public:
-				FunctionMixed(const std::string & _functionName );
-				virtual ~FunctionMixed();
+    namespace Function2D{
+        class FunctionMixed : public fl::Function2D::Function2DBase
+        {
+            public:
+                struct FunctionRange{
+                    boost::shared_ptr< fl::Function2D::Function2DBase> m_spFunction ; 
+                    double m_start ; 
+                    double m_stop ; 
+                };
+            public:
+                FunctionMixed(const std::string & _functionName );
+                virtual ~FunctionMixed(){}
 
-				virtual double eval( double point ) = 0 ; 
-				virtual Function2DBase * integrate( double start, double stop ) = 0 ; 
+                virtual double eval( double point , bool *pOk ) ; 
+                virtual Function2DBase * integrate( double start, double stop ) ; 
 
-				virtual double max() = 0 ; 
-				virtual double min() = 0 ; 
+                virtual double max() ; 
+                virtual double min() ; 
 
-				void addFunction( fl::Function2D::Function2DBase * pFunction, double start, double stop);
-			private:
-				std::vector<FunctionRange> m_Functions ; 
-		};
-	}
+                void addFunction( fl::Function2D::Function2DBase * pFunction, double start, double stop);
+            private:
+                std::vector<FunctionRange> m_Functions ; 
+        };
+    }
 }
 
 

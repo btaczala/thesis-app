@@ -49,37 +49,46 @@ void Actions::addDefaultActions()
     LOG("adding default actions") ; 
     
     m_pquit.reset( new QAction(NULL) ) ;
-    m_pquit->setText(QObject::tr("Quit") );
+    m_pquit->setText(QObject::tr("&Quit") );
     m_pquit->setShortcut( QKeySequence( "Ctrl+X") );
     m_pquit->setIcon(QIcon(":/exit.png"));
     
     m_pnewTab.reset( new QAction(NULL) ) ; 
-    m_pnewTab->setText(QObject::tr("New Tab") ) ;
+    m_pnewTab->setText(QObject::tr("&New Tab") ) ;
     m_pnewTab->setShortcut( QKeySequence( "Ctrl+N") );
     m_pnewTab->setIcon(QIcon(":/new.png"));
     
     m_pabout.reset( new QAction(NULL) ) ; 
-    m_pabout->setText(QObject::tr("About") );
+    m_pabout->setText(QObject::tr("&About") );
+    m_pabout->setIcon(QIcon(":/about.png"));
     m_paboutQt.reset( new QAction(NULL) ) ; 
-    m_paboutQt->setText(QObject::tr("About Qt ") );
+    m_paboutQt->setText(QObject::tr("About &Qt ") );
     m_paboutQt->setIcon(QIcon(":/qt-logo.png"));
     
     m_pnewContinousFunction.reset( new QAction(NULL) ) ; 
-    m_pnewContinousFunction->setText(QObject::tr("New continous function") );
+    m_pnewContinousFunction->setText(QObject::tr("New &continous function") );
+    m_pnewContinousFunction->setShortcut( QKeySequence( "Ctrl+Alt+C") );
     
     m_pnewDiscreteFromFile.reset( new QAction(NULL) ) ; 
-//     m_pnewDiscreteFunction
-    m_pnewDiscreteFromFile->setText(QObject::tr("New discrete function from file") );
+    m_pnewDiscreteFromFile->setText(QObject::tr("New &discrete function from file") );
+    m_pnewDiscreteFromFile->setShortcut( QKeySequence( "Ctrl+Alt+D") );
+    
+    m_pnewMixedFromFile.reset( new QAction(NULL) ) ; 
+    m_pnewMixedFromFile->setText(QObject::tr("New &mixed function from file") );
+    m_pnewMixedFromFile->setShortcut( QKeySequence( "Ctrl+Alt+M") );
     
     m_pnewMixedFunction.reset ( new QAction(NULL) ) ; 
-    m_pnewMixedFunction->setText(QObject::tr("New mixed function") );
+    m_pnewMixedFunction->setText(QObject::tr("New m&ixed function") );
+    m_pnewMixedFunction->setShortcut( QKeySequence( "Ctrl+Alt+N") );
     
     m_pcloseWorkspace.reset( new QAction ( NULL) ) ; 
-    m_pcloseWorkspace->setText( QObject::tr("Close current workspace") );
+    m_pcloseWorkspace->setText( QObject::tr("&Close current workspace") );
+    m_pcloseWorkspace->setShortcut( QKeySequence( "Ctrl+W") );
     m_pcloseWorkspace->setIcon(QIcon(":/cancel.png"));
     
     m_pworkspaceSettings.reset( new QAction(NULL) ) ;
-    m_pworkspaceSettings->setText( QObject::tr("Workspace settings") );
+    m_pworkspaceSettings->setText( QObject::tr("Workspace &settings") );
+    m_pworkspaceSettings->setShortcut( QKeySequence( "Ctrl+S") );
     m_pworkspaceSettings->setIcon(QIcon(":/tool.png"));
     
     

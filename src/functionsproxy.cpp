@@ -23,7 +23,9 @@
 #include "fl/functionbase.h"
 #include "fl/functioncontinous.h"
 #include "fl/functiondiscrete.h"
+#include "fl/functionMixed.h"
 #include <QFile>
+#include <limits>
 
 using namespace Thesis;
 
@@ -48,6 +50,17 @@ m_functionFileNamePath ( fileName )
 {
 }
 
+FunctionsProxy::FunctionsProxy(const std::vector< QStringList >& functionsList) :
+m_functionEquation(""),
+m_functionDimension(-1),
+m_bCustomRange(false),
+m_Type(eMixed),
+m_functionFileNamePath (""),
+m_FunctionsVector(functionsList)
+{
+}
+
+
 
 // FunctionsProxy::FunctionsProxy(const Thesis::FunctionsProxy& _rhs) :
 // m_functionEquation(_rhs.m_functionEquation),
@@ -65,72 +78,34 @@ fl::FunctionBase* FunctionsProxy::proxy()
 {
     cLOG() ; 
     fl::FunctionBase *pFunction = NULL ; 
-    if ( !m_functionEquation.isEmpty() ) {
-        LOG("Proxying cont function");
-        if ( m_functionDimension ==2 ) {
-            if ( m_Type == eContinous ) {
-                LOG("Proxying 2d continous function");
-                fl::Function2D::FunctionContinous *pContFunc = new fl::Function2D::FunctionContinous(m_functionEquation.toStdString(),"name");
-                pContFunc->addVariable(m_functionVars.at(0).toStdString());
-                pFunction = dynamic_cast<fl::FunctionBase *> ( pContFunc ); 
-                
-            }   
-        }
-        if ( m_functionDimension == 3 ) {
-            if ( m_Type == eContinous ) {
-                LOG("Proxying 3d continous function");
-                fl::Function3D::FunctionContinous *pContFunc = new fl::Function3D::FunctionContinous(m_functionEquation.toStdString(),"name");
-                pContFunc->addVariable(m_functionVars.at(0).toStdString());
-                pContFunc->addVariable(m_functionVars.at(1).toStdString());
-                pFunction = dynamic_cast<fl::FunctionBase *> ( pContFunc ); 
-            }
-        }
-    }
-    else {
-        LOG("Proxying discrete");
-        QFile file ( m_functionFileNamePath );
-        if ( !file.open(QIODevice::ReadOnly) )
-            LOG("Unable to open file:" << m_functionFileNamePath );
-        else{
-            double x,y,z;
-            std::vector<double> xs  ;
-            std::vector<double> ys  ;
-            std::vector<double> zs  ;
-            fl::Function2D::FunctionDiscrete *pFunc2DDiscrete = NULL;
-            fl::Function3D::FunctionDiscrete *pFunc3DDiscrete = NULL; 
-            QByteArray arr ;
-            QList<QByteArray> sp ;
-            bool bOk ; 
-            bool bOk2 ; 
-            bool bOk3 ; 
-            int dimensions ;
-            arr = file.readLine();
-            arr.remove(arr.size()-1,1);
-            if ( ! arr.isEmpty() ) {
-                LOG(arr);
-                sp = arr.split(' ');
-                dimensions = sp.size(); 
-                x = sp.at(0).toDouble(&bOk) ;
-                y = sp.at(1).toDouble(&bOk2) ;
-                if ( dimensions == 3 )
-                    z = sp.at(2).toDouble(&bOk3);
-                if ( bOk && bOk2 ) {
-                    LOG("Adding point (" << x << " , " << y << " )") ; 
-                    xs.push_back(x);
-                    ys.push_back(y);
-                    if ( dimensions == 3 )
-                        zs.push_back(z);
-                }
-                LOG("Dimensions:" << dimensions ) ; 
-                for(;;){
-                    arr = file.readLine();
-                    arr.remove(arr.size()-1,1);
+    
+    switch ( m_Type ) {
+        case eDiscrete : {
+            LOG("Proxying discrete");
+            QFile file ( m_functionFileNamePath );
+            if ( !file.open(QIODevice::ReadOnly) )
+                LOG("Unable to open file:" << m_functionFileNamePath );
+            else{
+                double x,y,z;
+                std::vector<double> xs  ;
+                std::vector<double> ys  ;
+                std::vector<double> zs  ;
+                fl::Function2D::FunctionDiscrete *pFunc2DDiscrete = NULL;
+                fl::Function3D::FunctionDiscrete *pFunc3DDiscrete = NULL; 
+                QByteArray arr ;
+                QList<QByteArray> sp ;
+                bool bOk ; 
+                bool bOk2 ; 
+                bool bOk3 ; 
+                int dimensions ;
+                arr = file.readLine();
+                arr.remove(arr.size()-1,1);
+                if ( ! arr.isEmpty() ) {
                     LOG(arr);
-                    if ( arr.isEmpty() ) 
-                        break ;
                     sp = arr.split(' ');
-                    x = sp.at(0).toDouble(&bOk ) ;
-                    y = sp.at(1).toDouble(&bOk2 ) ;
+                    dimensions = sp.size(); 
+                    x = sp.at(0).toDouble(&bOk) ;
+                    y = sp.at(1).toDouble(&bOk2) ;
                     if ( dimensions == 3 )
                         z = sp.at(2).toDouble(&bOk3);
                     if ( bOk && bOk2 ) {
@@ -140,19 +115,116 @@ fl::FunctionBase* FunctionsProxy::proxy()
                         if ( dimensions == 3 )
                             zs.push_back(z);
                     }
-                }
-                if ( dimensions == 2 ) 
-                {
-                    pFunc2DDiscrete = new fl::Function2D::FunctionDiscrete(xs,ys,"some func") ; 
-                    pFunction = dynamic_cast<fl::FunctionBase *> ( pFunc2DDiscrete ); 
-                }
-                else
-                {
-                    pFunc3DDiscrete = new fl::Function3D::FunctionDiscrete(xs,ys,zs,"some 3d func") ; 
-                    pFunction = dynamic_cast<fl::FunctionBase *> ( pFunc2DDiscrete ); 
+                    LOG("Dimensions:" << dimensions ) ; 
+                    for(;;){
+                        arr = file.readLine();
+                        arr.remove(arr.size()-1,1);
+                        LOG(arr);
+                        if ( arr.isEmpty() ) 
+                            break ;
+                        sp = arr.split(' ');
+                        x = sp.at(0).toDouble(&bOk ) ;
+                        y = sp.at(1).toDouble(&bOk2 ) ;
+                        if ( dimensions == 3 )
+                            z = sp.at(2).toDouble(&bOk3);
+                        if ( bOk && bOk2 ) {
+                            LOG("Adding point (" << x << " , " << y << " )") ; 
+                            xs.push_back(x);
+                            ys.push_back(y);
+                            if ( dimensions == 3 )
+                                zs.push_back(z);
+                        }
+                    }
+                    if ( dimensions == 2 ) 
+                    {
+                        pFunc2DDiscrete = new fl::Function2D::FunctionDiscrete(xs,ys,"some func") ; 
+                        pFunction = dynamic_cast<fl::FunctionBase *> ( pFunc2DDiscrete ); 
+                    }
+                    else
+                    {
+                        pFunc3DDiscrete = new fl::Function3D::FunctionDiscrete(xs,ys,zs,"some 3d func") ; 
+                        pFunction = dynamic_cast<fl::FunctionBase *> ( pFunc2DDiscrete ); 
+                    }
                 }
             }
         }
+        case eContinous : {
+            LOG("Proxying cont function");
+            if ( m_functionDimension ==2 ) {
+                if ( m_Type == eContinous ) {
+                    LOG("Proxying 2d continous function");
+                    fl::Function2D::FunctionContinous *pContFunc = new fl::Function2D::FunctionContinous(m_functionEquation.toStdString(),"name");
+                    pContFunc->addVariable(m_functionVars.at(0).toStdString());
+                    pFunction = dynamic_cast<fl::FunctionBase *> ( pContFunc ); 
+                    
+                }   
+            }
+            else if ( m_functionDimension == 3 ) {
+                if ( m_Type == eContinous ) {
+                    LOG("Proxying 3d continous function");
+                    fl::Function3D::FunctionContinous *pContFunc = new fl::Function3D::FunctionContinous(m_functionEquation.toStdString(),"name");
+                    pContFunc->addVariable(m_functionVars.at(0).toStdString());
+                    pContFunc->addVariable(m_functionVars.at(1).toStdString());
+                    pFunction = dynamic_cast<fl::FunctionBase *> ( pContFunc ); 
+                }
+            }
+            break ;
+        }
+        case eMixed : {
+            LOG("Proxying mixed function");
+            fl::Function2D::FunctionMixed *pFuncMixed = NULL ;
+            if ( ! m_FunctionsVector.empty() && m_functionFileNamePath.isEmpty() ) {
+                LOG("Proxying mixed function from std::vector");
+                pFuncMixed = new fl::Function2D::FunctionMixed("unnamed");
+                double start, stop ; 
+                QString qStart, qStop ;
+                bool bOk = true ;
+                bool bOk2 = true ; 
+                foreach ( QStringList list, m_FunctionsVector ){
+                    LOG(list);
+                    if ( list.size() != 4 ) {
+                        LOG("List is not correct");
+                        continue ; 
+                    }
+                    fl::Function2D::FunctionContinous *pFuncCont = new fl::Function2D::FunctionContinous(list.at(0).toStdString(),"func tmp");
+                    qStart = list.at(2) ;
+                    if ( qStart == "-inf" ) {
+                        start = - std::numeric_limits< double >::infinity();
+                    } else if ( qStart == "+inf" ) {
+                        start = std::numeric_limits< double >::infinity();
+                    } else if ( qStart == "inf" ) {
+                        start = std::numeric_limits< double >::infinity();
+                    }
+                    else
+                        start = qStart.toDouble(&bOk);
+                    
+                    qStop = list.at(3) ;
+                    if ( qStop == "-inf" ) {
+                        stop = - std::numeric_limits< double >::infinity();
+                    } else if ( qStop == "+inf" ) {
+                        stop = std::numeric_limits< double >::infinity();
+                    } else if ( qStop == "inf" ) {
+                        stop = std::numeric_limits< double >::infinity();
+                    }
+                    else
+                        stop = qStop.toDouble(&bOk2);
+                    if (bOk && bOk2) {
+                        LOG("adding function") ;
+                        pFuncCont->addVariable(list.at(1).toStdString());
+                        pFuncMixed->addFunction(pFuncCont,start,stop);
+                    }
+                    bOk = true ; 
+                    bOk2 = true ; 
+                }
+                pFunction = dynamic_cast<fl::FunctionBase *> ( pFuncMixed ); 
+            }
+            else{
+                LOG("Proxying mixed function from file");
+            }
+            break ;
+        }
+        default:
+            break ; 
     }
     Q_ASSERT(pFunction!=NULL);
     return pFunction ; 

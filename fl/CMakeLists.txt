@@ -29,6 +29,3 @@ set ( fl_hdrs
 ADD_LIBRARY(fl ${fl_src} ${fl_hdrs} )
 target_link_libraries( fl muparser ) 
 
-#add_executable ( test main.cpp ) 
-#target_link_libraries( test fl ) 
-

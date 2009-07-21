@@ -86,7 +86,7 @@ void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction)
         KPlotObject *pPlotObject = NULL ; 
         if ( pFunction2D->type() == fl::FunctionBase::eDiscrete ) 
             pPlotObject = new KPlotObject( Qt::red, KPlotObject::Points, 2 );
-        else if ( pFunction2D->type() == fl::FunctionBase::eContinous ) 
+        else if ( pFunction2D->type() == fl::FunctionBase::eContinous || pFunction2D->type() == fl::FunctionBase::eMixed ) 
             pPlotObject = new KPlotObject( Qt::red, KPlotObject::Lines, 2 );
             
 //         KPlotObject *pPlotObject = new KPlotObject( Qt::red, plotType, 2 );

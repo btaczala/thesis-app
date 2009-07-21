@@ -45,6 +45,7 @@ set ( thesis_src
   src/newcontinousfunctiondialog.cpp
   src/functionsproxy.cpp
   src/workspacesettingsdialog.cpp
+  src/newfunctionmixeddialog.cpp
   
   plotting/kplotaxis.cpp
   plotting/kplotobject.cpp
@@ -61,6 +62,7 @@ set ( thesis_hdrs
   src/newcontinousfunctiondialog.h
   src/functionsproxy.h	
   src/workspacesettingsdialog.h
+  src/newfunctionmixeddialog.h
   
   plotting/kplotaxis.h
   plotting/kplotobject.h
@@ -74,6 +76,8 @@ set ( thesis_moc
   src/newcontinousfunctiondialog.h
   src/plotwidget.h
   src/workspacesettingsdialog.h
+  src/newfunctionmixeddialog.h
+  
   plotting/kplotwidget.h
   
   )
@@ -81,6 +85,7 @@ set(thesis_rsc resources/main.qrc )
 set( thesis_ui 
     ui/newcontinousfunction.ui 
     ui/range.ui
+    ui/functionMixed.ui
 ) 
 
 

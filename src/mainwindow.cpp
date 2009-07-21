@@ -24,6 +24,7 @@
 #include "tabwidget.h"
 #include "plotwidget.h"
 #include "newcontinousfunctiondialog.h"
+#include "newfunctionmixeddialog.h"
 #include "functionsproxy.h"
 #include "workspacesettingsdialog.h"
 #include "tabwidgetitem.h"
@@ -73,8 +74,12 @@ void MainWindow::createUI()
     m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newContinousFunctionAction());
 //     m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newDiscreteFunctionAction());
     m_pWorkspaceNewDiscreteFunctionMenu->addAction(Thesis::Actions::newDiscreteFromFileAction());
+    m_pWorkspaceNewMixedFunctionMenu->addAction( Thesis::Actions::newMixedFromFileAction() );
+    m_pWorkspaceNewMixedFunctionMenu->addAction( Thesis::Actions::newMixedFunctionAction() );
+    
     m_pWorkspaceNewFunctionMenu->addMenu(m_pWorkspaceNewDiscreteFunctionMenu);
-    m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newMixedFunctionAction());
+    
+    m_pWorkspaceNewFunctionMenu->addMenu(m_pWorkspaceNewMixedFunctionMenu);
     m_pWorkspaceMenu->addMenu(m_pWorkspaceNewFunctionMenu);
     m_pWorkspaceMenu->addSeparator();
     
@@ -117,6 +122,7 @@ void MainWindow::createWidgets()
     m_pWorkspaceMenu = new QMenu ( tr("&Workspace"), m_pMenuBar ) ; 
     m_pWorkspaceNewFunctionMenu = new QMenu ( tr("&New function") , m_pWorkspaceMenu) ; 
     m_pWorkspaceNewDiscreteFunctionMenu = new QMenu(tr("New discrete function"),m_pWorkspaceNewFunctionMenu);
+    m_pWorkspaceNewMixedFunctionMenu = new QMenu(tr("New mixed function"),m_pWorkspaceNewFunctionMenu);
     
     
     m_pAboutMenu = new QMenu ( tr("&About"),m_pMenuBar ) ; 
@@ -132,6 +138,9 @@ void MainWindow::initSignals()
     
     connect( Thesis::Actions::newContinousFunctionAction(),SIGNAL(triggered()),this,SLOT(newContinousFunction()));
     connect ( Thesis::Actions::newDiscreteFromFileAction(),SIGNAL(triggered()),this,SLOT(newDiscreteFunctionFromFile()));
+    connect ( Thesis::Actions::newMixedFunctionAction(),SIGNAL(triggered()),this,SLOT(newMixedFunction()));
+    connect ( Thesis::Actions::newMixedFromFileAction(),SIGNAL(triggered()),this,SLOT(newMixedFunctionFromFile()));
+    
     connect ( Thesis::Actions::workspaceSettingsAction(), SIGNAL(triggered()),this,SLOT(workspaceSettings()));
     
     
@@ -205,6 +214,10 @@ void Thesis::UI::MainWindow::newDiscreteFunctionFromFile()
 {
     cLOG() ; 
     QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::homePath(),tr("Function files( *.fnt)"));
+    if ( fileName.isEmpty() ) {
+        LOG("Not opening file");
+        return ; 
+    }
     LOG("Opening file:" << fileName );
     Thesis::FunctionsProxy prx ( fileName ) ; 
     m_pTabWidget->addFunction(prx);
@@ -223,4 +236,29 @@ void Thesis::UI::MainWindow::workspaceSettings()
         pCurrent->plotProxy()->changeRange( pRange->xMin(), pRange->xMax(),pRange->yMin(), pRange->yMax() );
     }
 
+}
+
+void Thesis::UI::MainWindow::newMixedFunction()
+{
+    cLOG() ; 
+    Thesis::UI::NewFunctionMixedDialog dlg ;
+    dlg.exec() ; 
+    if ( dlg.result() == QDialog::Accepted ) {
+        std::vector<QStringList> list = dlg.funcDesc();
+        Thesis::FunctionsProxy prx ( list ) ; 
+        m_pTabWidget->addFunction(prx);
+    }
+}
+
+void Thesis::UI::MainWindow::newMixedFunctionFromFile()
+{
+    cLOG() ; 
+    QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::homePath(),tr("Function files( *.fnt)"));
+    if ( fileName.isEmpty() ) {
+        LOG("Not opening file");
+        return ; 
+    }
+    LOG("Opening file:" << fileName );
+    Thesis::FunctionsProxy prx ( fileName ) ; 
+    m_pTabWidget->addFunction(prx);
 }

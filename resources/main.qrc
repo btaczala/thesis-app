@@ -7,5 +7,6 @@
 		<file>new.png</file>
 		<file>qt-logo.png</file>
 		<file>tool.png</file>
+		<file>about.png</file>
     </qresource>
 </RCC>
