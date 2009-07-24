@@ -27,6 +27,7 @@
 class KPlotWidget ; 
 class TabWidget ; 
 class QLabel ; 
+class QToolBar ; 
 
 namespace Thesis {
     namespace UI {
@@ -52,6 +53,8 @@ namespace Thesis {
                 void newMixedFunctionFromFile();
                 
                 void workspaceSettings() ; 
+                void zoomIn();
+                void zoomOut();
             private:
                 Q_DISABLE_COPY(MainWindow) ;
                 
@@ -81,6 +84,7 @@ namespace Thesis {
                 QPointer<QStatusBar> m_pStatusBar ; 
                 QPointer<QLabel> m_pStatusBarWidget ; 
                 QPointer<QMenuBar> m_pMenuBar ; 
+                QPointer<QToolBar> m_pToolBar ; 
                 
                 QPointer<QMenu> m_pFileMenu ;
                 QPointer<QMenu> m_pWorkspaceMenu ;  

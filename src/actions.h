@@ -45,6 +45,8 @@ namespace Thesis {
             static QAction * closeWorkspaceAction() { Actions * pInstance = instance() ; return pInstance->m_pcloseWorkspace.get() ; }
             static QAction * workspaceSettingsAction() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceSettings.get() ; }
             static QAction * newMixedFromFileAction() { Actions * pInstance = instance() ; return pInstance->m_pnewMixedFromFile.get() ; }
+            static QAction * workspaceZoomOut() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceZoomOut.get() ; }
+            static QAction * workspaceZoomIn() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceZoomIn.get() ; }
         private:
             Actions() ; 
             static Actions* instance() ;
@@ -63,6 +65,9 @@ namespace Thesis {
             boost::shared_ptr<QAction> m_pcloseWorkspace ; 
             
             boost::shared_ptr<QAction> m_pworkspaceSettings ;
+            
+            boost::shared_ptr<QAction> m_pworkspaceZoomOut ;
+            boost::shared_ptr<QAction> m_pworkspaceZoomIn ;
 
 
             

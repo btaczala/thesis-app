@@ -25,6 +25,7 @@
 #include <QDialog>
 #include <boost/shared_ptr.hpp>
 
+class QtColorPicker;
 namespace Ui{
     class PasswordDialog ; 
 }
@@ -44,9 +45,11 @@ namespace Thesis {
                 const QString  fuction() const ;
                 const QStringList variables() const ; 
                 int dimensions() const ; 
+                QColor color() const ; 
             protected:
                 boost::shared_ptr<Ui::PasswordDialog> m_pDialog ; 
                 QPointer<QTimer> m_pTimer ; 
+                QPointer<QtColorPicker> m_pColorPicker ; 
             private slots:
                 void customRangeChecked( bool checked ) ; 
                 void checkIfOk() ; 

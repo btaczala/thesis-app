@@ -65,9 +65,7 @@ void TabWidget::addFunction(Thesis::FunctionsProxy & fProxy, int index)
     Q_UNUSED(index);
     QWidget *pWidget = currentWidget() ; 
     TabWidgetItem *pTabWidgetItem = qobject_cast< TabWidgetItem* >(pWidget);
-    pTabWidgetItem->plotProxy()->addFunction(fProxy.proxy());
+    pTabWidgetItem->addFunction(fProxy.proxy(),fProxy.color());
 
 }
-
-
 

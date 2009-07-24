@@ -24,9 +24,18 @@
 #include <QWidget>
 #include <boost/shared_ptr.hpp>
 #include <QPointer>
+#include "plotwidget.h"
 
+class QListWidgetItem;
+class QPushButton;
+class QButtonGroup;
 class QScrollBar;
 class QVBoxLayout ; 
+class QHBoxLayout ; 
+class QListWidget ; 
+namespace fl{
+    class FunctionBase ; 
+}
 namespace Thesis{
     namespace UI{
         class PlotWidgetProxy ; 
@@ -44,17 +53,21 @@ namespace Thesis{
                 
                 PlotWidgetProxy * plotProxy() ;
                 
+                void addFunction( fl::FunctionBase* pFunction, const QColor & color) ; 
+                
+                
             protected:
                 QString m_text ; 
                 boost::shared_ptr<PlotWidgetProxy> m_pPlotProxy ; 
-                QPointer<QVBoxLayout> m_pLayout ;
-                QPointer<QLayout> m_pPlotAndOtherWidgets ; 
-                QPointer<QScrollBar> m_pVerticalScrollBar ; 
-                QPointer<QScrollBar> m_pHorizontalScrollBar ; 
+                QPointer<QHBoxLayout> m_pLayout ;
+                QPointer<QVBoxLayout> m_pLeftLayout ;
+                QPointer<QPushButton> m_pDeleteButton ; 
+                QPointer<QListWidget> m_pListWidget ; 
                 int m_NumberOfPlots ; 
             private slots:
-                void plotAboutToChange() ; 
-                void plotChaged() ; 
+                void functionAdded( const FunctionInfo & fInfo ) ; 
+                void deleteFunction() ; 
+                void itemDoubleClicked ( const QListWidgetItem * pItem ) ; 
         };
     }
 }

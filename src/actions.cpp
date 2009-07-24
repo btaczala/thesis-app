@@ -51,7 +51,7 @@ void Actions::addDefaultActions()
     m_pquit.reset( new QAction(NULL) ) ;
     m_pquit->setText(QObject::tr("&Quit") );
     m_pquit->setShortcut( QKeySequence( "Ctrl+X") );
-    m_pquit->setIcon(QIcon(":/exit.png"));
+    m_pquit->setIcon(QIcon(":/quit_app.png"));
     
     m_pnewTab.reset( new QAction(NULL) ) ; 
     m_pnewTab->setText(QObject::tr("&New Tab") ) ;
@@ -84,12 +84,22 @@ void Actions::addDefaultActions()
     m_pcloseWorkspace.reset( new QAction ( NULL) ) ; 
     m_pcloseWorkspace->setText( QObject::tr("&Close current workspace") );
     m_pcloseWorkspace->setShortcut( QKeySequence( "Ctrl+W") );
-    m_pcloseWorkspace->setIcon(QIcon(":/cancel.png"));
+    m_pcloseWorkspace->setIcon(QIcon(":/delete_tab.png"));
     
     m_pworkspaceSettings.reset( new QAction(NULL) ) ;
     m_pworkspaceSettings->setText( QObject::tr("Workspace &settings") );
     m_pworkspaceSettings->setShortcut( QKeySequence( "Ctrl+S") );
     m_pworkspaceSettings->setIcon(QIcon(":/tool.png"));
+    
+    m_pworkspaceZoomIn.reset(new QAction(NULL));
+    m_pworkspaceZoomIn->setText( QObject::tr("Zoom in ") );
+    m_pworkspaceZoomIn->setShortcut( QKeySequence( "+" ) );
+    m_pworkspaceZoomIn->setIcon(QIcon(":/zoom_in.png"));
+    
+    m_pworkspaceZoomOut.reset(new QAction(NULL));
+    m_pworkspaceZoomOut->setText( QObject::tr("Zoom out") );
+    m_pworkspaceZoomOut->setShortcut( QKeySequence( "-" ) );
+    m_pworkspaceZoomOut->setIcon(QIcon(":/zoom_out.png"));
     
     
 }

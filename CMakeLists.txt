@@ -12,8 +12,6 @@ find_package(Boost REQUIRED )
 find_package(Qt4 REQUIRED ) 
 find_package(QwtPlot3D-qt4 REQUIRED)
 
-#include (KDE4Defaults)
-#include_directories(${KDE4_INCLUDES})
 
 if(UNIX)
   add_definitions( -fexceptions )
@@ -27,8 +25,10 @@ include(${QT_USE_FILE})
 
 include_directories( ${Boost_INCLUDE_DIRS} )
 include_directories("./")
+include_directories("./plotting")
 include_directories("./fl")
 include_directories("./fl/muparser")
+include_directories("./QtColorPicker")
 include_directories(${CMAKE_BINARY_DIR})
 include_directories(${QWTPLOT3D_INCLUDE_DIR})
 
@@ -51,6 +51,8 @@ set ( thesis_src
   plotting/kplotobject.cpp
   plotting/kplotpoint.cpp
   plotting/kplotwidget.cpp
+  
+  QtColorPicker/qtcolorpicker.cpp
   ) 
 set ( thesis_hdrs 
   src/mainwindow.h
@@ -68,6 +70,8 @@ set ( thesis_hdrs
   plotting/kplotobject.h
   plotting/kplotpoint.h
   plotting/kplotwidget.h
+  
+  QtColorPicker/qtcolorpicker.h
   ) 
 set ( thesis_moc
   src/mainwindow.h
@@ -79,6 +83,7 @@ set ( thesis_moc
   src/newfunctionmixeddialog.h
   
   plotting/kplotwidget.h
+  QtColorPicker/qtcolorpicker.h
   
   )
 set(thesis_rsc resources/main.qrc )

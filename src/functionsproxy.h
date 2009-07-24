@@ -26,6 +26,8 @@
 #include <vector>
 #include <boost/ref.hpp>
 
+#include <QColor>
+
 namespace fl{
     class FunctionBase;
 }
@@ -43,6 +45,8 @@ namespace Thesis {
             FunctionsProxy( const QString & _equation, const QStringList & _vars, int _dimension,Type type,  bool bCustomRange = false, CustomRangeContainer _range =  CustomRangeContainer() ) ; 
             FunctionsProxy( const QString & fileName ) ; 
             FunctionsProxy ( const std::vector<QStringList> & functionsList ) ; 
+            void setColor ( const QColor & color ) { m_functionColor = color ; } 
+            QColor color() const { return m_functionColor ; } 
             //FunctionsProxy(const FunctionsProxy & _rhs ) ; 
             fl::FunctionBase * proxy() ; 
         private:
@@ -53,10 +57,10 @@ namespace Thesis {
             CustomRangeContainer m_CustomRange ; 
             Type m_Type ; 
             QString m_functionFileNamePath ; 
-            std::vector<QStringList> m_FunctionsVector ; 
-             
+            std::vector<QStringList> m_FunctionsVector ;  
+            
+            QColor m_functionColor ; 
     };
-
 }
 
 #endif // THESIS_FUNCTIONSPROXY_H

@@ -25,6 +25,7 @@
 #include <QGridLayout>
 #include <QPushButton>
 #include <QTimer>
+#include "QtColorPicker/qtcolorpicker.h"
 
 using namespace Thesis::UI;
 
@@ -36,6 +37,20 @@ m_pDialog( new Ui::PasswordDialog())
     m_pDialog->setupUi(this);
     m_pDialog->RangeXSpinBox->setEnabled(false);
     m_pDialog->RangeYSpinBox->setEnabled(false);
+    m_pColorPicker = new QtColorPicker(this) ;
+    m_pColorPicker->insertColor(QColor("white"), "White");
+    m_pColorPicker->insertColor(QColor("black"), "Black");
+    m_pColorPicker->insertColor(QColor("green"), "Green");
+    m_pColorPicker->insertColor(QColor("darkGreen"), "Dark green");
+    m_pColorPicker->insertColor(QColor("blue"), "Blue");
+    m_pColorPicker->insertColor(QColor("darkBlue"), "Dark blue");
+    m_pColorPicker->insertColor(QColor("cyan"), "Cyan");
+    m_pColorPicker->insertColor(QColor("darkCyan"), "Dark cyan");
+    m_pColorPicker->insertColor(QColor("magenta"), "Magenta");
+    m_pColorPicker->insertColor(QColor("darkMagenta"), "Dark magenta");
+    m_pColorPicker->insertColor(QColor("yellow"), "Yellow");
+    m_pColorPicker->insertColor(QColor("grey"), "Grey");
+    m_pDialog->colorPickerWidget->addWidget( m_pColorPicker );
     
     m_pDialog->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     
@@ -122,4 +137,7 @@ int Thesis::UI::NewContinousFunctionDialog::dimensions() const
     return m_pDialog->dimensionSpinBox->value();
 }
 
-
+QColor Thesis::UI::NewContinousFunctionDialog::color() const
+{
+    return m_pColorPicker->currentColor();
+}

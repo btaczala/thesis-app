@@ -203,6 +203,8 @@ public:
      * Remove and delete all items from the list of KPlotObjects
      */
     void removeAllPlotObjects();
+    
+    void removeObject( KPlotObject *plotObject ) ; 
 
     /**
      * Reset the mask used for non-overlapping labels so that all 

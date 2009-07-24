@@ -36,6 +36,7 @@
 #include <QApplication>
 #include <QLabel>
 #include <QFileDialog>
+#include <QToolBar>
 
 using namespace Thesis::UI;
 
@@ -96,12 +97,22 @@ void MainWindow::createUI()
     m_pMenuBar->addMenu( m_pWorkspaceMenu);
     m_pMenuBar->addMenu( m_pAboutMenu);
     
+    m_pToolBar->addAction(Thesis::Actions::newTabAction());
+    m_pToolBar->addAction(Thesis::Actions::quitAction());
+    m_pToolBar->addSeparator();
+    m_pToolBar->addAction(Thesis::Actions::workspaceSettingsAction());
+    
+    m_pToolBar->addAction(Thesis::Actions::workspaceZoomIn());
+    m_pToolBar->addAction(Thesis::Actions::workspaceZoomOut());
+    
+    
     
     m_pStatusBar->addPermanentWidget(m_pStatusBarWidget);
     
     
     setStatusBar(m_pStatusBar);
     setMenuBar(m_pMenuBar);
+    addToolBar(m_pToolBar);
     setCentralWidget(m_pTabWidget);
     setWindowIcon(QIcon(":/app_icon.png"));
     
@@ -117,6 +128,7 @@ void MainWindow::createWidgets()
     m_pStatusBar = new QStatusBar(this) ; 
     m_pStatusBarWidget = new QLabel(m_pStatusBar);
     m_pMenuBar = new QMenuBar(this);
+    m_pToolBar = new QToolBar(this);
     m_pFileMenu = new QMenu( tr("&File"),m_pMenuBar );
     /// WORKSPACE menu
     m_pWorkspaceMenu = new QMenu ( tr("&Workspace"), m_pMenuBar ) ; 
@@ -149,6 +161,9 @@ void MainWindow::initSignals()
     connect ( Thesis::Actions::aboutAction(), SIGNAL(triggered()), this, SLOT(about()));
     
     connect ( Thesis::Actions::closeWorkspaceAction(),SIGNAL(triggered()),this,SLOT(closeCurrentTab()));
+    
+    connect ( Thesis::Actions::workspaceZoomIn(),SIGNAL(triggered()),this,SLOT(zoomIn()));
+    connect ( Thesis::Actions::workspaceZoomOut(),SIGNAL(triggered()),this,SLOT(zoomOut()));
 }
 
 void MainWindow::setStatusBarStatus(const QString& _status, bool isWorking)
@@ -156,7 +171,7 @@ void MainWindow::setStatusBarStatus(const QString& _status, bool isWorking)
     Q_UNUSED(isWorking);
     LOG(" _status=" << _status);
     m_pStatusBarWidget->setText(_status);
-    m_pStatusBarWidget->setPixmap(QPixmap(":/ok.png")) ;
+    m_pStatusBarWidget->setPixmap(QPixmap(":/ok.png").scaled(32,32)) ;
 }
 
 void MainWindow::closeApp()
@@ -202,6 +217,7 @@ void Thesis::UI::MainWindow::newContinousFunction()
         int dimension = dialog.dimensions();
         LOG("Created function :" << functionEquation <<" with variables:"<< vars );
         Thesis::FunctionsProxy prx( functionEquation,vars,dimension,FunctionsProxy::eContinous ) ; 
+        prx.setColor(dialog.color());
         m_pTabWidget->addFunction(prx);
     }
     else {
@@ -262,3 +278,16 @@ void Thesis::UI::MainWindow::newMixedFunctionFromFile()
     Thesis::FunctionsProxy prx ( fileName ) ; 
     m_pTabWidget->addFunction(prx);
 }
+
+void Thesis::UI::MainWindow::zoomIn()
+{
+    TabWidgetItem *pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget()); 
+    pTab->plotProxy()->zoomIn();
+}
+
+void Thesis::UI::MainWindow::zoomOut()
+{
+    TabWidgetItem *pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget()); 
+    pTab->plotProxy()->zoomOut();
+}
+

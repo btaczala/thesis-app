@@ -26,6 +26,9 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 #include <QMap>
+#include <QThread>
+#include <QMutex>
+#include <QColor>
 
 class QWidget ; 
 class KPlotWidget ; 
@@ -37,49 +40,86 @@ namespace fl{
 namespace Qwt3D{
     class SurfacePlot ; 
 }
+struct FunctionInfo{
+                    QString _fId ; 
+                    QColor _fColor ; 
+                };
 
 namespace Thesis {
     namespace UI {
+        class CalculatingThread ; 
         class PlotWidgetProxy : public QObject
         {
             Q_OBJECT
             public:
-                enum PlotType {
-                    ePlot2D = 0,
-                    ePlot3D
-                };
-                PlotWidgetProxy(Thesis::UI::PlotWidgetProxy::PlotType type, QWidget* pParent); 
+                
+                PlotWidgetProxy(QWidget* pParent); 
                 virtual ~PlotWidgetProxy();
                 QWidget * widget() ;
-                void addFunction ( fl::FunctionBase * pFunction ) ; 
-                void changeType( PlotType  newType) ; 
+                void addFunction ( fl::FunctionBase * pFunction, const QColor & color = QColor() ) ; 
+                void deleteFunction( const QString & fID ) ; 
                 double xMin() const { return m_xMin ; }
                 double xMax() const { return m_xMax ; }
                 double yMin() const { return m_yMin ; }
                 double yMax() const { return m_yMax ; }
                 
                 void changeRange( double xstart,double xstop,double ystart,double ystop ) ;
-                
-                PlotType plotType() const { return m_PlotType ; } 
+            public slots:
+                void zoomIn();
+                void zoomOut();
             protected:
-                boost::shared_ptr<QWidget> m_pWidget ; 
+                
+                typedef boost::shared_ptr<fl::FunctionBase> functionShPtr;
+                typedef boost::shared_ptr<KPlotObject> KPlotObjectShPtr;
+                typedef QMap<fl::FunctionBase*, KPlotObject* > FunctionsPlotMapType ;
                 boost::shared_ptr<KPlotWidget> m_pKPlotWidget ;
-                boost::shared_ptr<Qwt3D::SurfacePlot> m_pSurfacePlotWidget ; 
-                
-                PlotType m_PlotType ; 
-                
-                QMap<KPlotObject*, fl::FunctionBase *> m_PlotsFunctions ; 
+                boost::shared_ptr<CalculatingThread> m_pCalcThread ; 
+                FunctionsPlotMapType m_PlotsFunctions ; 
                 QWidget * m_pParent ; 
-                void setWidget( PlotType _type) ; 
-                
+                fl::FunctionBase * m_pLastAddedFunction ;  
                 double m_xMin ; 
                 double m_xMax ;
                 double m_yMin ; 
                 double m_yMax ; 
+                
+                friend class CalculatingThread ; 
             signals:
-                void plotChanging() ; 
-                void plotChanged();
+                
+                void functionAdded( const FunctionInfo & fInfo ) ; 
+            private slots:
+                void threadEnded() ; 
+                
+                
         };
+        class CalculatingThread : public QThread {
+            public:
+                enum WorkType {
+                    eAdd =0,
+                    eRecalculate
+                };
+                CalculatingThread() ; 
+                ~CalculatingThread();
+                void setLimits ( double,double,double,double);
+                void run() ; 
+                void setWorkType( WorkType type ) { 
+                    m_mutex.lock();
+                    m_WorkType = type ; 
+                    m_mutex.unlock();
+                }
+                WorkType workType() const { return m_WorkType ; } 
+                void setFunctions( const PlotWidgetProxy::FunctionsPlotMapType & pFunctionPlotMap ) ; 
+                QList<KPlotObject *>  result() { return m_plotsCalculated ; }  
+                void freeLists() ; 
+            private:
+                QMutex m_mutex ; 
+                QList<fl::FunctionBase *> m_functionToCalculate ; 
+                QList<KPlotObject *> m_plotsCalculated;
+                double m_xMin ; 
+                double m_xMax ;
+                double m_yMin ; 
+                double m_yMax ;
+                WorkType m_WorkType ; 
+        } ;
     }
 }
 

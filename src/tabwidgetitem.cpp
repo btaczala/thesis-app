@@ -24,6 +24,9 @@
 
 #include <QLayout>
 #include <QScrollBar>
+#include <QListWidget>
+#include <QButtonGroup>
+#include <QPushButton>
 
 
 using namespace Thesis::UI ; 
@@ -31,15 +34,32 @@ using namespace Thesis::UI ;
 
 TabWidgetItem::TabWidgetItem(QWidget* parent, Qt::WindowFlags f) : 
 QWidget(parent, f),
-m_pPlotProxy( new PlotWidgetProxy(Thesis::UI::PlotWidgetProxy::ePlot2D,this) ),
-m_pLayout( new QVBoxLayout(this) )
+m_pPlotProxy( new PlotWidgetProxy(this) ),
+m_pLayout( new QHBoxLayout(this) ),
+m_pLeftLayout(new QVBoxLayout(this)),
+m_pDeleteButton ( new QPushButton(tr("Delete me"))),
+m_pListWidget( new QListWidget(this))
 {
     cLOG();
+    
+    
+    m_pDeleteButton->setEnabled(false);
+    m_pLeftLayout->addWidget(m_pListWidget);
+    m_pLeftLayout->addWidget(m_pDeleteButton);
+    
+    m_pPlotProxy->widget()->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
+    m_pListWidget->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred));
+    
+    m_pLayout->addLayout(m_pLeftLayout);
     m_pLayout->addWidget(m_pPlotProxy->widget());
     setLayout(m_pLayout);
     
-    connect ( m_pPlotProxy.get(), SIGNAL(plotChanging()),this,SLOT(plotAboutToChange()));
-    connect ( m_pPlotProxy.get(), SIGNAL(plotChanged()),this,SLOT(plotChaged() ) );
+    
+    connect ( m_pPlotProxy.get(), SIGNAL(functionAdded(const FunctionInfo & )),this,SLOT(functionAdded(const FunctionInfo & )));
+    
+    connect ( m_pListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
+    
+    connect ( m_pDeleteButton, SIGNAL(pressed()),this,SLOT(deleteFunction()));
 }
 TabWidgetItem::~TabWidgetItem()
 {
@@ -52,13 +72,39 @@ PlotWidgetProxy* TabWidgetItem::plotProxy()
     return m_pPlotProxy.get();
 }
 
-void TabWidgetItem::plotAboutToChange()
+
+void Thesis::UI::TabWidgetItem::functionAdded(const FunctionInfo & fInfo )
 {
     cLOG();
-    m_pLayout->removeWidget(m_pPlotProxy->widget());
+    m_pDeleteButton->setEnabled(true);
+    QListWidgetItem *pItem = new QListWidgetItem(m_pListWidget);
+    pItem->setText(fInfo._fId);
+    pItem->setBackground(fInfo._fColor);
+    
+    m_pListWidget->addItem(pItem);
 }
-void Thesis::UI::TabWidgetItem::plotChaged()
+
+void Thesis::UI::TabWidgetItem::deleteFunction()
 {
     cLOG();
-    m_pLayout->addWidget(m_pPlotProxy->widget());
+    QListWidgetItem *pItem = m_pListWidget->currentItem();
+    if  (pItem == NULL ) 
+        return ; 
+    LOG(pItem->text());
+    m_pPlotProxy->deleteFunction(pItem->text());
+    int i = m_pListWidget->currentRow();
+    delete m_pListWidget->takeItem(i);
+    
+    if ( m_pListWidget->count() == 0 ) 
+        m_pDeleteButton->setEnabled(false);
+}
+void Thesis::UI::TabWidgetItem::itemDoubleClicked(const QListWidgetItem* pItem)
+{
+    cLOG() ; 
+    LOG(pItem->text());
+    QString oldFunctionName = pItem->text();
+}
+void Thesis::UI::TabWidgetItem::addFunction(fl::FunctionBase* pFunction, const QColor& color)
+{
+    m_pPlotProxy->addFunction(pFunction,color);
 }

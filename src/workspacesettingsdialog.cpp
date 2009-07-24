@@ -62,18 +62,11 @@ m_pForm( new Ui::RangeForm())
     
     
     PlotWidgetProxy *proxy = pParent->m_pTabItem->plotProxy();
-    if ( proxy->plotType() == PlotWidgetProxy::ePlot3D ) {
-        m_pForm->xMinSpinBox->setEnabled(false);
-        m_pForm->xMaxSpinBox->setEnabled(false);
-        
-        m_pForm->yMinSpinBox->setEnabled(false);
-        m_pForm->yMaxSpinBox->setEnabled(false);
-    } else {
-        m_pForm->xMinSpinBox->setValue( proxy->xMin() );
-        m_pForm->xMaxSpinBox->setValue( proxy->xMax() );
-        m_pForm->yMinSpinBox->setValue( proxy->yMin() );
-        m_pForm->yMaxSpinBox->setValue( proxy->yMax() );
-    }
+    
+    m_pForm->xMinSpinBox->setValue( proxy->xMin() );
+    m_pForm->xMaxSpinBox->setValue( proxy->xMax() );
+    m_pForm->yMinSpinBox->setValue( proxy->yMin() );
+    m_pForm->yMaxSpinBox->setValue( proxy->yMax() );
 }
 
 double RangeTab::xMin() const

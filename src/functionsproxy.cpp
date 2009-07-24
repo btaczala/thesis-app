@@ -137,12 +137,12 @@ fl::FunctionBase* FunctionsProxy::proxy()
                     }
                     if ( dimensions == 2 ) 
                     {
-                        pFunc2DDiscrete = new fl::Function2D::FunctionDiscrete(xs,ys,"some func") ; 
+                        pFunc2DDiscrete = new fl::Function2D::FunctionDiscrete(xs,ys,m_functionFileNamePath.toStdString() ) ; 
                         pFunction = dynamic_cast<fl::FunctionBase *> ( pFunc2DDiscrete ); 
                     }
                     else
                     {
-                        pFunc3DDiscrete = new fl::Function3D::FunctionDiscrete(xs,ys,zs,"some 3d func") ; 
+                        pFunc3DDiscrete = new fl::Function3D::FunctionDiscrete(xs,ys,zs,m_functionFileNamePath.toStdString() ) ; 
                         pFunction = dynamic_cast<fl::FunctionBase *> ( pFunc2DDiscrete ); 
                     }
                 }
@@ -153,7 +153,7 @@ fl::FunctionBase* FunctionsProxy::proxy()
             if ( m_functionDimension ==2 ) {
                 if ( m_Type == eContinous ) {
                     LOG("Proxying 2d continous function");
-                    fl::Function2D::FunctionContinous *pContFunc = new fl::Function2D::FunctionContinous(m_functionEquation.toStdString(),"name");
+                    fl::Function2D::FunctionContinous *pContFunc = new fl::Function2D::FunctionContinous(m_functionEquation.toStdString(),m_functionEquation.toStdString());
                     pContFunc->addVariable(m_functionVars.at(0).toStdString());
                     pFunction = dynamic_cast<fl::FunctionBase *> ( pContFunc ); 
                     
@@ -162,7 +162,7 @@ fl::FunctionBase* FunctionsProxy::proxy()
             else if ( m_functionDimension == 3 ) {
                 if ( m_Type == eContinous ) {
                     LOG("Proxying 3d continous function");
-                    fl::Function3D::FunctionContinous *pContFunc = new fl::Function3D::FunctionContinous(m_functionEquation.toStdString(),"name");
+                    fl::Function3D::FunctionContinous *pContFunc = new fl::Function3D::FunctionContinous(m_functionEquation.toStdString(),m_functionEquation.toStdString());
                     pContFunc->addVariable(m_functionVars.at(0).toStdString());
                     pContFunc->addVariable(m_functionVars.at(1).toStdString());
                     pFunction = dynamic_cast<fl::FunctionBase *> ( pContFunc ); 
@@ -175,7 +175,9 @@ fl::FunctionBase* FunctionsProxy::proxy()
             fl::Function2D::FunctionMixed *pFuncMixed = NULL ;
             if ( ! m_FunctionsVector.empty() && m_functionFileNamePath.isEmpty() ) {
                 LOG("Proxying mixed function from std::vector");
-                pFuncMixed = new fl::Function2D::FunctionMixed("unnamed");
+                srand(time(NULL));
+                QString name = QString("Func mixed %1").arg(rand()) ; 
+                pFuncMixed = new fl::Function2D::FunctionMixed(name.toStdString());
                 double start, stop ; 
                 QString qStart, qStop ;
                 bool bOk = true ;

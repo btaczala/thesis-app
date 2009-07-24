@@ -246,6 +246,18 @@ void KPlotWidget::removeAllPlotObjects()
     update();
 }
 
+void KPlotWidget::removeObject(KPlotObject* plotObject)
+{
+    Q_ASSERT(plotObject != NULL ) ;
+    QList<KPlotObject*>::iterator it = qFind( d->objectList.begin(),d->objectList.end(),plotObject);
+    if ( it != d->objectList.end() ) {
+        d->objectList.erase(it);
+        delete *it;
+    }
+    update();
+}
+
+
 void KPlotWidget::resetPlotMask() {
     d->plotMask = QImage( pixRect().size(), QImage::Format_ARGB32 );
     QColor fillColor = Qt::black;

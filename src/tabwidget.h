@@ -42,6 +42,8 @@ namespace Thesis {
                     \param index defines to which tab add a function
                 */
                 void addFunction (FunctionsProxy & fProxy, int index=-1);
+                
+                
             protected:
                 int m_currentWorkspace ; 
                 std::vector<bool> m_isWorkspaceUsed ; 
