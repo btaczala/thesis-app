@@ -241,9 +241,17 @@ void Thesis::UI::CalculatingThread::run()
             KPlotObject *pPlotObject = m_plotsCalculated.at(m_plotsCalculated.size()-1);
             bool bOk ; 
             double value ; 
-            double maxValueY ; 
-            double minValueY ; 
-            for ( double t=m_xMin; t<=m_xMax; t+=0.01 ) {
+            double start ;
+            double stop ;
+            if ( pFunction2D->type() == fl::FunctionBase::eDiscrete ) {
+                // add all values
+                start = pFunction2D->min();
+                stop = pFunction2D->max();
+            } else {
+                start = m_xMin ;
+                stop = m_xMax ;
+            }
+            for ( double t=start; t<=stop; t+=0.01 ) {
                 value = pFunction2D->eval(t,&bOk);
                 if ( bOk ) {
                     pPlotObject->addPoint(t,value);  
@@ -262,8 +270,8 @@ void Thesis::UI::CalculatingThread::run()
             pPlotObject = m_plotsCalculated.at(i);
             p2DFunc = dynamic_cast<fl::Function2D::Function2DBase *> ( m_functionToCalculate.at(i) );
             Q_ASSERT ( pPlotObject != NULL && p2DFunc != NULL ) ; 
-//             if ( p2DFunc->type() == fl::FunctionBase::eDiscrete ) 
-//                 continue ; 
+            if ( p2DFunc->type() == fl::FunctionBase::eDiscrete ) 
+                continue ; 
             for ( double i = m_xMin ; i < m_xMax ; i += 0.01 ) {
                 val = p2DFunc->eval(i,&bOk);
                 if ( bOk ) {
