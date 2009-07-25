@@ -108,12 +108,18 @@ namespace Thesis {
                 }
                 WorkType workType() const { return m_WorkType ; } 
                 void setFunctions( const PlotWidgetProxy::FunctionsPlotMapType & pFunctionPlotMap ) ; 
+				void setLastFunctionAdded( fl::FunctionBase * pFunction ) {m_pLastFunctionAdded = pFunction;}
+				void setLastPlotAdded( KPlotObject * pPlot ) { m_pLastPlotAdded = pPlot ; } 
+				fl::FunctionBase * lastFunctionAdded() const { return m_pLastFunctionAdded;}
+				KPlotObject *lastPlotAdded() const { return m_pLastPlotAdded ;}
                 QList<KPlotObject *>  result() { return m_plotsCalculated ; }  
                 void freeLists() ; 
             private:
                 QMutex m_mutex ; 
                 QList<fl::FunctionBase *> m_functionToCalculate ; 
                 QList<KPlotObject *> m_plotsCalculated;
+				KPlotObject *m_pLastPlotAdded ; 
+				fl::FunctionBase * m_pLastFunctionAdded ; 
                 double m_xMin ; 
                 double m_xMax ;
                 double m_yMin ; 

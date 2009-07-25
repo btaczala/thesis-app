@@ -2,3 +2,4 @@ src/*.*~
 *.*~
 build/*
 .kdev4/*
+build_windows/*

@@ -249,11 +249,19 @@ void KPlotWidget::removeAllPlotObjects()
 void KPlotWidget::removeObject(KPlotObject* plotObject)
 {
     Q_ASSERT(plotObject != NULL ) ;
-    QList<KPlotObject*>::iterator it = qFind( d->objectList.begin(),d->objectList.end(),plotObject);
-    if ( it != d->objectList.end() ) {
-        d->objectList.erase(it);
-        delete *it;
-    }
+	QList<KPlotObject*> obj  = d->objectList;
+	d->objectList.clear();
+	foreach( KPlotObject * pPlot, obj) {
+		if ( pPlot == plotObject)
+			continue ; 
+		else
+			addPlotObject(pPlot);
+	}
+    //QList<KPlotObject*>::iterator it = qFind( d->objectList.begin(),d->objectList.end(),plotObject);
+    //if ( it != d->objectList.end() ) {
+    //    d->objectList.erase(it);
+    //    delete *it;
+    //}
     update();
 }
 

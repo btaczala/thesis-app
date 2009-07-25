@@ -23,7 +23,7 @@
 #include "kplotwidget.h"
 #include "kplotobject.h"
 
-#include <qwt3d_surfaceplot.h>
+//#include <qwt3d_surfaceplot.h>
 
 #include <QScrollBar>
 #include <QProgressDialog>
@@ -31,6 +31,7 @@
 #include "fl/functionbase.h"
 #include "fl/function2dbase.h"
 #include "fl/functionException.h"
+#include "fl/functiondiscrete.h"
 #include <QVBoxLayout>
 
 using namespace Thesis::UI;
@@ -95,11 +96,14 @@ void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction, const QColor & co
     else if ( pFunction2D->type() == fl::FunctionBase::eContinous || pFunction2D->type() == fl::FunctionBase::eMixed ) 
         pPlotObject = new KPlotObject( fnColor, KPlotObject::Lines, 2 );
     m_pLastAddedFunction = pFunction ; 
+	LOG("inserting :" <<pFunction <<pPlotObject);
     m_PlotsFunctions.insert(pFunction,pPlotObject);
     
-    m_pKPlotWidget->addPlotObject(pPlotObject);
+    //m_pKPlotWidget->addPlotObject(pPlotObject);
     
-    m_pCalcThread->setFunctions(m_PlotsFunctions);
+    //m_pCalcThread->setFunctions(m_PlotsFunctions);
+	m_pCalcThread->setLastFunctionAdded(m_pLastAddedFunction);
+	m_pCalcThread->setLastPlotAdded(pPlotObject);
     m_pCalcThread->setLimits(m_xMin,m_xMax,m_yMin,m_yMax);
     m_pCalcThread->setWorkType(CalculatingThread::eAdd);
     
@@ -115,10 +119,13 @@ void Thesis::UI::PlotWidgetProxy::deleteFunction(const QString& fID)
     FunctionsPlotMapType::iterator itEnd = m_PlotsFunctions.end() ; 
     for ( it ; it != itEnd ; ++ it ) {
         if ( it.key()->name() == fID.toStdString() ) {
-            m_pKPlotWidget->removeObject(it.value());
+			LOG("deleting" << it.key()->name() << "with address:" << it.value());
+            m_pKPlotWidget->removeObject( it.value() );
+			delete it.key();
+			it = m_PlotsFunctions.erase(it);
         }
     }
-    m_pKPlotWidget->update();
+    //m_pKPlotWidget->update();
 
 }
 
@@ -130,9 +137,9 @@ void Thesis::UI::PlotWidgetProxy::changeRange(double xstart, double xstop, doubl
     m_yMin = ystart; 
     m_yMax = ystop; 
     
-    foreach( KPlotObject *pObject , m_pKPlotWidget->plotObjects() ) {
+    /*foreach( KPlotObject *pObject , m_pKPlotWidget->plotObjects() ) {
         pObject->clearPoints();
-    }
+    }*/
     m_pCalcThread->setFunctions(m_PlotsFunctions);
     m_pCalcThread->setLimits(m_xMin,m_xMax,m_yMin,m_yMax);
     m_pCalcThread->setWorkType(CalculatingThread::eRecalculate);
@@ -189,7 +196,10 @@ void Thesis::UI::PlotWidgetProxy::threadEnded()
     if ( m_pCalcThread->workType() == CalculatingThread::eAdd ) {
         FunctionInfo info ; 
         info._fId = QString( m_pLastAddedFunction->name().c_str());
-        info._fColor = m_PlotsFunctions[m_pLastAddedFunction]->brush().color();
+		KPlotObject *pLastObject = m_PlotsFunctions[m_pLastAddedFunction];
+		Q_ASSERT(pLastObject);
+        info._fColor = pLastObject->brush().color();
+		m_pKPlotWidget->addPlotObject(pLastObject);
         LOG("Emit functionAdded");
         emit functionAdded(info);
     }
@@ -212,7 +222,7 @@ void Thesis::UI::CalculatingThread::setLimits(double x, double x1, double y, dou
     m_mutex.unlock();
 }
 
-Thesis::UI::CalculatingThread::CalculatingThread() : QThread()
+Thesis::UI::CalculatingThread::CalculatingThread() : QThread(), m_pLastPlotAdded(NULL),m_pLastFunctionAdded(NULL)
 {
 }
 
@@ -229,24 +239,23 @@ void Thesis::UI::CalculatingThread::run()
     
     if ( m_WorkType == eAdd ) {
         LOG("Adding a function");
-        if ( m_functionToCalculate.size() == 0 ) {
-            LOG("No functions is container");
-            return ;
-        }
-        fl::FunctionBase *pFunction = m_functionToCalculate.at(m_functionToCalculate.size()-1);
+		Q_ASSERT( m_pLastFunctionAdded != NULL && m_pLastPlotAdded != NULL );
+        fl::FunctionBase *pFunction = m_pLastFunctionAdded;
         if ( pFunction->dimensions() == 2 ) 
         {
             fl::Function2D::Function2DBase *pFunction2D = dynamic_cast<fl::Function2D::Function2DBase *>( pFunction ); 
+			LOG(pFunction2D->name() << " size of arr" << m_functionToCalculate.size() );
             Q_ASSERT(pFunction2D != NULL ) ; 
-            KPlotObject *pPlotObject = m_plotsCalculated.at(m_plotsCalculated.size()-1);
+            KPlotObject *pPlotObject = m_pLastPlotAdded;
             bool bOk ; 
-            double value ; 
-            double start ;
-            double stop ;
+            double value;
+            double start;
+            double stop;
             if ( pFunction2D->type() == fl::FunctionBase::eDiscrete ) {
                 // add all values
-                start = pFunction2D->min();
-                stop = pFunction2D->max();
+				fl::Function2D::FunctionDiscrete *pF = dynamic_cast<fl::Function2D::FunctionDiscrete *>(pFunction2D);
+                start = pF->xMin();
+                stop = pF->xMax();
             } else {
                 start = m_xMin ;
                 stop = m_xMax ;
@@ -306,9 +315,10 @@ void Thesis::UI::CalculatingThread::freeLists()
 void Thesis::UI::PlotWidgetProxy::zoomIn()
 {
     cLOG();
+	/// zoom about 10% of value
     double xMn = xMin();
     if ( xMn < 0 ) 
-        xMn +=1 ; 
+        xMn +=value ; 
     else
         xMn -= 1 ; 
     double xMx = xMax();

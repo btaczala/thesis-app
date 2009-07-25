@@ -29,6 +29,18 @@
 
 using namespace Thesis;
 
+QByteArray removeJunk( const QByteArray & bArray){
+	QByteArray arr ; 
+	char sign ; 
+	for ( int i = 0; i< bArray.size() ; ++i ){
+		sign = bArray.at(i);
+		if ( isdigit(sign) || sign =='-' || sign =='.' ){
+			arr += sign ; 
+		}
+	}
+	return arr ; 
+}
+
 
 FunctionsProxy::FunctionsProxy(const QString& _equation, const QStringList& _vars, int _dimension, Type type, bool bCustomRange, FunctionsProxy::CustomRangeContainer _range) :
 m_functionEquation(_equation),
@@ -101,34 +113,40 @@ fl::FunctionBase* FunctionsProxy::proxy()
                 arr = file.readLine();
                 arr.remove(arr.size()-1,1);
                 if ( ! arr.isEmpty() ) {
-                    LOG(arr);
+                    //LOG(arr);
                     sp = arr.split(' ');
                     dimensions = sp.size(); 
-                    x = sp.at(0).toDouble(&bOk) ;
-                    y = sp.at(1).toDouble(&bOk2) ;
+					QByteArray num1 =  removeJunk( sp.at(0) );
+					QByteArray num2 =  removeJunk( sp.at(1) );
+                    x = num1.toDouble(&bOk) ;
+                    y = num2.toDouble(&bOk2) ;
                     if ( dimensions == 3 )
                         z = sp.at(2).toDouble(&bOk3);
                     if ( bOk && bOk2 ) {
-                        LOG("Adding point (" << x << " , " << y << " )") ; 
+                        //LOG("Adding point (" << x << " , " << y << " )") ; 
                         xs.push_back(x);
                         ys.push_back(y);
                         if ( dimensions == 3 )
                             zs.push_back(z);
-                    }
-                    LOG("Dimensions:" << dimensions ) ; 
+					} else {
+						LOG("Unable to add!!");
+					}
+                    //LOG("Dimensions:" << dimensions ) ; 
                     for(;;){
                         arr = file.readLine();
                         arr.remove(arr.size()-1,1);
-                        LOG(arr);
+                        //LOG(arr);
                         if ( arr.isEmpty() ) 
                             break ;
                         sp = arr.split(' ');
-                        x = sp.at(0).toDouble(&bOk ) ;
-                        y = sp.at(1).toDouble(&bOk2 ) ;
+						num1 =  removeJunk( sp.at(0) );
+						num2 =  removeJunk( sp.at(1) );
+						x = num1.toDouble(&bOk) ;
+						y = num2.toDouble(&bOk2) ;
                         if ( dimensions == 3 )
                             z = sp.at(2).toDouble(&bOk3);
                         if ( bOk && bOk2 ) {
-                            LOG("Adding point (" << x << " , " << y << " )") ; 
+                            //LOG("Adding point (" << x << " , " << y << " )") ; 
                             xs.push_back(x);
                             ys.push_back(y);
                             if ( dimensions == 3 )

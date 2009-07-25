@@ -30,9 +30,9 @@ double myFunction( double x ) {
 
 int main( int, char ** ) {
     
-    generateFunction("sin.fnt",-4,3,0.1, mathFunction(&sin));
+    /*generateFunction("sin.fnt",-4,3,0.1, mathFunction(&sin));
     generateFunction("cos.fnt",-4,3,0.1, mathFunction(&cos));
     generateFunction("abs.fnt",-4,3,0.1, mathFunction(&abs));
-    generateFunction("myFunction.fnt",-4,3,0.1, mathFunction(&myFunction));
+    generateFunction("myFunction.fnt",-4,3,0.1, mathFunction(&myFunction));*/
     return 1; 
 }

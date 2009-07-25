@@ -49,7 +49,16 @@ struct comparePairsMax{
             if ( pair1.second < pair2.second ) 
                 return true ; 
             return false ; 
-        };
+        }
+};
+struct comparePairsMax2{
+public:
+	bool operator()( const std::pair<double,double> & pair1,const std::pair<double,double> & pair2 )
+	{
+		if ( pair1.first < pair2.first ) 
+			return true ; 
+		return false ; 
+	}
 };
 struct comparePairsMin{
     public:
@@ -58,7 +67,16 @@ struct comparePairsMin{
             if ( pair1.second > pair2.second ) 
                 return true ; 
             return false ; 
-        };
+        }
+};
+struct comparePairsMin2{
+public:
+	bool operator()( const std::pair<double,double> & pair1,const std::pair<double,double> & pair2 )
+	{
+		if ( pair1.first < pair2.first ) 
+			return true ; 
+		return false ; 
+	}
 };
 
 fl::Function2D::FunctionDiscrete::FunctionDiscrete(const std::vector< double > & _x, const std::vector< double > & _y, const std::string& _functionName): Function2DBase(_functionName)
@@ -100,9 +118,23 @@ double fl::Function2D::FunctionDiscrete::min()
 {
     if ( m_xy.size() == 0 ) 
         return -1 ; 
-    DomainRangeIterator it = std::max_element( m_xy.begin(), m_xy.end(), comparePairsMin() );
+    DomainRangeIterator it = std::min_element( m_xy.begin(), m_xy.end(), comparePairsMax() );
 //     if ( it != m_xy.end() ) 
-        return it->second ; 
+    return it->second ; 
+}
+double fl::Function2D::FunctionDiscrete::xMin() {
+	
+	if ( m_xy.size() == 0 ) 
+		return -1 ; 
+	DomainRangeIterator it = std::min_element( m_xy.begin(), m_xy.end(), comparePairsMin2() );
+	return it->first; 
+}
+double fl::Function2D::FunctionDiscrete::xMax() {
+
+	if ( m_xy.size() == 0 ) 
+		return -1 ; 
+	DomainRangeIterator it = std::max_element( m_xy.begin(), m_xy.end(), comparePairsMax2() );
+	return it->first ; 
 }
 
 fl::Function3D::FunctionDiscrete::FunctionDiscrete( const std::vector< double >& _x, const std::vector< double >& _y, const std::vector< double >& _z, const std::string& _functionName ) : Function3DBase( _functionName )

@@ -52,7 +52,7 @@ double fl::Function2D::FunctionContinous::eval(double point, bool *pCorrect)
         else{
             if( toRet > m_iMax ) 
                 m_iMax = toRet ; 
-            if ( toRet < m_iMin ) ; 
+            if ( toRet < m_iMin ) 
                 m_iMin = toRet ; 
         }
     }

@@ -10,7 +10,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 find_package(Boost REQUIRED ) 
 find_package(Qt4 REQUIRED ) 
-find_package(QwtPlot3D-qt4 REQUIRED)
+#find_package(QwtPlot3D-qt4 REQUIRED)
 
 
 if(UNIX)
@@ -30,7 +30,7 @@ include_directories("./fl")
 include_directories("./fl/muparser")
 include_directories("./QtColorPicker")
 include_directories(${CMAKE_BINARY_DIR})
-include_directories(${QWTPLOT3D_INCLUDE_DIR})
+#include_directories(${QWTPLOT3D_INCLUDE_DIR})
 
 add_subdirectory(fl)
 
@@ -101,7 +101,7 @@ qt4_add_resources(thesis_rsc_src ${thesis_rsc})
 add_executable(Thesis-app ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src} ${thesis_ui_src})
 add_executable( gen src/genFunctions.cpp)
 
-target_link_libraries(Thesis-app ${QT_LIBRARIES} fl ${QWTPLOT3D_LIBRARIES}) 
+target_link_libraries(Thesis-app ${QT_LIBRARIES} fl ) 
 target_link_libraries(gen ${QT_LIBRARIES} )
 
 

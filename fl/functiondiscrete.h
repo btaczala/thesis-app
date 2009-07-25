@@ -43,6 +43,9 @@ namespace fl{
                 
                 virtual double max();
                 virtual double min();
+
+				double xMin() ; 
+				double xMax();
             private:
                 DomainRange m_xy ; 
         };

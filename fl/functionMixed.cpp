@@ -33,10 +33,10 @@ double fl::Function2D::FunctionMixed::eval( double point,bool *pOk ) {
     
 }
 double fl::Function2D::FunctionMixed::min( ) {
-    ;
+    return -1 ; 
 }
 double fl::Function2D::FunctionMixed::max( ) {
-    ;
+    return -1 ; 
 }
 
 fl::Function2D::Function2DBase* fl::Function2D::FunctionMixed::integrate(double start, double stop)
