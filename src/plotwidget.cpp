@@ -137,9 +137,18 @@ void Thesis::UI::PlotWidgetProxy::changeRange(double xstart, double xstop, doubl
     m_yMin = ystart; 
     m_yMax = ystop; 
     
-    /*foreach( KPlotObject *pObject , m_pKPlotWidget->plotObjects() ) {
-        pObject->clearPoints();
-    }*/
+	FunctionsPlotMapType::iterator it = m_PlotsFunctions.begin();
+	FunctionsPlotMapType::iterator itEnd = m_PlotsFunctions.end();
+	for ( it ; it != itEnd ; ++it ){
+		if( it.key()->type() == fl::FunctionBase::eDiscrete ){
+			continue ; 
+		}
+		else
+			it.value()->clearPoints();
+	}
+
+
+
     m_pCalcThread->setFunctions(m_PlotsFunctions);
     m_pCalcThread->setLimits(m_xMin,m_xMax,m_yMin,m_yMax);
     m_pCalcThread->setWorkType(CalculatingThread::eRecalculate);
@@ -147,47 +156,6 @@ void Thesis::UI::PlotWidgetProxy::changeRange(double xstart, double xstop, doubl
     m_pKPlotWidget->setLimits(m_xMin,m_xMax,m_yMin,m_yMax);
     
     m_pCalcThread->start() ; 
-    
-//     LOG(" ( " << xstart << " , " << xstop << " x ( " << ystart << " , " << ystop << " ) " ) ; 
-//     if ( m_PlotType == ePlot3D ) 
-//     {
-//         LOG("unable to change 3d plot range");
-//         return ;
-//     }
-//     m_xMax = xstop ; 
-//     m_xMin = xstart ;
-//     m_yMax = ystop ; 
-//     m_yMin = ystart ; 
-//     
-//     m_pKPlotWidget->setLimits( m_xMin,m_xMax,m_yMin,m_yMax);
-//     
-//     // RUN RUN RUN 
-//     QProgressDialog dlg ( "calc","abort",m_xMin,m_xMax * m_PlotsFunctions.size() );
-//     FunctionsPlotMapType::iterator it = m_PlotsFunctions.begin() ; 
-//     fl::Function2D::Function2DBase *p2DFunc = NULL; 
-//     KPlotObject *pPlotObject = NULL ; 
-//     double val;
-//     bool bOk ; 
-//     int counter = 1 ; 
-//     while( it != m_PlotsFunctions.end()) {
-//         pPlotObject = it.key();
-//         p2DFunc = dynamic_cast<fl::Function2D::Function2DBase *> ( it.value() );
-//         Q_ASSERT ( pPlotObject != NULL && p2DFunc != NULL ) ; 
-//         if ( p2DFunc->type() == fl::FunctionBase::eDiscrete ) 
-//             continue ; 
-//         pPlotObject->clearPoints() ;
-//         for ( double i = m_xMin ; i < m_xMax ; i += 0.01 ) {
-//             LOG(i);
-//             val = p2DFunc->eval(i,&bOk);
-//             dlg.setValue(i * counter);
-//             if ( bOk ) {
-//                 LOG("Adding points : ("<<i<<" , " << val<< ")") ; 
-//                 pPlotObject->addPoint(i,val);  
-//             }
-//         }
-//         ++counter;
-//         ++it ; 
-//     }
 }
 
 void Thesis::UI::PlotWidgetProxy::threadEnded()
@@ -284,6 +252,7 @@ void Thesis::UI::CalculatingThread::run()
             for ( double i = m_xMin ; i < m_xMax ; i += 0.01 ) {
                 val = p2DFunc->eval(i,&bOk);
                 if ( bOk ) {
+					LOG("Adding :" << i << " - " << val);
                     pPlotObject->addPoint(i,val);  
                 }
             }
@@ -318,14 +287,14 @@ void Thesis::UI::PlotWidgetProxy::zoomIn()
 	/// zoom about 10% of value
     double xMn = xMin();
     if ( xMn < 0 ) 
-        xMn +=value ; 
+        xMn +=1 ; 
     else
         xMn -= 1 ; 
     double xMx = xMax();
     if ( xMx < 0 ) 
         xMx +=1 ; 
     else
-        xMx -= 1 ; 
+        xMx -= 1 ;
     changeRange(xMn,xMx,yMin(),yMax());
 }
 

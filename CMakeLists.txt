@@ -20,6 +20,16 @@ else(UNIX)
   endif(WIN32)
 endif(UNIX)
 
+SET(VS_SUBSYSTEM "")
+IF(WIN32)
+	IF( CONSOLE )
+		SET(VS_SUBSYSTEM "")
+	ELSE(CONSOLE)
+		SET(VS_SUBSYSTEM WIN32)
+		SET(QT_USE_QTMAIN TRUE)
+	ENDIF (CONSOLE)
+ENDIF (WIN32)
+
 include(${QT_USE_FILE})
 
 
@@ -98,7 +108,7 @@ qt4_wrap_cpp( thesis_moc_src ${thesis_moc} )
 qt4_wrap_ui( thesis_ui_src ${thesis_ui})
 qt4_add_resources(thesis_rsc_src ${thesis_rsc})
 
-add_executable(Thesis-app ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src} ${thesis_ui_src})
+add_executable(Thesis-app ${VS_SUBSYSTEM} ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src} ${thesis_ui_src})
 add_executable( gen src/genFunctions.cpp)
 
 target_link_libraries(Thesis-app ${QT_LIBRARIES} fl ) 

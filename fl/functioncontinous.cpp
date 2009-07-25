@@ -57,6 +57,7 @@ double fl::Function2D::FunctionContinous::eval(double point, bool *pCorrect)
         }
     }
     catch ( mu::Parser::exception_type & e ) {
+		e;
         *pCorrect = false ; 
     }
     return toRet ; 
