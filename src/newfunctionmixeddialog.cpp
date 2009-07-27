@@ -39,7 +39,7 @@ Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::
     
     
 
-    QTreeWidgetItem *pTreeItem = new QTreeWidgetItem();
+    /*QTreeWidgetItem *pTreeItem = new QTreeWidgetItem();
     pTreeItem->setText(0,"sin(x)");
     pTreeItem->setText(1,"x");
     pTreeItem->setText(2,"-inf");
@@ -58,7 +58,7 @@ Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::
     pTreeItem3->setText(1,"x");
     pTreeItem3->setText(2,"0");
     pTreeItem3->setText(3,"+inf");
-    m_pForm->treeWidget->addTopLevelItem(pTreeItem3);
+    m_pForm->treeWidget->addTopLevelItem(pTreeItem3);*/
     
 }
 void NewFunctionMixedDialog::done(int i)
