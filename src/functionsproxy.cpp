@@ -53,11 +53,11 @@ m_functionFileNamePath("")
 {
 }
 
-FunctionsProxy::FunctionsProxy(const QString& fileName):
+FunctionsProxy::FunctionsProxy(const QString& fileName, Type type ):
 m_functionEquation(""),
 m_functionDimension(-1),
 m_bCustomRange(true),
-m_Type(eDiscrete),
+m_Type(type),
 m_functionFileNamePath ( fileName ) 
 {
 }
@@ -240,6 +240,24 @@ fl::FunctionBase* FunctionsProxy::proxy()
             }
             else{
                 LOG("Proxying mixed function from file");
+				/// from file 
+				QFile file ( m_functionFileNamePath );
+				if ( !file.open(QIODevice::ReadOnly ) ){
+					LOG("Unable to open file" << m_functionFileNamePath);
+				} else {
+					QByteArray arr ; 
+					arr = file.readLine();
+					if ( !arr.contains("mixed") ) {
+						LOG("This is not mixed function?");
+					}
+					else{
+						for (;;)
+						arr = file.readLine();
+						if ( arr.isEmpty())
+							break ; 
+					}	
+				}
+
             }
             break ;
         }

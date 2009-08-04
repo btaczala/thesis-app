@@ -43,7 +43,7 @@ namespace Thesis {
             } ;
             typedef std::vector<std::pair<double,double> > CustomRangeContainer ; 
             FunctionsProxy( const QString & _equation, const QStringList & _vars, int _dimension,Type type,  bool bCustomRange = false, CustomRangeContainer _range =  CustomRangeContainer() ) ; 
-            FunctionsProxy( const QString & fileName ) ; 
+            FunctionsProxy( const QString & fileName, Type type = eDiscrete) ; 
             FunctionsProxy ( const std::vector<QStringList> & functionsList ) ; 
             void setColor ( const QColor & color ) { m_functionColor = color ; } 
             QColor color() const { return m_functionColor ; } 
