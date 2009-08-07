@@ -34,17 +34,119 @@ namespace Thesis {
 
     namespace UI {
 
+        /**
+         * \class	NewContinousFunctionDialog
+         *
+         * \brief	Dialog for setting the new continous function. 
+         *
+         * \author	Bartosz Taczala
+         * \date	2009-08-07
+        **/
+
         class NewContinousFunctionDialog : public QDialog
         {
             Q_OBJECT
             public:
+
+                /**
+                 * \fn	NewContinousFunctionDialog(QWidget* parent = 0, Qt::WindowFlags f = 0)
+                 *
+                 * \brief	Constructor. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	parent	If non-null, the parent. 
+                 * \param	f		The. 
+                **/
+
                 NewContinousFunctionDialog(QWidget* parent = 0, Qt::WindowFlags f = 0); 
+
+                /**
+                 * \fn	virtual ~NewContinousFunctionDialog()
+                 *
+                 * \brief	Finaliser. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 virtual ~NewContinousFunctionDialog() {};
+
+                /**
+                 * \fn	virtual void done(int done)
+                 *
+                 * \brief	Dones. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	done	The done. 
+                **/
+
                 virtual void done(int done);
+
+                /**
+                 * \fn	virtual void accept()
+                 *
+                 * \brief	Accepts this object. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 virtual void accept();
+
+                /**
+                 * \fn	const QString fuction() const
+                 *
+                 * \brief	Fuctions this object. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \return	. 
+                **/
+
                 const QString  fuction() const ;
+
+                /**
+                 * \fn	const QStringList variables() const
+                 *
+                 * \brief	Variables this object. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \return	. 
+                **/
+
                 const QStringList variables() const ; 
+
+                /**
+                 * \fn	int dimensions() const
+                 *
+                 * \brief	Dimensions this object. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \return	. 
+                **/
+
                 int dimensions() const ; 
+
+                /**
+                 * \fn	QColor color() const
+                 *
+                 * \brief	Colors this object. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \return	. 
+                **/
+
                 QColor color() const ; 
             protected:
                 boost::shared_ptr<Ui::PasswordDialog> m_pDialog ; 

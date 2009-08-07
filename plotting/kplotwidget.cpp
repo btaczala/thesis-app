@@ -99,6 +99,9 @@ public:
     QRect pixRect;
     //Array holding the mask of "used" regions of the plot
     QImage plotMask;
+
+	QPoint m_lastClickedPoint ; 
+	QPoint m_lastReleasedPoint ; 
 };
 
 KPlotWidget::KPlotWidget( QWidget * parent )

@@ -40,8 +40,9 @@
 
 using namespace Thesis::UI;
 
+
 MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags) : 
-QMainWindow(parent, flags)
+QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
 {
     cLOG() ;
     setWindowTitle( Thesis::Strings::applicationName );
@@ -60,7 +61,6 @@ MainWindow::~MainWindow()
 {
     cLOG() ;
 }
-
 void MainWindow::createUI()
 {
     cLOG() ;
@@ -122,6 +122,7 @@ void MainWindow::createUI()
 //     m_pTabWidget->addTab(/*pProxy->widget(),"test"*/);
     
 }
+
 void MainWindow::createWidgets()
 {
     cLOG() ;
@@ -183,6 +184,7 @@ void MainWindow::closeApp()
 void Thesis::UI::MainWindow::newTab()
 {
     cLOG() ; 
+	++m_iNumberOfWorkspaces ;
     m_pTabWidget->addTab();
     setStatusBarStatus(tr("New Workspace added"),false);
     m_pWorkspaceMenu->setEnabled(true);
@@ -203,6 +205,9 @@ void Thesis::UI::MainWindow::aboutQt()
 void Thesis::UI::MainWindow::closeCurrentTab()
 {
     cLOG();
+	--m_iNumberOfWorkspaces;
+	if ( m_iNumberOfWorkspaces == 0 )
+		m_pWorkspaceMenu->setEnabled(false);
     m_pTabWidget->closeTabAt();
 }
 
@@ -229,7 +234,8 @@ void Thesis::UI::MainWindow::newContinousFunction()
 void Thesis::UI::MainWindow::newDiscreteFunctionFromFile()
 {
     cLOG() ; 
-    QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::homePath(),tr("Function files( *.fnt)"));
+	
+    QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)"));
     if ( fileName.isEmpty() ) {
         LOG("Not opening file");
         return ; 
@@ -251,7 +257,6 @@ void Thesis::UI::MainWindow::workspaceSettings()
         const Thesis::UI::RangeTab *pRange = dlg.rangeSettings(); 
         pCurrent->plotProxy()->changeRange( pRange->xMin(), pRange->xMax(),pRange->yMin(), pRange->yMax() );
     }
-
 }
 
 void Thesis::UI::MainWindow::newMixedFunction()
@@ -269,13 +274,13 @@ void Thesis::UI::MainWindow::newMixedFunction()
 void Thesis::UI::MainWindow::newMixedFunctionFromFile()
 {
     cLOG() ; 
-    QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::homePath(),tr("Function files( *.fnt)"));
+    QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)"));
     if ( fileName.isEmpty() ) {
         LOG("Not opening file");
         return ; 
     }
     LOG("Opening file:" << fileName );
-    Thesis::FunctionsProxy prx ( fileName ) ; 
+	Thesis::FunctionsProxy prx ( fileName, Thesis::FunctionsProxy::eMixed ) ; 
     m_pTabWidget->addFunction(prx);
 }
 

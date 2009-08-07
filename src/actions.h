@@ -30,6 +30,15 @@ class QAction ;
 
 namespace Thesis {
 
+    /**
+     * \class	Actions
+     *
+     * \brief	Actions. 
+     *
+     * \author	Bartosz Taczala
+     * \date	2009-08-07
+    **/
+
     class Actions
     {
         public:

@@ -32,14 +32,80 @@ namespace Ui{
 namespace Thesis{
     namespace UI{
 
+        /**
+         * \class	NewFunctionMixedDialog
+         *
+         * \brief	Dialog for setting the new function mixed. 
+         *
+         * \author	Bartosz Taczala
+         * \date	2009-08-07
+        **/
+
         class NewFunctionMixedDialog : public QDialog
         {
             Q_OBJECT
             public:
+
+                /**
+                 * \fn	NewFunctionMixedDialog(QWidget* parent = 0, Qt::WindowFlags f = 0)
+                 *
+                 * \brief	Constructor. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	parent	If non-null, the parent. 
+                 * \param	f		The. 
+                **/
+
                 NewFunctionMixedDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
+
+                /**
+                 * \fn	virtual void done(int )
+                 *
+                 * \brief	Dones. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param		The. 
+                **/
+
                 virtual void done(int );
+
+                /**
+                 * \fn	virtual void accept()
+                 *
+                 * \brief	Accepts this object. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 virtual void accept();
+
+                /**
+                 * \fn	virtual void reject()
+                 *
+                 * \brief	Rejects this object. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 virtual void reject();
+
+                /**
+                 * \fn	const std::vector<QStringList> & funcDesc() const
+                 *
+                 * \brief	Func description. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \return	A list of. 
+                **/
+
                 const std::vector<QStringList> & funcDesc() const { return m_FunctionsDesc ; } 
             private:
                 boost::shared_ptr<Ui::newFunctionMixed> m_pForm ; 
@@ -48,19 +114,30 @@ namespace Thesis{
                 std::vector<QStringList> m_FunctionsDesc ; 
                 
             private slots:
+
+                /**
+                 * \fn	void addRow()
+                 *
+                 * \brief	Adds  row
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void addRow() ;
+
+                /**
+                 * \fn	void deleteRow()
+                 *
+                 * \brief	Deletes a row. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void deleteRow() ;
                 
         };
-//         class ComboBoxDelegate : public QItemDelegate{
-//             Q_OBJECT
-//             public:
-//                 ComboBoxDelegate(QObject* parent = 0);
-//                 virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-//                 virtual void setEditorData(QWidget* editor, const QModelIndex& index) const;
-//                 virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-//                 virtual void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-//         };
     }
 }
 

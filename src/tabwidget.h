@@ -28,13 +28,67 @@
 
 namespace Thesis {
     namespace UI {
+
+        /**
+         * \class	TabWidget
+         *
+         * \brief	Tab widget. 
+         *
+         * \author	Bartosz Taczala
+         * \date	2009-08-07
+        **/
+
         class TabWidget : public QTabWidget
         {
             Q_OBJECT
             public:
+
+                /**
+                 * \fn	TabWidget(QWidget* parent = 0)
+                 *
+                 * \brief	Constructor. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	parent	If non-null, the parent. 
+                **/
+
                 TabWidget(QWidget* parent = 0);
+
+                /**
+                 * \fn	virtual ~TabWidget()
+                 *
+                 * \brief	Finaliser. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 virtual ~TabWidget();
+
+                /**
+                 * \fn	void addTab()
+                 *
+                 * \brief	Adds  tab
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void addTab() ; 
+
+                /**
+                 * \fn	void closeTabAt( int index =-1 )
+                 *
+                 * \brief	Closes a tab at. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	index	Zero-based index of the. 
+                **/
+
                 void closeTabAt( int index =-1 ); 
                 
                 /**

@@ -59,6 +59,8 @@ m_pLastAddedFunction(NULL)
     
     m_pKPlotWidget->setAntialiasing( true );
     m_pKPlotWidget->setLimits( m_xMin,m_xMax,m_yMin,m_yMax);
+	m_pKPlotWidget->setShowGrid(true);
+	m_pKPlotWidget->setObjectToolTipShown(true);
     
 }
 PlotWidgetProxy::~PlotWidgetProxy()
@@ -129,6 +131,20 @@ void Thesis::UI::PlotWidgetProxy::deleteFunction(const QString& fID)
 
 }
 
+/**
+ * \fn	void Thesis::UI::PlotWidgetProxy::changeRange(double xstart, double xstop, double ystart,
+ * 		double ystop)
+ *
+ * \brief	User interface plot widget proxy change range. 
+ *
+ * \author	Bartosz Taczala
+ * \date	2009-08-07
+ *
+ * \param	xstart	The xstart. 
+ * \param	xstop	The xstop. 
+ * \param	ystart	The ystart. 
+ * \param	ystop	The ystop. 
+**/
 
 void Thesis::UI::PlotWidgetProxy::changeRange(double xstart, double xstop, double ystart, double ystop)
 {   
@@ -167,6 +183,7 @@ void Thesis::UI::PlotWidgetProxy::threadEnded()
 		KPlotObject *pLastObject = m_PlotsFunctions[m_pLastAddedFunction];
 		Q_ASSERT(pLastObject);
         info._fColor = pLastObject->brush().color();
+		//pLastObject->la
 		m_pKPlotWidget->addPlotObject(pLastObject);
         LOG("Emit functionAdded");
         emit functionAdded(info);

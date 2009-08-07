@@ -34,7 +34,7 @@ QByteArray removeJunk( const QByteArray & bArray){
 	char sign ; 
 	for ( int i = 0; i< bArray.size() ; ++i ){
 		sign = bArray.at(i);
-		if ( isdigit(sign) || sign =='-' || sign =='.' ){
+		if ( isdigit(sign) || sign =='-' || sign =='.' || isalpha(sign) || sign =='(' || sign ==')' || sign == '+' || sign == '*' || sign == '/'){
 			arr += sign ; 
 		}
 	}
@@ -241,23 +241,47 @@ fl::FunctionBase* FunctionsProxy::proxy()
             else{
                 LOG("Proxying mixed function from file");
 				/// from file 
+
+				QList<QByteArray> sp ;
+				QByteArray tmp ; 
+				std::vector<QStringList> functionVector; 
+				QStringList oneFunction ; 
 				QFile file ( m_functionFileNamePath );
 				if ( !file.open(QIODevice::ReadOnly ) ){
 					LOG("Unable to open file" << m_functionFileNamePath);
 				} else {
 					QByteArray arr ; 
 					arr = file.readLine();
+					//arr = removeJunk(arr);
 					if ( !arr.contains("mixed") ) {
 						LOG("This is not mixed function?");
 					}
 					else{
-						for (;;)
-						arr = file.readLine();
-						if ( arr.isEmpty())
-							break ; 
+						// this is a mixed function ;)
+						for (;;) {
+							arr = file.readLine();
+							if ( arr.isEmpty())
+								break ; 
+							sp = arr.split(' ');
+							foreach( QByteArray t, sp) {
+								t = removeJunk ( t ) ;
+								if ( ! t.isEmpty() )
+									oneFunction << t ; 
+							}
+							LOG(oneFunction);
+							functionVector.push_back(oneFunction);
+							oneFunction.clear();
+							arr="";
+							sp.clear();
+						}
+						
+						file.close();
+						m_FunctionsVector = functionVector;
+						m_functionFileNamePath.clear();
+						return proxy() ; 
+						
 					}	
 				}
-
             }
             break ;
         }

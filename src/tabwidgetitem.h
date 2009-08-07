@@ -39,20 +39,123 @@ namespace fl{
 namespace Thesis{
     namespace UI{
         class PlotWidgetProxy ; 
+
+        /**
+         * \class	TabWidgetItem
+         *
+         * \brief	Tab widget item. 
+         *
+         * \author	Bartosz Taczala
+         * \date	2009-08-07
+        **/
+
         class TabWidgetItem : public QWidget
         {
             Q_OBJECT
             public:
+
+                /**
+                 * \fn	TabWidgetItem(QWidget* parent = 0, Qt::WindowFlags f = 0)
+                 *
+                 * \brief	Constructor. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	parent	If non-null, the parent. 
+                 * \param	f		The. 
+                **/
+
                 TabWidgetItem(QWidget* parent = 0, Qt::WindowFlags f = 0);
+
+                /**
+                 * \fn	virtual ~TabWidgetItem()
+                 *
+                 * \brief	Finaliser. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 virtual ~TabWidgetItem();
+
+                /**
+                 * \fn	const QString& text() const
+                 *
+                 * \brief	Texts this object. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \return	. 
+                **/
+
                 const QString& text() const { return m_text ; }
+
+                /**
+                 * \fn	void settext( const QString & _rhs )
+                 *
+                 * \brief	Settexts. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	_rhs	The right hand side. 
+                **/
+
                 void settext( const QString & _rhs ) { m_text = _rhs ; } 
-                
+
+                /**
+                 * \fn	const int& numberOfPlots() const
+                 *
+                 * \brief	Number of plots. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \return	The total number of plots. 
+                **/
+
                 const int& numberOfPlots() const { return m_NumberOfPlots  ; }
+
+                /**
+                 * \fn	void setNumberOfPlots( int _rhs )
+                 *
+                 * \brief	Sets a number of plots. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	_rhs	The right hand side. 
+                **/
+
                 void setNumberOfPlots( int _rhs ) { m_NumberOfPlots  = _rhs ; } 
-                
+
+                /**
+                 * \fn	PlotWidgetProxy * plotProxy()
+                 *
+                 * \brief	Plot proxy. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \return	null if it fails, else. 
+                **/
+
                 PlotWidgetProxy * plotProxy() ;
-                
+
+                /**
+                 * \fn	void addFunction( fl::FunctionBase* pFunction, const QColor & color)
+                 *
+                 * \brief	Adds a function to 'color'. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	pFunction	If non-null, the function. 
+                 * \param	color		The color. 
+                **/
+
                 void addFunction( fl::FunctionBase* pFunction, const QColor & color) ; 
                 
                 
@@ -65,8 +168,42 @@ namespace Thesis{
                 QPointer<QListWidget> m_pListWidget ; 
                 int m_NumberOfPlots ; 
             private slots:
+
+                /**
+                 * \fn	void functionAdded( const FunctionInfo & fInfo )
+                 *
+                 * \brief	Function added. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	fInfo	The information. 
+                **/
+
                 void functionAdded( const FunctionInfo & fInfo ) ; 
+
+                /**
+                 * \fn	void deleteFunction()
+                 *
+                 * \brief	Deletes a function. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void deleteFunction() ; 
+
+                /**
+                 * \fn	void itemDoubleClicked ( const QListWidgetItem * pItem )
+                 *
+                 * \brief	Item double clicked. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	pItem	If non-null, the item. 
+                **/
+
                 void itemDoubleClicked ( const QListWidgetItem * pItem ) ; 
         };
     }

@@ -32,28 +32,178 @@ class QToolBar ;
 namespace Thesis {
     namespace UI {
         class TabWidget ; 
+
+        /**
+         * \class	MainWindow
+         *
+         * \brief	Form for viewing the main. 
+         *
+         * \author	Bartosz Taczala
+         * \date	2009-08-07
+        **/
+
         class MainWindow : public QMainWindow
         {
             Q_OBJECT
             public:
+
+                /**
+                 * \fn	MainWindow(QWidget* parent = 0, Qt::WindowFlags flags = 0)
+                 *
+                 * \brief	Constructor. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	parent	If non-null, the parent. 
+                 * \param	flags	The flags. 
+                **/
+
                 MainWindow(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+
+                /**
+                 * \fn	~MainWindow()
+                 *
+                 * \brief	Finaliser. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 ~MainWindow() ; 
                 
             public slots:
+
+                /**
+                 * \fn	void closeApp()
+                 *
+                 * \brief	Closes the application. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void closeApp() ; 
+
+                /**
+                 * \fn	void newTab()
+                 *
+                 * \brief	New tab. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void newTab();
+
+                /**
+                 * \fn	void about()
+                 *
+                 * \brief	Abouts this application. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void about() ; 
+
+                /**
+                 * \fn	void aboutQt()
+                 *
+                 * \brief	About Qt framework
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void aboutQt();
+
+                /**
+                 * \fn	void closeCurrentTab()
+                 *
+                 * \brief	Closes the current tab. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void closeCurrentTab();
-                
+
+                /**
+                 * \fn	void newContinousFunction()
+                 *
+                 * \brief	New continous function. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void newContinousFunction();
+
+                /**
+                 * \fn	void newDiscreteFunctionFromFile()
+                 *
+                 * \brief	New discrete function from file. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void newDiscreteFunctionFromFile() ; 
-                
+
+                /**
+                 * \fn	void newMixedFunction()
+                 *
+                 * \brief	New mixed function. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void newMixedFunction() ; 
+
+                /**
+                 * \fn	void newMixedFunctionFromFile()
+                 *
+                 * \brief	New mixed function from file. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void newMixedFunctionFromFile();
-                
+
+                /**
+                 * \fn	void workspaceSettings()
+                 *
+                 * \brief	Workspace settings. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void workspaceSettings() ; 
+
+                /**
+                 * \fn	void zoomIn()
+                 *
+                 * \brief	Zooms in current workspace widget.
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void zoomIn();
+
+                /**
+                 * \fn	void zoomOut()
+                 *
+                 * \brief	Zooms out current workspace widget.
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                **/
+
                 void zoomOut();
             private:
                 Q_DISABLE_COPY(MainWindow) ;
@@ -76,7 +226,19 @@ namespace Thesis {
                     Function connects signal and slots with each other
                 */
                 void initSignals() ; 
-                
+
+                /**
+                 * \fn	void setStatusBarStatus( const QString & _status, bool isWorking )
+                 *
+                 * \brief	Sets the status bar status. 
+                 *
+                 * \author	Bartosz Taczala
+                 * \date	2009-08-07
+                 *
+                 * \param	_status		The status. 
+                 * \param	isWorking	true if is working. 
+                **/
+
                 void setStatusBarStatus( const QString & _status, bool isWorking ) ; 
                 
                 
@@ -94,6 +256,8 @@ namespace Thesis {
                 
                 QPointer<QMenu> m_pAboutMenu ;  
                 QPointer<TabWidget> m_pTabWidget ; 
+
+				int m_iNumberOfWorkspaces ; 
         };
     }
 }

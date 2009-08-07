@@ -33,6 +33,15 @@ namespace fl{
 }
 namespace Thesis {
 
+    /**
+     * \class	FunctionsProxy
+     *
+     * \brief	Functions proxy. 
+     *
+     * \author	Bartosz Taczala
+     * \date	2009-08-07
+    **/
+
     class FunctionsProxy
     {
         public:
@@ -42,12 +51,92 @@ namespace Thesis {
                 eMixed 
             } ;
             typedef std::vector<std::pair<double,double> > CustomRangeContainer ; 
+
+            /**
+             * \fn	FunctionsProxy( const QString & _equation, const QStringList & _vars, int _dimension,
+             * 		Type type, bool bCustomRange = false,
+             * 		CustomRangeContainer _range = CustomRangeContainer() )
+             *
+             * \brief	Constructor. 
+             *
+             * \author	Bartosz Taczala
+             * \date	2009-08-07
+             *
+             * \param	_equation		The equation. 
+             * \param	_vars			The variables. 
+             * \param	_dimension		The dimension. 
+             * \param	type			The type. 
+             * \param	bCustomRange	true to custom range. 
+             * \param	_range			The range. 
+            **/
+
             FunctionsProxy( const QString & _equation, const QStringList & _vars, int _dimension,Type type,  bool bCustomRange = false, CustomRangeContainer _range =  CustomRangeContainer() ) ; 
+
+            /**
+             * \fn	FunctionsProxy( const QString & fileName, Type type = eDiscrete)
+             *
+             * \brief	Constructor. 
+             *
+             * \author	Bartosz Taczala
+             * \date	2009-08-07
+             *
+             * \param	fileName	Filename of the file. 
+             * \param	type		The type. 
+            **/
+
             FunctionsProxy( const QString & fileName, Type type = eDiscrete) ; 
+
+            /**
+             * \fn	FunctionsProxy ( const std::vector<QStringList> & functionsList )
+             *
+             * \brief	Constructor. 
+             *
+             * \author	Bartosz Taczala
+             * \date	2009-08-07
+             *
+             * \param	functionsList	List of functions. 
+            **/
+
             FunctionsProxy ( const std::vector<QStringList> & functionsList ) ; 
+
+            /**
+             * \fn	void setColor ( const QColor & color )
+             *
+             * \brief	Sets a color. 
+             *
+             * \author	Bartosz Taczala
+             * \date	2009-08-07
+             *
+             * \param	color	The color. 
+            **/
+
             void setColor ( const QColor & color ) { m_functionColor = color ; } 
+
+            /**
+             * \fn	QColor color() const
+             *
+             * \brief	Return current function color.
+             *
+             * \author	Bartosz Taczala
+             * \date	2009-08-07
+             *
+             * \return	. 
+            **/
+
             QColor color() const { return m_functionColor ; } 
             //FunctionsProxy(const FunctionsProxy & _rhs ) ; 
+
+            /**
+             * \fn	fl::FunctionBase * proxy()
+             *
+             * \brief	Proxies this object. 
+             *
+             * \author	Bartosz Taczala
+             * \date	2009-08-07
+             *
+             * \return	null if it fails, else. 
+            **/
+
             fl::FunctionBase * proxy() ; 
         private:
             QString m_functionEquation ; 

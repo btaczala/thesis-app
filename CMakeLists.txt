@@ -124,12 +124,18 @@ IF(NOT QT_CONFIG MATCHES "static")
 	ENDIF( WIN32 )
 ENDIF(NOT QT_CONFIG MATCHES "static")
 
+set ( FUNCTIONS_EXAMPLES 
+    cos.fnt
+    sin.fnt
+    test.fnt
+    mixed1.fnt
+    )
+INSTALL(FILES ${FUNCTIONS_EXAMPLES} DESTINATION functions-samples ) 
 INSTALL(TARGETS Thesis-app
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
 )
-
 INCLUDE(InstallRequiredSystemLibraries)
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Thesis application")
 SET(CPACK_PACKAGE_VENDOR "Bartosz Taczala")
