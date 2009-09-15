@@ -63,6 +63,9 @@ set ( thesis_src
   plotting/kplotwidget.cpp
   
   QtColorPicker/qtcolorpicker.cpp
+  operations/interface/functionoperationinterface.cpp
+  
+  operations/builtin/discreteconvolution.cpp
   ) 
 set ( thesis_hdrs 
   src/mainwindow.h
@@ -82,6 +85,9 @@ set ( thesis_hdrs
   plotting/kplotwidget.h
   
   QtColorPicker/qtcolorpicker.h
+  operations/interface/functionoperationinterface.h
+  
+  operations/builtin/discreteconvolution.h
   ) 
 set ( thesis_moc
   src/mainwindow.h
@@ -95,6 +101,7 @@ set ( thesis_moc
   plotting/kplotwidget.h
   QtColorPicker/qtcolorpicker.h
   
+  operations/builtin/discreteconvolution.h
   )
 set(thesis_rsc resources/main.qrc )
 set( thesis_ui 
