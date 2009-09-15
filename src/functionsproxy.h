@@ -24,7 +24,7 @@
 #include <QString>
 #include <QStringList>
 #include <vector>
-#include <boost/ref.hpp>
+//#include <boost/ref.hpp>
 
 #include <QColor>
 
