@@ -1,0 +1,45 @@
+
+Jeżeli istnieje x dla którego P(x) nie jest określone to ma być zero. 
+x1 i x2 mają być niezależne!
+1.) dodawanie (x1 + x2 ) 
+  P(x1+x2)
+  całkujemy od -inf do +inf, czyli od zakresu przedziałów, 
+  P(s) = <całka><-inf><inf>{ P1(t)*P2(s operacja t )dt, gdzie operacja = odwrotna ( dla dodawnia odejmowanie ) 
+  s in a1+a2,b1+b2
+    
+  lepiej całkować po szerszym
+  
+  Algorytm 
+  1.) 
+    s in [A,B]. ( dla przykładu 0,5)
+    1. Dokładność, n - ilość próbek ( 1...1000 ) 
+      przedział = E = (A-B)/n, n- dyskretyzacja dla s
+    for_each ( s_i= A+ (i-1)*E +(1/2)E, i =1 do n 
+    2.1) n_dysk dyskr dla t ( też koło 1000 ) , D( delta ) = (b1-a1)/n, t_j = a1+D(i-1/2), j=1..n_dysk
+
+    2.2) P_{x1 op x2} (s) = D* sum_{j=1} { P1(t_i)*P2(s_i op_od t_i ) 
+    
+  2.) Aproksymacja, plus całkowanie do jedności. 
+  
+
+2.) odejmowanie
+  P(x1-x2)
+  s in ( a1-b2, b2-a1) 
+3.) mnożenie 
+4.) dzielenie ( x1/x2 ) 
+  sprawdzić czy x2 nie zawiera zera, bo nie bylibyśmy w stanie dowieść że jest całkowalna przy x->inf
+
+Każda ze zmiennych ma swoją f. gęstości. 
+
+Splot funkcji 
+
+
+
+Aproksymacja 
+domyślny stopień wielomianu stosunkowo mały. 
+Można by zliczań ilość wachań znaku i ilość tych zliczeń może być stopniem wielomianu. 
+f(s) - wynikowa
+g(s) = f(s)/ { całka_{ A do B } f(z)d(z) }
+
+Dodatkowo:
+dodatkowo aproksymacja kawałkami schodkową. 

@@ -24,8 +24,12 @@
 
 #include <QGridLayout>
 #include <QPushButton>
+#include <QMessageBox>
 #include <QTimer>
+#include <time.h>
 #include "QtColorPicker/qtcolorpicker.h"
+#include "fl/muparser/muParser.h"
+#include "fl/muparser/muParserError.h"
 
 using namespace Thesis::UI;
 
@@ -65,9 +69,53 @@ m_pDialog( new Ui::PasswordDialog())
 
 void NewContinousFunctionDialog::accept()
 {
-    // check if we cannot accept 
-    
-    QDialog::accept();
+//     mu::Parser mParser ;
+//     QString expresion = m_pDialog->functionLineEdit->text();
+//     QString variables = m_pDialog->variableLineEdit->text() ; 
+//     
+//     variables.remove(',');
+//     variables.remove(' ');
+//     QList<double*> lVariables ; 
+//     QString t ; 
+//     for ( int i = 0 ; i < variables.size() ; ++i ) {
+//         lVariables.push_back(new double());
+//         t = variables.at(i);
+//         mParser.DefineVar( t.toStdString() , lVariables.at(i) );
+//     }
+//     mParser.SetExpr(expresion.toStdString());
+//     
+//     int value ; 
+//     qsrand(time(NULL));
+//     int testValue=0;
+//     for ( int i = 0 ; i < 10 ; ++i ) {
+//         for ( int j = 0 ; j < lVariables.size() ; ++j ) {
+//             value = ( qrand()%100 ) - 50 ;
+//             *lVariables[j] = value ; 
+//         }
+//         try{
+//             mParser.Eval();
+//             testValue++;
+//         }
+//         catch( mu::Parser::exception_type & e ) {
+//         }
+//     }
+//     qDeleteAll(lVariables.begin(), lVariables.end());
+//     
+//     if ( testValue < 6 ) {
+//         QMessageBox msgBox ; 
+//         msgBox.setText(tr("This could not be properly defined function"));
+//         msgBox.setInformativeText(tr("Do U really want to add this function?"));
+//         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+//         msgBox.setDefaultButton(QMessageBox::No);
+//         int ret = msgBox.exec();
+//         if ( ret == QMessageBox::Yes ) {
+//             return QDialog::accept();
+//         }
+//         else if ( ret == QMessageBox::No ) {
+//             return QDialog::reject();
+//         }
+//     }
+    return QDialog::accept() ; 
 }
 void NewContinousFunctionDialog::done(int done)
 {

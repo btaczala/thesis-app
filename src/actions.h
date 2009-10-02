@@ -56,6 +56,8 @@ namespace Thesis {
             static QAction * newMixedFromFileAction() { Actions * pInstance = instance() ; return pInstance->m_pnewMixedFromFile.get() ; }
             static QAction * workspaceZoomOut() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceZoomOut.get() ; }
             static QAction * workspaceZoomIn() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceZoomIn.get() ; }
+	    
+	    void init() ;
         private:
             Actions() ; 
             static Actions* instance() ;
