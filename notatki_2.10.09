@@ -14,8 +14,8 @@ x1 i x2 mają być niezależne!
     s in [A,B]. ( dla przykładu 0,5)
     1. Dokładność, n - ilość próbek ( 1...1000 ) 
       przedział = E = (A-B)/n, n- dyskretyzacja dla s
-    for_each ( s_i= A+ (i-1)*E +(1/2)E, i =1 do n 
-    2.1) n_dysk dyskr dla t ( też koło 1000 ) , D( delta ) = (b1-a1)/n, t_j = a1+D(i-1/2), j=1..n_dysk
+    for_each ( s_i= A + (i-1)*E +(1/2)E, i =1 do n 
+    2.1) n_dysk dyskr dla t ( też koło 1000 ) , D( delta ) = (b1-a1)/n, t_j = a1+D(j-1/2), j=1..n_dysk
 
     2.2) P_{x1 op x2} (s) = D* sum_{j=1} { P1(t_i)*P2(s_i op_od t_i ) 
     

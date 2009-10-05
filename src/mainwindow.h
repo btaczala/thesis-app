@@ -205,6 +205,8 @@ namespace Thesis {
                 **/
 
                 void zoomOut();
+                
+                void convolutionOperation() ; 
             private:
                 Q_DISABLE_COPY(MainWindow) ;
                 
@@ -252,12 +254,15 @@ namespace Thesis {
                 QPointer<QMenu> m_pWorkspaceMenu ;  
                 QPointer<QMenu> m_pWorkspaceNewFunctionMenu ; 
                 QPointer<QMenu> m_pWorkspaceNewDiscreteFunctionMenu ; 
-                QPointer<QMenu> m_pWorkspaceNewMixedFunctionMenu ; 
+                QPointer<QMenu> m_pWorkspaceNewMixedFunctionMenu ;
+                QPointer<QMenu> m_pAritmeticOperationMenu ;
+                QPointer<QMenu> m_pConvolutionBasedAritmeticOperationMenu ; 
+                
                 
                 QPointer<QMenu> m_pAboutMenu ;  
                 QPointer<TabWidget> m_pTabWidget ; 
 
-				int m_iNumberOfWorkspaces ; 
+                int m_iNumberOfWorkspaces ; 
         };
     }
 }

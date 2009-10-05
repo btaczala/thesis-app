@@ -56,6 +56,12 @@ namespace Thesis {
             static QAction * newMixedFromFileAction() { Actions * pInstance = instance() ; return pInstance->m_pnewMixedFromFile.get() ; }
             static QAction * workspaceZoomOut() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceZoomOut.get() ; }
             static QAction * workspaceZoomIn() { Actions * pInstance = instance() ; return pInstance->m_pworkspaceZoomIn.get() ; }
+            
+            static QAction * convolutionAddOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionAddOperation.get() ; }
+            static QAction * convolutionMinusOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionMinusOperation.get() ; }
+            static QAction * convolutionTimesOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionTimesOperation.get() ; }
+            static QAction * convolutionDevideOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionDevideOperation.get() ; }
+            
 	    
 	    void init() ;
         private:
@@ -79,6 +85,11 @@ namespace Thesis {
             
             boost::shared_ptr<QAction> m_pworkspaceZoomOut ;
             boost::shared_ptr<QAction> m_pworkspaceZoomIn ;
+            
+            boost::shared_ptr<QAction> m_pConvolutionAddOperation;
+            boost::shared_ptr<QAction> m_pConvolutionMinusOperation;
+            boost::shared_ptr<QAction> m_pConvolutionTimesOperation;
+            boost::shared_ptr<QAction> m_pConvolutionDevideOperation;
 
 
             

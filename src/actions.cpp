@@ -101,5 +101,18 @@ void Actions::addDefaultActions()
     m_pworkspaceZoomOut->setShortcut( QKeySequence( "-" ) );
     m_pworkspaceZoomOut->setIcon(QIcon(":/zoom_out.png"));
     
+    m_pConvolutionAddOperation.reset( new QAction(NULL));
+    m_pConvolutionAddOperation->setText(QObject::tr(" Add " ) ) ;
+    //m_pConvolutionAddOperation->setText(QObject::tr(" Add " ) ) ; 
+    
+    m_pConvolutionMinusOperation.reset( new QAction(NULL));
+    m_pConvolutionMinusOperation->setText(QObject::tr(" Minus " ) ) ;
+    
+    m_pConvolutionTimesOperation.reset( new QAction(NULL));
+    m_pConvolutionTimesOperation->setText(QObject::tr(" Times " ) ) ;
+    
+    m_pConvolutionDevideOperation.reset( new QAction(NULL));
+    m_pConvolutionDevideOperation->setText(QObject::tr(" Devine " ) ) ;
+    
     
 }

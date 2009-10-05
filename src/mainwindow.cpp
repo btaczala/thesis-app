@@ -65,7 +65,6 @@ void MainWindow::createUI()
 {
     cLOG() ;
     // set up menus 
-//     m_pFileMenu->addAction(Thesis::Actions::action(Thesis::Actions::Names::scNewFunctionActionName));
     m_pFileMenu->addAction( Thesis::Actions::newTabAction() );
     
     m_pFileMenu->addSeparator();
@@ -73,7 +72,6 @@ void MainWindow::createUI()
     
 //     m_pWorkspaceMenu
     m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newContinousFunctionAction());
-//     m_pWorkspaceNewFunctionMenu->addAction(Thesis::Actions::newDiscreteFunctionAction());
     m_pWorkspaceNewDiscreteFunctionMenu->addAction(Thesis::Actions::newDiscreteFromFileAction());
     m_pWorkspaceNewMixedFunctionMenu->addAction( Thesis::Actions::newMixedFromFileAction() );
     m_pWorkspaceNewMixedFunctionMenu->addAction( Thesis::Actions::newMixedFunctionAction() );
@@ -88,6 +86,12 @@ void MainWindow::createUI()
     m_pWorkspaceMenu->addSeparator();
     m_pWorkspaceMenu->addAction( Thesis::Actions::closeWorkspaceAction() );
     
+    m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionAddOperation() ) ;
+    m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionMinusOperation() ) ; 
+    m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionTimesOperation() ) ; 
+    m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionDevideOperation() ) ; 
+    m_pAritmeticOperationMenu->addMenu(m_pConvolutionBasedAritmeticOperationMenu);
+    
     m_pAboutMenu->addAction(Thesis::Actions::aboutAction());
     m_pAboutMenu->addAction(Thesis::Actions::aboutQtAction());
     
@@ -95,6 +99,7 @@ void MainWindow::createUI()
     
     
     m_pMenuBar->addMenu( m_pWorkspaceMenu);
+    m_pMenuBar->addMenu( m_pAritmeticOperationMenu);
     m_pMenuBar->addMenu( m_pAboutMenu);
     
     m_pToolBar->addAction(Thesis::Actions::newTabAction());
@@ -137,9 +142,10 @@ void MainWindow::createWidgets()
     m_pWorkspaceNewDiscreteFunctionMenu = new QMenu(tr("New discrete function"),m_pWorkspaceNewFunctionMenu);
     m_pWorkspaceNewMixedFunctionMenu = new QMenu(tr("New mixed function"),m_pWorkspaceNewFunctionMenu);
     
+    m_pAritmeticOperationMenu  = new QMenu( tr(" Operations "), m_pMenuBar) ; 
+    m_pConvolutionBasedAritmeticOperationMenu  = new QMenu( tr("Convolution based"), m_pAritmeticOperationMenu ) ; 
     
     m_pAboutMenu = new QMenu ( tr("&About"),m_pMenuBar ) ; 
-        
     m_pTabWidget = new TabWidget(this);    
 }
 
@@ -155,8 +161,6 @@ void MainWindow::initSignals()
     connect ( Thesis::Actions::newMixedFromFileAction(),SIGNAL(triggered()),this,SLOT(newMixedFunctionFromFile()));
     
     connect ( Thesis::Actions::workspaceSettingsAction(), SIGNAL(triggered()),this,SLOT(workspaceSettings()));
-    
-    
     
     connect ( Thesis::Actions::aboutQtAction(), SIGNAL(triggered()), this, SLOT(aboutQt()));
     connect ( Thesis::Actions::aboutAction(), SIGNAL(triggered()), this, SLOT(about()));
@@ -205,12 +209,11 @@ void Thesis::UI::MainWindow::aboutQt()
 void Thesis::UI::MainWindow::closeCurrentTab()
 {
     cLOG();
-	--m_iNumberOfWorkspaces;
-	if ( m_iNumberOfWorkspaces == 0 )
-		m_pWorkspaceMenu->setEnabled(false);
+    --m_iNumberOfWorkspaces;
+    if ( m_iNumberOfWorkspaces == 0 )
+        m_pWorkspaceMenu->setEnabled(false);
     m_pTabWidget->closeTabAt();
 }
-
 void Thesis::UI::MainWindow::newContinousFunction()
 {
     cLOG() ; 
@@ -230,7 +233,6 @@ void Thesis::UI::MainWindow::newContinousFunction()
         return ; 
     }
 }
-
 void Thesis::UI::MainWindow::newDiscreteFunctionFromFile()
 {
     cLOG() ; 
@@ -244,7 +246,6 @@ void Thesis::UI::MainWindow::newDiscreteFunctionFromFile()
     Thesis::FunctionsProxy prx ( fileName ) ; 
     m_pTabWidget->addFunction(prx);
 }
-
 void Thesis::UI::MainWindow::workspaceSettings()
 {
     cLOG() ; 
@@ -258,7 +259,6 @@ void Thesis::UI::MainWindow::workspaceSettings()
         pCurrent->plotProxy()->changeRange( pRange->xMin(), pRange->xMax(),pRange->yMin(), pRange->yMax() );
     }
 }
-
 void Thesis::UI::MainWindow::newMixedFunction()
 {
     cLOG() ; 
@@ -270,7 +270,6 @@ void Thesis::UI::MainWindow::newMixedFunction()
         m_pTabWidget->addFunction(prx);
     }
 }
-
 void Thesis::UI::MainWindow::newMixedFunctionFromFile()
 {
     cLOG() ; 
@@ -283,16 +282,19 @@ void Thesis::UI::MainWindow::newMixedFunctionFromFile()
 	Thesis::FunctionsProxy prx ( fileName, Thesis::FunctionsProxy::eMixed ) ; 
     m_pTabWidget->addFunction(prx);
 }
-
 void Thesis::UI::MainWindow::zoomIn()
 {
     TabWidgetItem *pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget()); 
     pTab->plotProxy()->zoomIn();
 }
-
 void Thesis::UI::MainWindow::zoomOut()
 {
     TabWidgetItem *pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget()); 
     pTab->plotProxy()->zoomOut();
+}
+
+void Thesis::UI::MainWindow::convolutionOperation()
+{
+    
 }
 
