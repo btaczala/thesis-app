@@ -56,6 +56,10 @@ set ( thesis_src
   src/functionsproxy.cpp
   src/workspacesettingsdialog.cpp
   src/newfunctionmixeddialog.cpp
+  src/convolutionpicker.cpp
+  
+  src/ioperation.cpp
+  src/convolutionoperation.cpp
   
   plotting/kplotaxis.cpp
   plotting/kplotobject.cpp
@@ -78,6 +82,10 @@ set ( thesis_hdrs
   src/functionsproxy.h	
   src/workspacesettingsdialog.h
   src/newfunctionmixeddialog.h
+  src/convolutionpicker.h
+  
+  src/ioperation.h
+  src/convolutionoperation.h
   
   plotting/kplotaxis.h
   plotting/kplotobject.h
@@ -97,6 +105,7 @@ set ( thesis_moc
   src/plotwidget.h
   src/workspacesettingsdialog.h
   src/newfunctionmixeddialog.h
+  src/convolutionpicker.h
   
   plotting/kplotwidget.h
   QtColorPicker/qtcolorpicker.h
@@ -108,6 +117,7 @@ set( thesis_ui
     ui/newcontinousfunction.ui 
     ui/range.ui
     ui/functionMixed.ui
+    ui/convolutionpicker.ui
 ) 
 
 

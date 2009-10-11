@@ -72,6 +72,8 @@ namespace Thesis {
         {
             Q_OBJECT
             public:
+                
+                typedef QMap<fl::FunctionBase*, KPlotObject* > FunctionsPlotMapType ;
 
                 /**
                  * \fn	PlotWidgetProxy(QWidget* pParent)
@@ -204,6 +206,8 @@ namespace Thesis {
                 **/
 
                 void changeRange( double xstart,double xstop,double ystart,double ystop ) ;
+                
+                const FunctionsPlotMapType plotMap() const { return m_PlotsFunctions ; } 
             public slots:
 
                 /**
@@ -227,11 +231,12 @@ namespace Thesis {
                 **/
 
                 void zoomOut();
+                
             protected:
                 
                 typedef boost::shared_ptr<fl::FunctionBase> functionShPtr;
                 typedef boost::shared_ptr<KPlotObject> KPlotObjectShPtr;
-                typedef QMap<fl::FunctionBase*, KPlotObject* > FunctionsPlotMapType ;
+                
                 boost::shared_ptr<KPlotWidget> m_pKPlotWidget ;
                 boost::shared_ptr<CalculatingThread> m_pCalcThread ; 
                 FunctionsPlotMapType m_PlotsFunctions ; 

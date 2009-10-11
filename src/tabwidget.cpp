@@ -39,12 +39,14 @@ TabWidget::~TabWidget()
     cLOG();
 }
 
-void TabWidget::addTab()
+void TabWidget::addTab(bool bSetFocus)
 {
     cLOG();
     TabWidgetItem *pItemWidget = new TabWidgetItem(this);
     QString currentWorkspaceText = QObject::tr("Workspace") +" " +  QString::number(m_currentWorkspace+1) ; 
-    QTabWidget::addTab(pItemWidget,currentWorkspaceText );
+    int iPos = QTabWidget::addTab(pItemWidget,currentWorkspaceText );
+    if ( bSetFocus ) 
+        QTabWidget::setCurrentWidget(pItemWidget);
     m_currentWorkspace++ ;     
 }
 
@@ -66,6 +68,5 @@ void TabWidget::addFunction(Thesis::FunctionsProxy & fProxy, int index)
     QWidget *pWidget = currentWidget() ; 
     TabWidgetItem *pTabWidgetItem = qobject_cast< TabWidgetItem* >(pWidget);
     pTabWidgetItem->addFunction(fProxy.proxy(),fProxy.color());
-
 }
 

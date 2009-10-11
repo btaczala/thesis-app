@@ -26,8 +26,6 @@ void generateFunction( const QString & fName,  double start, double stop, double
 double myFunction( double x ) {
     return 2*x - 7 ; 
 }
-
-
 int main( int, char ** ) {
     
     /*generateFunction("sin.fnt",-4,3,0.1, mathFunction(&sin));

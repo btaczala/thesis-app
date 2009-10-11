@@ -89,7 +89,7 @@ fl::Function2D::FunctionDiscrete::FunctionDiscrete(const std::vector< double > &
 fl::Function2D::FunctionDiscrete::~FunctionDiscrete()
 {
 }
-double fl::Function2D::FunctionDiscrete::eval( double _xs, bool * pCorrect ) 
+double fl::Function2D::FunctionDiscrete::eval( double _xs, bool * pCorrect ) const
 {
     if ( m_xy.size() == 0 ) 
         return -1 ; 

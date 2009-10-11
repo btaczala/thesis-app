@@ -84,7 +84,7 @@ QWidget* PlotWidgetProxy::widget()
 void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction, const QColor & color )
 {
     cLOG();
-    
+    Q_ASSERT(pFunction != NULL );
     KPlotObject *pPlotObject = NULL ; 
     fl::Function2D::Function2DBase *pFunction2D = dynamic_cast<fl::Function2D::Function2DBase *>( pFunction ); 
     Q_ASSERT(pFunction2D != NULL ) ; 

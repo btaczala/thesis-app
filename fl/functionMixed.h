@@ -39,7 +39,7 @@ namespace fl{
                 FunctionMixed(const std::string & _functionName );
                 virtual ~FunctionMixed(){}
 
-                virtual double eval( double point , bool *pOk ) ; 
+                virtual double eval( double point , bool *pOk ) const ;
                 virtual Function2DBase * integrate( double start, double stop ) ; 
 
                 virtual double max() ; 
@@ -47,7 +47,7 @@ namespace fl{
 
                 void addFunction( fl::Function2D::Function2DBase * pFunction, double start, double stop);
             private:
-                std::vector<FunctionRange> m_Functions ; 
+                mutable std::vector<FunctionRange> m_Functions ; 
         };
     }
 }

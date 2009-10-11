@@ -21,6 +21,7 @@
 #include "tabwidgetitem.h"
 #include "plotwidget.h"
 #include "commons.h"
+#include "ioperation.h"
 
 #include <QLayout>
 #include <QScrollBar>
@@ -56,9 +57,7 @@ m_pListWidget( new QListWidget(this))
     
     
     connect ( m_pPlotProxy.get(), SIGNAL(functionAdded(const FunctionInfo & )),this,SLOT(functionAdded(const FunctionInfo & )));
-    
     connect ( m_pListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
-    
     connect ( m_pDeleteButton, SIGNAL(pressed()),this,SLOT(deleteFunction()));
 }
 TabWidgetItem::~TabWidgetItem()
@@ -107,4 +106,12 @@ void Thesis::UI::TabWidgetItem::itemDoubleClicked(const QListWidgetItem* pItem)
 void Thesis::UI::TabWidgetItem::addFunction(fl::FunctionBase* pFunction, const QColor& color)
 {
     m_pPlotProxy->addFunction(pFunction,color);
+}
+void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl::FunctionBase* >& list, IOperation* pOperation )
+{
+    fl::FunctionBase *pFunction=NULL ; 
+    foreach( const fl::FunctionBase *pFunc, list)
+        pOperation->addFunction(pFunc) ;
+    pFunction = pOperation->calculate() ; 
+    addFunction(pFunction,Qt::green);
 }

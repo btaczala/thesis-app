@@ -70,6 +70,9 @@ m_Type(eMixed),
 m_functionFileNamePath (""),
 m_FunctionsVector(functionsList)
 {
+    if ( m_FunctionsVector.empty() ) 
+        throw std::logic_error("FunctionsProxy::FunctionsProxy(const std::vector< QStringList >& functionsList)");
+        
 }
 
 
@@ -191,10 +194,12 @@ fl::FunctionBase* FunctionsProxy::proxy()
         case eMixed : {
             LOG("Proxying mixed function");
             fl::Function2D::FunctionMixed *pFuncMixed = NULL ;
-            if ( ! m_FunctionsVector.empty() && m_functionFileNamePath.isEmpty() ) {
+            if ( ! m_FunctionsVector.empty() /*&& m_functionFileNamePath.isEmpty()*/ ) {
                 LOG("Proxying mixed function from std::vector");
                 srand(time(NULL));
                 QString name = QString("Func mixed %1").arg(rand()) ; 
+                if ( !m_functionFileNamePath.isEmpty() )
+                    name = m_functionFileNamePath;
                 pFuncMixed = new fl::Function2D::FunctionMixed(name.toStdString());
                 double start, stop ; 
                 QString qStart, qStop ;

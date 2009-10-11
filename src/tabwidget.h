@@ -76,7 +76,7 @@ namespace Thesis {
                  * \date	2009-08-07
                 **/
 
-                void addTab() ; 
+                void addTab( bool bSetFocus = false) ; 
 
                 /**
                  * \fn	void closeTabAt( int index =-1 )

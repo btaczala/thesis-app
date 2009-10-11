@@ -15,7 +15,6 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
 */
 
 #ifndef THESIS_MAINWINDOW_H
@@ -94,7 +93,7 @@ namespace Thesis {
                  * \date	2009-08-07
                 **/
 
-                void newTab();
+                void newTab( bool setFocus = false);
 
                 /**
                  * \fn	void about()
@@ -205,6 +204,16 @@ namespace Thesis {
                 **/
 
                 void zoomOut();
+                
+                /**
+                 * \fn  void convolutionOperation()
+                 *
+                 * \brief   Zooms out current workspace widget.
+                 *
+                 * \author  Bartosz Taczala
+                 * \date    2009-08-07
+                **/
+                void convolutionOperation() ; 
             private:
                 Q_DISABLE_COPY(MainWindow) ;
                 
@@ -252,14 +261,16 @@ namespace Thesis {
                 QPointer<QMenu> m_pWorkspaceMenu ;  
                 QPointer<QMenu> m_pWorkspaceNewFunctionMenu ; 
                 QPointer<QMenu> m_pWorkspaceNewDiscreteFunctionMenu ; 
-                QPointer<QMenu> m_pWorkspaceNewMixedFunctionMenu ; 
+                QPointer<QMenu> m_pWorkspaceNewMixedFunctionMenu ;
+                QPointer<QMenu> m_pAritmeticOperationMenu ;
+                QPointer<QMenu> m_pConvolutionBasedAritmeticOperationMenu ; 
+                
                 
                 QPointer<QMenu> m_pAboutMenu ;  
                 QPointer<TabWidget> m_pTabWidget ; 
 
-				int m_iNumberOfWorkspaces ; 
+                int m_iNumberOfWorkspaces ; 
         };
     }
 }
-
 #endif // THESIS_MAINWINDOW_H
