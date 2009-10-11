@@ -93,7 +93,7 @@ namespace Thesis {
                  * \date	2009-08-07
                 **/
 
-                void newTab();
+                void newTab( bool setFocus = false);
 
                 /**
                  * \fn	void about()

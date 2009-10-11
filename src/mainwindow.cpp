@@ -57,6 +57,48 @@ QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
     setStatusBarStatus(tr( "Program is ready to use" ),false);
     
     setWindowState(Qt::WindowMaximized);
+    
+    
+    newTab() ; 
+    // first funct
+    QStringList l1 ;
+    l1 << "0.5*x" << "x" << "-0.01" << "2.01";
+    QStringList l2 ;
+    l2 << "0" << "x" << "-inf" << "0";
+    QStringList l3;
+    l3 << "0" << "x" << "2" << "inf";
+    
+    std::vector<QStringList> list ;
+    list.push_back(l1);
+    list.push_back(l2);
+    list.push_back(l3);
+    Thesis::FunctionsProxy prx ( list ) ;
+    fl::FunctionBase *pFunction1 = prx.proxy();
+    
+    // second func
+    list.clear();
+    l1.clear();
+    l2.clear();
+    l3.clear();
+    
+    l1 << "0.5*x" << "x" << "-0.01" << "2.01";
+    l2 << "0" << "x" << "-inf" << "0";
+    l3 << "0" << "x" << "2" << "inf";
+    list.push_back(l1);
+    list.push_back(l2);
+    list.push_back(l3);
+    
+    Thesis::FunctionsProxy prx2 ( list ) ; 
+    fl::FunctionBase *pFunction2 = prx.proxy();
+
+    QList<const fl::FunctionBase*> pFunctionList;
+    pFunctionList << pFunction1 << pFunction2;
+
+    TabWidgetItem *pTab=qobject_cast<TabWidgetItem*> ( m_pTabWidget->currentWidget());
+    pTab->addFunctionAndOperation(pFunctionList,new ConvolutionOperation(ConvolutionOperation::eAdd));
+
+    //
+    
     LOG("End of ");
 }
 
@@ -194,11 +236,11 @@ void MainWindow::closeApp()
     QMainWindow::close();
 }
 
-void Thesis::UI::MainWindow::newTab()
+void Thesis::UI::MainWindow::newTab(bool setFocus )
 {
     cLOG() ; 
 	++m_iNumberOfWorkspaces ;
-    m_pTabWidget->addTab();
+    m_pTabWidget->addTab(setFocus);
     setStatusBarStatus(tr("New Workspace added"),false);
     m_pWorkspaceMenu->setEnabled(true);
 }
@@ -322,18 +364,18 @@ void Thesis::UI::MainWindow::convolutionOperation()
         aa.clear();
     }
     if ( picker.show() == QDialog::Accepted ) {
-        if ( picker.whereToAdd() == Thesis::UI::ConvolutionPicker::eCurrentWorkspace ){
-            QStringList listOfFunctionsToAdd = picker.selectedFunctions() ; 
+        TabWidgetItem *pTab ; 
+        if ( picker.whereToAdd() != Thesis::UI::ConvolutionPicker::eCurrentWorkspace ){
+            newTab(true);
+        }
+        QStringList listOfFunctionsToAdd = picker.selectedFunctions() ; 
             QList<const fl::FunctionBase*> pFunctionList; 
             foreach ( QString fName, listOfFunctionsToAdd ) {
                 pFunctionList.push_back(tempMap[fName]);
             }
-            TabWidgetItem *pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
-            pTab->addFunctionAndOperation(pFunctionList,new ConvolutionOperation(ConvolutionOperation::eAdd) );
-        }
+        pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
+        pTab->addFunctionAndOperation(pFunctionList,new ConvolutionOperation(ConvolutionOperation::eAdd) );
     }
-    
-    
 //    ConvolutionOperation operation ; 
 }
 

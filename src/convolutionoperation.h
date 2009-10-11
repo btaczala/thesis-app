@@ -21,7 +21,17 @@
 #define CONVOLUTIONOPERATION_H
 
 #include "ioperation.h"
-
+#include <QDebug>
+template<class T>
+QDebug operator<<(QDebug dbg, const std::vector<T> & vec ) 
+{
+    dbg.nospace() << "[" ; 
+    foreach ( T type, vec ) {
+        dbg.nospace() << type << ", " ; 
+    }
+    dbg.nospace() << "]" ; 
+    return dbg.space();
+}
 
 class ConvolutionOperation : public IOperation
 {

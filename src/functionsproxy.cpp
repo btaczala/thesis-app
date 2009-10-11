@@ -70,6 +70,9 @@ m_Type(eMixed),
 m_functionFileNamePath (""),
 m_FunctionsVector(functionsList)
 {
+    if ( m_FunctionsVector.empty() ) 
+        throw std::logic_error("FunctionsProxy::FunctionsProxy(const std::vector< QStringList >& functionsList)");
+        
 }
 
 

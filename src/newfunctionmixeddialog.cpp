@@ -38,7 +38,7 @@ Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::
     m_pForm->treeWidget->setRootIsDecorated(false);
     
     
-
+/*
     QTreeWidgetItem *pTreeItem = new QTreeWidgetItem();
     pTreeItem->setText(0,"sin(x)");
     pTreeItem->setText(1,"x");
@@ -58,7 +58,7 @@ Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::
     pTreeItem3->setText(1,"x");
     pTreeItem3->setText(2,"0");
     pTreeItem3->setText(3,"+inf");
-    m_pForm->treeWidget->addTopLevelItem(pTreeItem3);
+    m_pForm->treeWidget->addTopLevelItem(pTreeItem3);*/
     
 }
 void NewFunctionMixedDialog::done(int i)
@@ -99,34 +99,3 @@ void NewFunctionMixedDialog::deleteRow()
     LOG(i);
     m_pForm->treeWidget->takeTopLevelItem(i);
 }
-
-
-// Thesis::UI::ComboBoxDelegate::ComboBoxDelegate(QObject* parent): QItemDelegate(parent)
-// {
-// }
-// 
-// QWidget* Thesis::UI::ComboBoxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
-// {
-//     QComboBox *pEditor = new QComboBox(parent);
-//     pEditor->addItem(">");
-//     pEditor->addItem("<");
-//     pEditor->addItem("=");
-//     pEditor->addItem(">=");
-//     pEditor->addItem("<=");
-//     return pEditor ; 
-// }
-// 
-// void Thesis::UI::ComboBoxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
-// {
-//     QItemDelegate::setEditorData(editor, index);
-// }
-// 
-// void Thesis::UI::ComboBoxDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
-// {
-//     editor->setGeometry(option.rect);
-// }
-// void Thesis::UI::ComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
-// {
-//     QItemDelegate::setModelData(editor, model, index);
-// }
-// 

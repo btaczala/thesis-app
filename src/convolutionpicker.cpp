@@ -27,6 +27,11 @@ Thesis::UI::ConvolutionPicker::ConvolutionPicker ( QWidget* parent, Qt::WindowFl
     //FIXME: sss 
 //    connect ( m_pForm->comboBox, SIGNAL(currentIndexChanged(QString)),this,SLOT(comboBoxValueChanged(QString)));
     connect ( m_pForm->comboBox, SIGNAL(currentIndexChanged(int)),this,SLOT(comboBoxValueChanged(int)));
+    connect ( m_pForm->okButton, SIGNAL(clicked()),this,SLOT(accept()));
+    connect ( m_pForm->cancelButton, SIGNAL(clicked()),this,SLOT(reject()));
+    //connect ( m_pForm->buttonBox, SIGNAL(clicked(QAbstractButton*)),this,SLOT(
+    //QObject *pButton = qobject_cast< QObject* >(m_pForm->buttonBox->button(QDialogButtonBox::Ok)) ; 
+    //connect ( pButton,SIGNAL(triggered()),this,SLOT(accept()));
 }
 
 void Thesis::UI::ConvolutionPicker::populateTreeWidget ( int index )
