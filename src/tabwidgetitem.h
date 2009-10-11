@@ -33,6 +33,8 @@ class QScrollBar;
 class QVBoxLayout ; 
 class QHBoxLayout ; 
 class QListWidget ; 
+
+class IOperation ; 
 namespace fl{
     class FunctionBase ; 
 }
@@ -158,6 +160,8 @@ namespace Thesis{
 
                 void addFunction( fl::FunctionBase* pFunction, const QColor & color) ; 
                 
+                
+                void addFunctionAndOperation( const QList<const fl::FunctionBase*> & list, IOperation * pOperation ) ; 
                 
             protected:
                 QString m_text ; 

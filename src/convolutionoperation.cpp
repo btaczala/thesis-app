@@ -49,8 +49,8 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     int a1 = 0 ; 
     int b1 = 2 ; 
     double delta = (b1 - a1) /(double)n_discrete ; 
-    fl::Function2D::Function2DBase * pFirst = dynamic_cast<fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
-    fl::Function2D::Function2DBase * pSecond = dynamic_cast<fl::Function2D::Function2DBase*>( m_functions[1].get() ); 
+    const fl::Function2D::Function2DBase * pFirst = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
+    const fl::Function2D::Function2DBase * pSecond = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[1].get() ); 
     std::vector<double> t ; 
     for ( int iter = 0 ; iter < n_discrete ; ++iter ) {
         double to_insert = a1 + delta*( iter-1/2 ) ;

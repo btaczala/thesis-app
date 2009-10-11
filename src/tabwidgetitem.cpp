@@ -21,6 +21,7 @@
 #include "tabwidgetitem.h"
 #include "plotwidget.h"
 #include "commons.h"
+#include "ioperation.h"
 
 #include <QLayout>
 #include <QScrollBar>
@@ -108,3 +109,12 @@ void Thesis::UI::TabWidgetItem::addFunction(fl::FunctionBase* pFunction, const Q
 {
     m_pPlotProxy->addFunction(pFunction,color);
 }
+
+void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl::FunctionBase* >& list, IOperation* pOperation )
+{
+    fl::FunctionBase *pFunction=NULL ; 
+    foreach( const fl::FunctionBase *pFunc, list)
+        pOperation->addFunction(pFunc) ;
+    pFunction = pOperation->calculate() ; 
+}
+

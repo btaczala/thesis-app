@@ -28,6 +28,7 @@
 #include "functionsproxy.h"
 #include "workspacesettingsdialog.h"
 #include "tabwidgetitem.h"
+#include "convolutionpicker.h"
 
 #include <QStatusBar>
 #include <QMenuBar>
@@ -37,6 +38,8 @@
 #include <QLabel>
 #include <QFileDialog>
 #include <QToolBar>
+#include <functionbase.h>
+#include "convolutionoperation.h"
 
 using namespace Thesis::UI;
 
@@ -142,7 +145,7 @@ void MainWindow::createWidgets()
     m_pWorkspaceNewDiscreteFunctionMenu = new QMenu(tr("New discrete function"),m_pWorkspaceNewFunctionMenu);
     m_pWorkspaceNewMixedFunctionMenu = new QMenu(tr("New mixed function"),m_pWorkspaceNewFunctionMenu);
     
-    m_pAritmeticOperationMenu  = new QMenu( tr(" Operations "), m_pMenuBar) ; 
+    m_pAritmeticOperationMenu  = new QMenu( tr("&Operations "), m_pMenuBar) ; 
     m_pConvolutionBasedAritmeticOperationMenu  = new QMenu( tr("Convolution based"), m_pAritmeticOperationMenu ) ; 
     
     m_pAboutMenu = new QMenu ( tr("&About"),m_pMenuBar ) ; 
@@ -169,6 +172,12 @@ void MainWindow::initSignals()
     
     connect ( Thesis::Actions::workspaceZoomIn(),SIGNAL(triggered()),this,SLOT(zoomIn()));
     connect ( Thesis::Actions::workspaceZoomOut(),SIGNAL(triggered()),this,SLOT(zoomOut()));
+    
+    connect ( Thesis::Actions::convolutionAddOperation(),SIGNAL(triggered()),this,SLOT(convolutionOperation()));
+    connect ( Thesis::Actions::convolutionMinusOperation(),SIGNAL(triggered()),this,SLOT(convolutionOperation()));
+    connect ( Thesis::Actions::convolutionTimesOperation(),SIGNAL(triggered()),this,SLOT(convolutionOperation()));
+    connect ( Thesis::Actions::convolutionDevideOperation(),SIGNAL(triggered()),this,SLOT(convolutionOperation()));
+    
 }
 
 void MainWindow::setStatusBarStatus(const QString& _status, bool isWorking)
@@ -295,6 +304,36 @@ void Thesis::UI::MainWindow::zoomOut()
 
 void Thesis::UI::MainWindow::convolutionOperation()
 {
+    int i = m_pTabWidget->count();
+    TabWidgetItem *pTab=NULL;
+    QStringList aa ; 
+    QMap<QString,const fl::FunctionBase*> tempMap ; 
+    Thesis::UI::ConvolutionPicker picker ( this ) ; 
+    for ( int j=0 ; j < i ; ++j)
+    {
+        pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->widget(j)); 
+        PlotWidgetProxy::FunctionsPlotMapType map = pTab->plotProxy()->plotMap() ; 
+        QList<fl::FunctionBase*> keysaa = map.keys();
+        Q_FOREACH ( const fl::FunctionBase *pFunc, keysaa ) {
+            tempMap[pFunc->name().c_str()] = pFunc ; 
+            aa.push_back(QString( pFunc->name().c_str()) );
+        }
+        picker.addFunctions(j+1,aa);
+        aa.clear();
+    }
+    if ( picker.show() == QDialog::Accepted ) {
+        if ( picker.whereToAdd() == Thesis::UI::ConvolutionPicker::eCurrentWorkspace ){
+            QStringList listOfFunctionsToAdd = picker.selectedFunctions() ; 
+            QList<const fl::FunctionBase*> pFunctionList; 
+            foreach ( QString fName, listOfFunctionsToAdd ) {
+                pFunctionList.push_back(tempMap[fName]);
+            }
+            TabWidgetItem *pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
+            pTab->addFunctionAndOperation(pFunctionList,new ConvolutionOperation(ConvolutionOperation::eAdd) );
+        }
+    }
     
+    
+//    ConvolutionOperation operation ; 
 }
 

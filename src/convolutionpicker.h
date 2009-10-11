@@ -31,12 +31,30 @@ namespace Thesis{
         {
             Q_OBJECT
             public:
-                
+                enum WhereToAdd{
+                    eCurrentWorkspace=0,
+                    eCreateNewWorkspace
+                };
                 ConvolutionPicker ( QWidget* parent = 0, Qt::WindowFlags f = 0 );
                 virtual void accept();
                 virtual void reject();
+                void addFunctions ( int index, const QStringList & names ) ; 
+                int  show() ; 
+                
+                const QStringList & selectedFunctions() const { return m_selectedFunctions ; } 
+                const WhereToAdd whereToAdd() const { return m_whereToAdd ; } 
+                
             private:
+                void populateTreeWidget(int index = -1 ) ; 
+                
                 boost::shared_ptr<Ui::ConvolutionPicker> m_pForm ; 
+                QMap<int,QStringList> m_functions ; 
+                QStringList m_selectedFunctions ; 
+                WhereToAdd m_whereToAdd ; 
+                
+            private slots:
+                void comboBoxValueChanged( const QString & ) ; 
+                void comboBoxValueChanged( int ) ;
                 
         };
     }

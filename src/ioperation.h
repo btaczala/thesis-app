@@ -27,9 +27,9 @@
 class IOperation
 {
     public:
-        typedef boost::shared_ptr<fl::FunctionBase> FunctionBaseShPtr ; 
+        typedef boost::shared_ptr<const fl::FunctionBase> FunctionBaseShPtr ; 
         virtual ~IOperation() {}
-        virtual void addFunction( fl::FunctionBase* pPtr ) ; 
+        virtual void addFunction( const fl::FunctionBase* pPtr ) ; 
         
         virtual fl::FunctionBase * calculate() = 0 ; 
     protected:

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>294</width>
+    <width>311</width>
     <height>326</height>
    </rect>
   </property>
@@ -16,13 +16,16 @@
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="1">
+     <item row="2" column="0">
       <widget class="QTreeWidget" name="treeWidget">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
+       </property>
        <property name="animated">
         <bool>true</bool>
        </property>
        <property name="columnCount">
-        <number>2</number>
+        <number>1</number>
        </property>
        <attribute name="headerVisible">
         <bool>true</bool>
@@ -32,17 +35,12 @@
        </attribute>
        <column>
         <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string notr="true">2</string>
+         <string>Function</string>
         </property>
        </column>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QLabel" name="label">
@@ -61,6 +59,31 @@
          <item>
           <property name="text">
            <string>Show from current</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Attach to </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_2">
+         <item>
+          <property name="text">
+           <string>Current Workspace</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>create new workspace</string>
           </property>
          </item>
         </widget>

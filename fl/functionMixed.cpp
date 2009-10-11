@@ -15,7 +15,7 @@ void fl::Function2D::FunctionMixed::addFunction( fl::Function2D::Function2DBase 
     frFunction.m_stop = stop ; 
     m_Functions.push_back(frFunction);
 }
-double fl::Function2D::FunctionMixed::eval( double point,bool *pOk ) {
+double fl::Function2D::FunctionMixed::eval( double point,bool *pOk ) const{
     std::vector<FunctionRange>::iterator it = m_Functions.begin();
     std::vector<FunctionRange>::iterator itEnd = m_Functions.end();
     double val = -1  ;

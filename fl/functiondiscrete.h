@@ -37,7 +37,7 @@ namespace fl{
                 
                 FunctionDiscrete(const std::vector< double >& _x, const std::vector< double >& _y, const std::string& _functionName = "unnamed");
                 virtual ~FunctionDiscrete();                
-                virtual double eval( double point, bool * pCorrect ) ;
+                virtual double eval( double point, bool * pCorrect ) const;
                 
                 virtual Function2DBase* integrate(double start, double stop);
                 
@@ -47,7 +47,7 @@ namespace fl{
 				double xMin() ; 
 				double xMax();
             private:
-                DomainRange m_xy ; 
+                mutable DomainRange m_xy ; 
         };
     }
     namespace Function3D{

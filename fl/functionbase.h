@@ -79,11 +79,11 @@ namespace fl{
             std::string m_functionEquation ; 
             std::auto_ptr<mu::Parser> m_pParser ; 
             double m_dStep ; 
-            std::map<std::string,double> m_VariableMap ; 
+            mutable std::map<std::string,double> m_VariableMap ; 
             
-            double m_iMin ;
-            double m_iMax ;
-            bool m_bMinMaxEval ; 
+            mutable double m_iMin ;
+            mutable double m_iMax ;
+            mutable bool m_bMinMaxEval ; 
     };
 }
 

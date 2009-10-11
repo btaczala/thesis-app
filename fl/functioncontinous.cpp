@@ -35,7 +35,7 @@ void fl::Function2D::FunctionContinous::addVariable(const std::string & varName 
 	}
 }
 
-double fl::Function2D::FunctionContinous::eval(double point, bool *pCorrect)
+double fl::Function2D::FunctionContinous::eval(double point, bool *pCorrect) const
 {
     double toRet = -1; 
     try{

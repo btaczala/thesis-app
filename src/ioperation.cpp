@@ -20,7 +20,7 @@
 #include "ioperation.h"
 
 
-void IOperation::addFunction ( fl::FunctionBase* pPtr )
+void IOperation::addFunction ( const fl::FunctionBase* pPtr )
 {
     m_functions.push_back( FunctionBaseShPtr ( pPtr)  );
 }
