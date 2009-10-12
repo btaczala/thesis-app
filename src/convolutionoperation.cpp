@@ -41,6 +41,18 @@ ConvolutionOperation::ConvolutionOperation ( ConvolutionOperation::OperationType
             break ; 
     }
 }
+double p1( double x){
+    if ( x > 0 && x< 2 )
+        return x/2 ;
+    else
+        return 0 ;
+}
+double p2( double x){
+    if ( x > 1 && x< 3 )
+        return (double) (1.5f - (x/2));
+    else
+        return 0 ;
+}
 
 fl::FunctionBase* ConvolutionOperation::calculate()
 {
@@ -53,30 +65,32 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     int a1 = 0 ; 
     int b1 = 2 ;
     double delta = (b1 - a1) /(double)n_discrete ; 
+
+    qDebug() <<"delta: "<<delta<<" a1: "<<a1<<" b1: "<<b1<<" epsilon: ";
     const fl::Function2D::Function2DBase * pFirst = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
     const fl::Function2D::Function2DBase * pSecond = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[1].get() ); 
     
     std::vector<double> t ; // those are my x's
     double to_insert;
-    for ( double j = 0 ; j < n_discrete ; ++j ) {
+    for ( double j = 1 ; j < n_discrete ; ++j ) {
         to_insert = a1 + epsilon*( j - 1/2 ) ;
+        qDebug() << to_insert;
         t.push_back( to_insert ) ;
     }
-    qDebug() << " Xs: [" << t ;
     std::vector<double> result;
+    std::vector<double> xs;
     double res = 0 ; 
     double first_mem= 0 ;
     double second_mem= 0 ;
     double partialResult;
     bool bOk ; 
-    //for ( double ss = startRange ; ss < endRange ; ++ss ) {
-    for ( int iter = 0 ; iter < n_discrete ; ++iter ) {
-        double to_insert = a1 + epsilon*( iter-1/2 ) ;
 
-        for ( int iter = 0 ; iter < n_discrete ; ++iter ) {
-            first_mem = pFirst->eval( t[iter],&bOk );
+    for ( double ss = startRange ; ss < endRange ; ss+=0.1 ) {
+        xs.push_back(ss);
+        for ( int iter = 1 ; iter < n_discrete ; ++iter ) {
+            first_mem = /*pFirst->eval( t[iter],&bOk )*/ p1(t[iter]);
             if ( bOk ) {
-                second_mem = pSecond->eval(to_insert - t[iter],&bOk);
+                second_mem = /*pSecond->eval(ss - t[iter],&bOk)*/ p2(ss-t[iter]);
                 if ( bOk ) {
                     partialResult += first_mem * second_mem ;
                 }
@@ -95,8 +109,14 @@ fl::FunctionBase* ConvolutionOperation::calculate()
         result.push_back(res);
         partialResult=0;
     }
-    qDebug() << "Ys:" << result ; 
-    fl::Function2D::Function2DBase * pResult = new fl::Function2D::FunctionDiscrete(t,result,"leather");
+    /*
+    qDebug() << "xs:" << xs;
+    qDebug() << "Ys:" << result ;
+    */
+    for ( int i = 0 ; i < xs.size() ; ++i){
+        qDebug() << "f(" <<xs.at(i)<<") = " <<result.at(i);
+    }
+    fl::Function2D::Function2DBase * pResult = new fl::Function2D::FunctionDiscrete(xs,result,"leather");
     return pResult;
 }
 void ConvolutionOperation::addFunction ( fl::FunctionBase* pPtr )
