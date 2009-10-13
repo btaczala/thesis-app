@@ -22,7 +22,7 @@
 #include <QApplication>
 #include <QDebug>
 #include "commons.h"
-
+#include <QErrorMessage>
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
