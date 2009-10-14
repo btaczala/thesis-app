@@ -106,7 +106,7 @@ fl::Function2D::Function2DBase* fl::Function2D::FunctionDiscrete::integrate(doub
 {
     return NULL ; 
 }
-double fl::Function2D::FunctionDiscrete::max()
+double fl::Function2D::FunctionDiscrete::max() const 
 {
     if ( m_xy.size() == 0 ) 
         return -1 ; 
@@ -114,7 +114,7 @@ double fl::Function2D::FunctionDiscrete::max()
     //if ( it != m_xy.end() ) 
     return it->second ; 
 }
-double fl::Function2D::FunctionDiscrete::min()
+double fl::Function2D::FunctionDiscrete::min() const 
 {
     if ( m_xy.size() == 0 ) 
         return -1 ; 
@@ -122,14 +122,14 @@ double fl::Function2D::FunctionDiscrete::min()
 //     if ( it != m_xy.end() ) 
     return it->second ; 
 }
-double fl::Function2D::FunctionDiscrete::xMin() {
+double fl::Function2D::FunctionDiscrete::xMin() const {
 	
 	if ( m_xy.size() == 0 ) 
 		return -1 ; 
 	DomainRangeIterator it = std::min_element( m_xy.begin(), m_xy.end(), comparePairsMin2() );
 	return it->first; 
 }
-double fl::Function2D::FunctionDiscrete::xMax() {
+double fl::Function2D::FunctionDiscrete::xMax() const {
 
 	if ( m_xy.size() == 0 ) 
 		return -1 ; 
@@ -148,7 +148,7 @@ fl::Function3D::FunctionDiscrete::FunctionDiscrete( const std::vector< double >&
     }
 }
 
-double fl::Function3D::FunctionDiscrete::max()
+double fl::Function3D::FunctionDiscrete::max() const 
 {
     double dMax = -1 ; 
     if ( m_xyz.size() == 0 ) 
@@ -166,7 +166,7 @@ double fl::Function3D::FunctionDiscrete::max()
 	return dMax; 
 }
 
-double fl::Function3D::FunctionDiscrete::min()
+double fl::Function3D::FunctionDiscrete::min() const 
 {
 	double dMin = -1 ; 
     if ( m_xyz.size() == 0 ) 
@@ -197,4 +197,14 @@ double fl::Function3D::FunctionDiscrete::eval( double x,double y )
         }
     }
     return eval; 
+}
+
+double fl::Function2D::FunctionDiscrete::xStartWhereIntegratingMakesSense() const 
+{
+    return xMin();
+}
+
+double fl::Function2D::FunctionDiscrete::xStopWhereIntegratingMakesSense() const 
+{
+    return xMin();
 }

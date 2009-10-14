@@ -51,8 +51,11 @@ namespace fl{
                 virtual double eval( double point , bool *pOk ) const ;
                 virtual Function2DBase * integrate( double start, double stop ) ; 
 
-                virtual double max() ; 
-                virtual double min() ; 
+                virtual double max() const ; 
+                virtual double min() const  ; 
+                
+                virtual double xStartWhereIntegratingMakesSense() const ; 
+                virtual double xStopWhereIntegratingMakesSense() const ; 
 
                 void addFunction(  fl::Function2D::Function2DBase * pFunction, double start, Operator startOperator, double stop, Operator stopOperator);
             private:

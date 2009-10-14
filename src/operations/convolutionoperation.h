@@ -36,18 +36,10 @@ QDebug operator<<(QDebug dbg, const std::vector<T> & vec )
 class ConvolutionOperation : public IOperation
 {
     public:
-        enum OperationType { 
-            eAdd=0,
-            eMinus,
-            eTimes,
-            eSub
-        };
-        ConvolutionOperation( OperationType type ) ;
-        virtual fl::FunctionBase* calculate();
-        virtual void addFunction ( fl::FunctionBase* pPtr );
-    private:
-        OperationType m_operationType ;
-        OperationType m_opposedOperationType ; 
+        ConvolutionOperation( ) ;
+        virtual ~ConvolutionOperation() {}
+        virtual fl::FunctionBase* calculate() = 0 ; 
+        virtual void addFunction ( fl::FunctionBase* pPtr ) ;
 };
 
 #endif // CONVOLUTIONOPERATION_H

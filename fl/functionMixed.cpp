@@ -1,5 +1,7 @@
 
 #include "functionMixed.h"
+#include <limits>
+
 
 fl::Function2D::FunctionMixed::FunctionMixed( const std::string & _functionName ) :
 fl::Function2D::Function2DBase(_functionName)
@@ -34,20 +36,6 @@ bool fl::Function2D::FunctionMixed::isHere (double point, const FunctionRange & 
         }
     }
     return false ; 
-    /*if ( point >= funRange.m_start 
-    {
-        if ( point < funRange.m_stop ){
-            return true ; 
-        }
-    }
-    else if ( point > funRange.m_start ){
-        if ( point <= funRange.m_stop && funRange.m_operatorStop == eLessEqual ){
-            return true ; 
-        }
-        else if ( point < funRange.m_stop)
-            return true ; 
-    }
-    return false ; */
 }
 double fl::Function2D::FunctionMixed::eval( double point,bool *pOk ) const{
     *pOk = false ;
@@ -64,10 +52,12 @@ double fl::Function2D::FunctionMixed::eval( double point,bool *pOk ) const{
     }
     return val ; 
 }
-double fl::Function2D::FunctionMixed::min( ) {
+double fl::Function2D::FunctionMixed::min( ) const {
+    //TODO: implement ?!
     return -1 ; 
 }
-double fl::Function2D::FunctionMixed::max( ) {
+double fl::Function2D::FunctionMixed::max( ) const {
+    //TODO: implement ?!
     return -1 ; 
 }
 
@@ -75,3 +65,67 @@ fl::Function2D::Function2DBase* fl::Function2D::FunctionMixed::integrate(double 
 {
     return NULL ; 
 }
+
+
+double fl::Function2D::FunctionMixed::xStartWhereIntegratingMakesSense() const 
+{
+    double xStart ; 
+    double val ; 
+    static const int nIloscProbek = 10 ; 
+    std::vector<FunctionRange>::const_iterator it = m_Functions.begin();
+    std::vector<FunctionRange>::const_iterator itEnd = m_Functions.end();
+    double xStop ; 
+    double iter ; 
+    double result ; 
+    bool bOk ; 
+    for ( it ; it != itEnd ; ++it ) {
+        xStart = it->m_start ;
+        xStop = it->m_stop; 
+        if ( std::isinf<double>(xStart) ){
+            xStart = -400;
+        }
+        double xStep = (xStop - xStart) / (double)nIloscProbek;
+        for ( int i = 0 ; i < nIloscProbek ; ++i ) {
+            iter = ((double)i) + xStep ;
+            val += it->m_spFunction->eval(iter,&bOk);
+        }
+        if ( val != 0 ) {
+            result = it-> m_start ; 
+            break  ;
+        }
+    }
+    return result ;
+}
+double fl::Function2D::FunctionMixed::xStopWhereIntegratingMakesSense() const
+{
+    
+    double xStart ; 
+    double val ; 
+    static const int nIloscProbek = 10 ; 
+    std::vector<FunctionRange>::const_iterator it = m_Functions.begin();
+    std::vector<FunctionRange>::const_iterator itEnd = m_Functions.end();
+    double xStop ; 
+    double iter ; 
+    double result ; 
+    bool bOk ; 
+    for ( it ; it != itEnd ; ++it ) {
+        xStart = it->m_start ;
+        xStop = it->m_stop; 
+        if ( std::isinf<double>(xStart) ){
+            xStart = -400;
+        }
+        double xStep = (xStop - xStart) / (double)nIloscProbek;
+        for ( int i = 0 ; i < nIloscProbek ; ++i ) {
+            iter = ((double)i) + xStep ;
+            val += it->m_spFunction->eval(iter,&bOk);
+        }
+        if ( val != 0 ) {
+            result = it-> m_stop ; 
+            break  ;
+        }
+    }
+    return result ;
+
+}
+
+

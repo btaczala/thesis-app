@@ -32,8 +32,8 @@ namespace fl{
 				Function3DBase( const std::string & _functionName ) ;
 				virtual ~Function3DBase() {}
 				
-				virtual double max() = 0 ; 
-				virtual double min() = 0 ; 
+				virtual double max() const= 0 ; 
+				virtual double min() const= 0 ; 
 				virtual double eval ( double x, double y ) = 0 ; 
         };
     }

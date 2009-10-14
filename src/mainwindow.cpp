@@ -40,6 +40,7 @@
 #include <QToolBar>
 #include <functionbase.h>
 #include "convolutionoperation.h"
+#include "convolutionadd.h"
 
 using namespace Thesis::UI;
 
@@ -97,7 +98,7 @@ QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
     TabWidgetItem *pTab=qobject_cast<TabWidgetItem*> ( m_pTabWidget->currentWidget());
     //pTab->addFunction(pFunction1,Qt::white);
     //pTab->addFunction(pFunction2,Qt::blue);
-    pTab->addFunctionAndOperation(pFunctionList,new ConvolutionOperation(ConvolutionOperation::eAdd));
+    pTab->addFunctionAndOperation(pFunctionList,new ConvolutionAdd());
     
 
     //
@@ -376,7 +377,7 @@ void Thesis::UI::MainWindow::convolutionOperation()
                 pFunctionList.push_back(tempMap[fName]);
             }
         pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
-        pTab->addFunctionAndOperation(pFunctionList,new ConvolutionOperation(ConvolutionOperation::eAdd) );
+        pTab->addFunctionAndOperation(pFunctionList,new ConvolutionAdd() );
     }
 //    ConvolutionOperation operation ; 
 }

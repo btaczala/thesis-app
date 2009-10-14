@@ -39,6 +39,7 @@ include_directories("./plotting")
 include_directories("./fl")
 include_directories("./fl/muparser")
 include_directories("./QtColorPicker")
+include_directories("./src/operations")
 include_directories(${CMAKE_BINARY_DIR})
 #include_directories(${QWTPLOT3D_INCLUDE_DIR})
 
@@ -57,19 +58,13 @@ set ( thesis_src
   src/workspacesettingsdialog.cpp
   src/newfunctionmixeddialog.cpp
   src/convolutionpicker.cpp
-  
-  src/ioperation.cpp
-  src/convolutionoperation.cpp
-  
+    
   plotting/kplotaxis.cpp
   plotting/kplotobject.cpp
   plotting/kplotpoint.cpp
   plotting/kplotwidget.cpp
   
   QtColorPicker/qtcolorpicker.cpp
-  operations/interface/functionoperationinterface.cpp
-  
-  operations/builtin/discreteconvolution.cpp
   ) 
 set ( thesis_hdrs 
   src/mainwindow.h
@@ -83,19 +78,13 @@ set ( thesis_hdrs
   src/workspacesettingsdialog.h
   src/newfunctionmixeddialog.h
   src/convolutionpicker.h
-  
-  src/ioperation.h
-  src/convolutionoperation.h
-  
+
   plotting/kplotaxis.h
   plotting/kplotobject.h
   plotting/kplotpoint.h
   plotting/kplotwidget.h
   
   QtColorPicker/qtcolorpicker.h
-  operations/interface/functionoperationinterface.h
-  
-  operations/builtin/discreteconvolution.h
   ) 
 set ( thesis_moc
   src/mainwindow.h
@@ -109,9 +98,19 @@ set ( thesis_moc
   
   plotting/kplotwidget.h
   QtColorPicker/qtcolorpicker.h
-  
-  operations/builtin/discreteconvolution.h
   )
+set ( thesis_operations_hdrs
+    src/operations/ioperation.h
+    src/operations/convolutionoperation.h
+    src/operations/convolutionadd.h
+    src/operations/convolutionminus.h
+)
+set ( thesis_operations_src
+    src/operations/ioperation.cpp
+    src/operations/convolutionoperation.cpp
+    src/operations/convolutionadd.cpp
+    src/operations/convolutionminus.cpp
+)
 set(thesis_rsc resources/main.qrc )
 set( thesis_ui 
     ui/newcontinousfunction.ui 
@@ -120,12 +119,19 @@ set( thesis_ui
     ui/convolutionpicker.ui
 ) 
 
-
 qt4_wrap_cpp( thesis_moc_src ${thesis_moc} )
 qt4_wrap_ui( thesis_ui_src ${thesis_ui})
 qt4_add_resources(thesis_rsc_src ${thesis_rsc})
 
-add_executable(Thesis-app ${VS_SUBSYSTEM} ${thesis_src} ${thesis_hdrs} ${thesis_moc_src} ${thesis_rsc_src} ${thesis_ui_src})
+set ( thesis_src_all 
+    ${thesis_operations_src}
+    ${thesis_moc_src}
+    ${thesis_ui_src}
+    ${thesis_rsc_src}
+    ${thesis_src}
+)
+
+add_executable(Thesis-app ${VS_SUBSYSTEM} ${thesis_src_all} ${thesis_hdrs} )
 add_executable( gen src/genFunctions.cpp)
 
 target_link_libraries(Thesis-app ${QT_LIBRARIES} fl ) 

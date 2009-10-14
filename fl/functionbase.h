@@ -38,8 +38,8 @@ namespace fl{
             const std::string & name() const { return m_FunctionName ; } 
             void setName ( const std::string & _name ) { m_FunctionName = _name ; } 
             
-            virtual double max() = 0 ; 
-            virtual double min() = 0 ; 
+            virtual double max() const = 0  ; 
+            virtual double min() const = 0 ; 
             virtual int dimensions() { return m_iDimension ; } 
             virtual Type type() const { return m_Type ; }
             //virtual void serialize ( const std::string & _pathToFile ) = 0 ; 

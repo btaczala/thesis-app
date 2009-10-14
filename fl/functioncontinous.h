@@ -36,8 +36,13 @@ namespace fl{
                 virtual double eval(double point, bool *pCorrect ) const ;
                 
                 virtual Function2DBase* integrate(double start, double stop);
-                virtual double max();
-                virtual double min();
+                virtual double max() const;
+                virtual double min() const;
+                
+                
+                virtual double xStartWhereIntegratingMakesSense() const ;
+                virtual double xStopWhereIntegratingMakesSense()const ;
+                
         };
     }
 	namespace Function3D{
@@ -50,8 +55,8 @@ namespace fl{
 				virtual void addVariable( const std::string & varName  );
 				virtual double eval ( double x, double y ); 
 				virtual Function3DBase* integrate(double start, double stop);
-				virtual double max();
-				virtual double min();
+				virtual double max() const;
+				virtual double min() const;
 			protected:
 		};
 	}

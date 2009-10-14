@@ -41,11 +41,14 @@ namespace fl{
                 
                 virtual Function2DBase* integrate(double start, double stop);
                 
-                virtual double max();
-                virtual double min();
-
-				double xMin() ; 
-				double xMax();
+                virtual double max() const ;
+                virtual double min() const ;
+                
+                virtual double xStartWhereIntegratingMakesSense() const ;
+                virtual double xStopWhereIntegratingMakesSense() const ;
+                
+                double xMin() const ; 
+                double xMax() const ;
             private:
                 mutable DomainRange m_xy ; 
         };
@@ -61,11 +64,11 @@ namespace fl{
 			public:
 				FunctionDiscrete ( const std::vector<double>& _x, const std::vector<double> & _y, const std::vector<double> & _z ,const std::string & _functionName );
 				virtual ~FunctionDiscrete() {} 
-				virtual double max() ; 
-				virtual double min() ; 
+				virtual double max() const ; 
+				virtual double min() const ; 
 				virtual double eval(double x,double y ) ; 
 			private:
-				DomainRange m_xyz ; 
+				mutable DomainRange m_xyz ; 
 
         };
     }

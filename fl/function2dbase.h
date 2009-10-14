@@ -35,8 +35,11 @@ namespace fl{
                 virtual double eval( double point, bool * pCorrect ) const  = 0 ; 
                 virtual Function2DBase * integrate( double start, double stop ) = 0 ; 
                 
-                virtual double max() = 0 ; 
-                virtual double min() = 0 ; 
+                virtual double max() const = 0 ; 
+                virtual double min() const = 0 ; 
+                
+                virtual double xStartWhereIntegratingMakesSense() const = 0 ;
+                virtual double xStopWhereIntegratingMakesSense() const =  0 ; 
         };
     }
 }

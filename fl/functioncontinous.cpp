@@ -65,15 +65,16 @@ double fl::Function2D::FunctionContinous::eval(double point, bool *pCorrect) con
 
 fl::Function2D::Function2DBase* fl::Function2D::FunctionContinous::integrate(double start, double stop)
 {
+    //TODO:implement ?!
 	return NULL ; 
 }
 
-double fl::Function2D::FunctionContinous::max()
+double fl::Function2D::FunctionContinous::max() const 
 {
 	return m_iMax; 
 }
 
-double fl::Function2D::FunctionContinous::min()
+double fl::Function2D::FunctionContinous::min() const 
 {
 	return m_iMin;
 }
@@ -87,28 +88,44 @@ fl::Function3D::Function3DBase(functionName)
 
 void fl::Function3D::FunctionContinous::addVariable( const std::string & varName )
 {
-
+    //TODO:implement ?! 
 }
 
 double fl::Function3D::FunctionContinous::eval( double x, double y )
 {
+    //TODO:implement ?!
 	return -1 ; 
 }
 
 fl::Function3D::Function3DBase* fl::Function3D::FunctionContinous::integrate( double start, double stop )
 {
+    //TODO:implement ?!
 	return NULL; 
 
 }
 
-double fl::Function3D::FunctionContinous::max()
+double fl::Function3D::FunctionContinous::max() const 
 {
+    //TODO:implement ?!
 	return -1 ; 
 
 }
 
-double fl::Function3D::FunctionContinous::min()
+double fl::Function3D::FunctionContinous::min() const 
 {
+    //TODO:implement ?!
 	return -1 ; 
 
+}
+
+double fl::Function2D::FunctionContinous::xStartWhereIntegratingMakesSense() const 
+{
+    //TODO:implement ?!
+    return -1 ; 
+}
+
+double fl::Function2D::FunctionContinous::xStopWhereIntegratingMakesSense() const 
+{
+    //TODO:implement ?!
+    return -1 ;
 }
