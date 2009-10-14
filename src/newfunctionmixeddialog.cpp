@@ -22,6 +22,7 @@
 #include "ui_functionMixed.h"
 #include "commons.h"
 #include <QComboBox>
+#include "tooltips.h"
 
 using namespace Thesis::UI ;
 
@@ -32,7 +33,8 @@ Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::
     
     connect ( m_pForm->addRowButton, SIGNAL(pressed()),this,SLOT(addRow()));
     connect ( m_pForm->deleteCurrentRow, SIGNAL(pressed()),this,SLOT(deleteRow() ) );
-    m_pForm->treeWidget->setHeaderLabels(QStringList() << " f(x" << " variable" << "range start" <<"range stop");
+    m_pForm->treeWidget->setHeaderLabels(QStringList() << " f(x)" << " variable" << "range start" <<"range stop");
+    m_pForm->treeWidget->setToolTip( Thesis::ToolTips::UI::NewMixedDialog::scMainToolTip ) ; 
     
     //m_pForm->treeWidget->setItemDelegateForColumn(2,new ComboBoxDelegate(this));
     m_pForm->treeWidget->setRootIsDecorated(false);

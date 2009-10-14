@@ -38,6 +38,21 @@ fl::FunctionBase* ConvolutionAdd::calculate()
     
     const fl::Function2D::Function2DBase * pFirst = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
     const fl::Function2D::Function2DBase * pSecond = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[1].get() ); 
+    
+    double f1XStart  = pFirst->xStartWhereIntegratingMakesSense() ; 
+    double f2XStart  = pSecond->xStartWhereIntegratingMakesSense() ; 
+    
+    qDebug() << "starts" << f1XStart << " " << f2XStart ;
+    
+    double f1XStop  = pFirst->xStopWhereIntegratingMakesSense() ; 
+    double f2XStop  = pSecond->xStopWhereIntegratingMakesSense() ;
+    qDebug() << "stops " << f1XStop  << " " << f2XStop ;
+    
+    
+    startRange = f1XStart + f2XStart ; 
+    endRange = f1XStop+f2XStop ; 
+    
+    qDebug() << "Meaning full range [  "<< startRange << " , " << endRange<<" ]"; 
 
     std::vector<double> t ; // those are my x's
     double to_insert;

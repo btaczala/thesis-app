@@ -58,6 +58,7 @@ set ( thesis_src
   src/workspacesettingsdialog.cpp
   src/newfunctionmixeddialog.cpp
   src/convolutionpicker.cpp
+  src/tooltips.cpp
     
   plotting/kplotaxis.cpp
   plotting/kplotobject.cpp
@@ -78,6 +79,7 @@ set ( thesis_hdrs
   src/workspacesettingsdialog.h
   src/newfunctionmixeddialog.h
   src/convolutionpicker.h
+  src/tooltips.h
 
   plotting/kplotaxis.h
   plotting/kplotobject.h

@@ -30,6 +30,7 @@
 #include "QtColorPicker/qtcolorpicker.h"
 #include "fl/muparser/muParser.h"
 #include "fl/muparser/muParserError.h"
+#include "tooltips.h"
 
 using namespace Thesis::UI;
 
@@ -60,6 +61,8 @@ m_pDialog( new Ui::PasswordDialog())
     
     m_pTimer = new QTimer(this);
 
+    m_pDialog->functionLineEdit->setToolTip(Thesis::ToolTips::UI::NewContinousFunctionDialog::scFunctionEditLineToolTip);
+    m_pDialog->variableLineEdit->setToolTip(Thesis::ToolTips::UI::NewContinousFunctionDialog::scVariablesEditLineToolTip);
     
     connect ( m_pDialog->CustomRangeCheckBox, SIGNAL(toggled(bool)),this,SLOT(customRangeChecked(bool)));
     connect ( m_pTimer, SIGNAL(timeout()),this,SLOT(checkIfOk()));

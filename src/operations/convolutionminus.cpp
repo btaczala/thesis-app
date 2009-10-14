@@ -38,10 +38,6 @@ fl::FunctionBase* ConvolutionMinus::calculate()
     
     const fl::Function2D::Function2DBase * pFirst = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
     const fl::Function2D::Function2DBase * pSecond = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[1].get() ); 
-
-    
-    double f1XStart  = pFirst->xStartWhereIntegratingMakesSense() ; 
-    double f2XStart  = pFirst->xStartWhereIntegratingMakesSense() ; 
     std::vector<double> t ; // those are my x's
     double to_insert;
     for ( double j = 1 ; j < n_discrete+1 ; ++j ) {
