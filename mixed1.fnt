@@ -1,0 +1,5 @@
+mixed
+sin(x) x -inf -2
+cos(x) x -2 0 
+x*x x 0 15
+1/x x 15 +inf
