@@ -24,7 +24,6 @@
 
 using namespace Thesis;
 
-
 Actions::Actions()
 {
     cLOG() ;
@@ -113,6 +112,4 @@ void Actions::addDefaultActions()
     
     m_pConvolutionDevideOperation.reset( new QAction(NULL));
     m_pConvolutionDevideOperation->setText(QObject::tr(" Devine " ) ) ;
-    
-    
 }

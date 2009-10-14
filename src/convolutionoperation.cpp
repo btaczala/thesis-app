@@ -1,19 +1,19 @@
 /*
-    <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) <year>  <name of author>
+<one line to give the program's name and a brief idea of what it does.>
+Copyright (C) <year>  <name of author>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
@@ -88,7 +88,7 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     double delta = (b1 - a1) /(double)n_discrete ; 
     const fl::Function2D::Function2DBase * pFirst = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
     const fl::Function2D::Function2DBase * pSecond = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[1].get() ); 
-    
+
     std::vector<double> t ; // those are my x's
     double to_insert;
     for ( double j = 1 ; j < n_discrete+1 ; ++j ) {
@@ -96,8 +96,8 @@ fl::FunctionBase* ConvolutionOperation::calculate()
         to_insert *=delta ; 
         to_insert+= a1 ; 
         t.push_back( to_insert ) ;
-    }
-    qDebug() << " Xs: [" << t ;
+    }git
+        qDebug() << " Xs: [" << t ;
     std::vector<double> xs ; 
     std::vector<double> ys ; 
     std::vector<double> ys2 ; 
