@@ -62,11 +62,11 @@ QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
     newTab() ; 
     // first funct
     QStringList l1 ;
-    l1 << "0.5*x" << "x" << "-0.01" << "2.01";
+    l1 << "0.5*x" << "x" << "0" << ">" << "2" << "<" ; 
     QStringList l2 ;
-    l2 << "0" << "x" << "-inf" << "0";
+    l2 << "0" << "x" << "-inf" << ">" << "0" << "<=" ; 
     QStringList l3;
-    l3 << "0" << "x" << "2" << "inf";
+    l3 << "0" << "x" << "2" << ">=" << "inf" << "<";
     
     std::vector<QStringList> list ;
     list.push_back(l1);
@@ -81,24 +81,26 @@ QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
     l2.clear();
     l3.clear();
     
-    l1 << "0.5*x" << "x" << "-0.01" << "2.01";
-    l2 << "0" << "x" << "-inf" << "0";
-    l3 << "0" << "x" << "2" << "inf";
+    l1 << "3/2 - 0.5*x" << "x" << "1" << ">" << "3" << "<";
+    l2 << "0" << "x" << "-inf" << ">" << "1" << "<=";
+    l3 << "0" << "x" << "3" << ">=" << "inf" << "<";
     list.push_back(l1);
     list.push_back(l2);
     list.push_back(l3);
     
     Thesis::FunctionsProxy prx2 ( list ) ; 
-    fl::FunctionBase *pFunction2 = prx.proxy();
+    fl::FunctionBase *pFunction2 = prx2.proxy();
 
     QList<const fl::FunctionBase*> pFunctionList;
     pFunctionList << pFunction1 << pFunction2;
 
     TabWidgetItem *pTab=qobject_cast<TabWidgetItem*> ( m_pTabWidget->currentWidget());
+    //pTab->addFunction(pFunction1,Qt::white);
+    //pTab->addFunction(pFunction2,Qt::blue);
     pTab->addFunctionAndOperation(pFunctionList,new ConvolutionOperation(ConvolutionOperation::eAdd));
+    
 
     //
-    
     LOG("End of ");
 }
 

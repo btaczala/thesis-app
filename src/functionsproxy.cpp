@@ -40,6 +40,18 @@ QByteArray removeJunk( const QByteArray & bArray){
 	}
 	return arr ; 
 }
+fl::Function2D::FunctionMixed::Operator stringToOperator( const QString & str){
+    if ( str == "<")
+        return fl::Function2D::FunctionMixed::eLess;
+    else if ( str == "<=")
+        return fl::Function2D::FunctionMixed::eLessEqual;
+    else if ( str == ">")
+        return fl::Function2D::FunctionMixed::eGreater;
+    else if ( str == ">=")
+        return fl::Function2D::FunctionMixed::eGreaterEqual;
+    else 
+        return fl::Function2D::FunctionMixed::eWTF;
+}
 
 
 FunctionsProxy::FunctionsProxy(const QString& _equation, const QStringList& _vars, int _dimension, Type type, bool bCustomRange, FunctionsProxy::CustomRangeContainer _range) :
@@ -202,16 +214,17 @@ fl::FunctionBase* FunctionsProxy::proxy()
                     name = m_functionFileNamePath;
                 pFuncMixed = new fl::Function2D::FunctionMixed(name.toStdString());
                 double start, stop ; 
-                QString qStart, qStop ;
+                QString qStart, qStop, qStartOp,qStopOp;
                 bool bOk = true ;
                 bool bOk2 = true ; 
                 foreach ( QStringList list, m_FunctionsVector ){
                     LOG(list);
-                    if ( list.size() != 4 ) {
+                    if ( list.size() != 6 ) {
                         LOG("List is not correct");
                         continue ; 
                     }
                     fl::Function2D::FunctionContinous *pFuncCont = new fl::Function2D::FunctionContinous(list.at(0).toStdString(),"func tmp");
+                    // 2 arg. start range
                     qStart = list.at(2) ;
                     if ( qStart == "-inf" ) {
                         start = - std::numeric_limits< double >::infinity();
@@ -222,8 +235,11 @@ fl::FunctionBase* FunctionsProxy::proxy()
                     }
                     else
                         start = qStart.toDouble(&bOk);
-                    
-                    qStop = list.at(3) ;
+
+                    // 3. Operator for start range ( less, greater, equal ) 
+                    fl::Function2D::FunctionMixed::Operator op1 = stringToOperator(list.at(3));
+                    qStop = list.at(4) ;
+
                     if ( qStop == "-inf" ) {
                         stop = - std::numeric_limits< double >::infinity();
                     } else if ( qStop == "+inf" ) {
@@ -233,10 +249,13 @@ fl::FunctionBase* FunctionsProxy::proxy()
                     }
                     else
                         stop = qStop.toDouble(&bOk2);
+
+                    fl::Function2D::FunctionMixed::Operator op2 = stringToOperator(list.at(5));
+                    
                     if (bOk && bOk2) {
                         LOG("adding function") ;
                         pFuncCont->addVariable(list.at(1).toStdString());
-                        pFuncMixed->addFunction(pFuncCont,start,stop);
+                        pFuncMixed->addFunction(pFuncCont,start,op1,stop,op2);
                     }
                     bOk = true ; 
                     bOk2 = true ; 

@@ -30,10 +30,19 @@ namespace fl{
         class FunctionMixed : public fl::Function2D::Function2DBase
         {
             public:
+                enum Operator{
+                    eGreater=0,
+                    eGreaterEqual,
+                    eLess,
+                    eLessEqual,
+                    eWTF
+                };
                 struct FunctionRange{
                     boost::shared_ptr< fl::Function2D::Function2DBase> m_spFunction ; 
                     double m_start ; 
                     double m_stop ; 
+                    Operator m_operatorStart ; 
+                    Operator m_operatorStop ; 
                 };
             public:
                 FunctionMixed(const std::string & _functionName );
@@ -45,9 +54,11 @@ namespace fl{
                 virtual double max() ; 
                 virtual double min() ; 
 
-                void addFunction( fl::Function2D::Function2DBase * pFunction, double start, double stop);
+                void addFunction(  fl::Function2D::Function2DBase * pFunction, double start, Operator startOperator, double stop, Operator stopOperator);
             private:
                 mutable std::vector<FunctionRange> m_Functions ; 
+            private:
+                bool isHere( double point, const FunctionRange & funRange) const ; 
         };
     }
 }

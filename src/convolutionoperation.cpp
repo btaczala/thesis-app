@@ -51,16 +51,21 @@ double p2( double x){
         return 1.5f - x/2 ; 
     return 0;
 }
-double pp ( double x){
+double pp ( double x , const fl::Function2D::Function2DBase * pFirst,const fl::Function2D::Function2DBase * pSecond){
     double y =0 ; 
     double temp =0 ; 
     double ppp1 ; 
     double ppp2 ; 
+    double kurwa ; 
+    double kurwa1 ; 
     QString stringgg = QString("1/50 * pp[%1] = ").arg(x);
     QString stringgg2="";
+    bool bOk ; 
     for ( double i = 2L ; i > 0 ; i-= 0.02){
-        ppp1 = p1(i);
-        ppp2 = p2(x-i);
+        ppp1 = pFirst->eval(i,&bOk);
+        kurwa = p1(i);
+        ppp2 = pSecond->eval(x-i,&bOk);
+        kurwa1 = p2(x-i);
         stringgg2 += QString("p1(%1)p2(%2-%3)\n").arg(i).arg(x).arg(i);
         temp = ppp1*ppp2 ;
         y+= temp ; 
@@ -117,13 +122,13 @@ fl::FunctionBase* ConvolutionOperation::calculate()
         y*= (double)delta;
         xs.push_back(x);
         ys.push_back(y);
-        ys2.push_back( pp( sIter ) );
+        /*ys2.push_back( pp( sIter, pFirst,pSecond) );*/
         x=0;
         y=0;
     }
     qDebug() << ys ; 
-    //fl::Function2D::Function2DBase * pResult = new fl::Function2D::FunctionDiscrete(xs,ys,"leather");
-    fl::Function2D::Function2DBase * pResult = new fl::Function2D::FunctionDiscrete(xs,ys2,"leather");
+    fl::Function2D::Function2DBase * pResult = new fl::Function2D::FunctionDiscrete(xs,ys,"leather");
+    //fl::Function2D::Function2DBase * pResult = new fl::Function2D::FunctionDiscrete(xs,ys2,"leather");
 
     return pResult;
 }

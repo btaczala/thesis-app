@@ -136,7 +136,6 @@ namespace Thesis{
                 **/
 
                 void deleteRow() ;
-                
         };
     }
 }
