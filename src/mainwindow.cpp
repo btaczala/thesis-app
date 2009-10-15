@@ -321,13 +321,13 @@ void Thesis::UI::MainWindow::newMixedFunction()
     if ( dlg.result() == QDialog::Accepted ) {
         std::vector<QStringList> list = dlg.funcDesc();
         Thesis::FunctionsProxy prx ( list ) ; 
-        m_pTabWidget->addFunction(prx);
+        m_pTabWidget->addFunction( prx );
     }
 }
 void Thesis::UI::MainWindow::newMixedFunctionFromFile()
 {
     cLOG() ; 
-    QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)"));
+    QString fileName = QFileDialog::getOpenFileName( this , tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)" ) );
     if ( fileName.isEmpty() ) {
         LOG("Not opening file");
         return ; 

@@ -35,6 +35,7 @@ include(${QT_USE_FILE})
 
 include_directories( ${Boost_INCLUDE_DIRS} )
 include_directories("./")
+include_directories("./src")
 include_directories("./plotting")
 include_directories("./fl")
 include_directories("./fl/muparser")

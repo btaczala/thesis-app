@@ -1,6 +1,6 @@
 
 #include "functionMixed.h"
-#include <limits>
+#include "commons.h"
 
 
 fl::Function2D::FunctionMixed::FunctionMixed( const std::string & _functionName ) :
@@ -70,7 +70,7 @@ fl::Function2D::Function2DBase* fl::Function2D::FunctionMixed::integrate(double 
 double fl::Function2D::FunctionMixed::xStartWhereIntegratingMakesSense() const 
 {
     double xStart ; 
-    double val ; 
+    double val = 0 ; 
     static const int nIloscProbek = 10 ; 
     std::vector<FunctionRange>::const_iterator it = m_Functions.begin();
     std::vector<FunctionRange>::const_iterator itEnd = m_Functions.end();
@@ -81,7 +81,7 @@ double fl::Function2D::FunctionMixed::xStartWhereIntegratingMakesSense() const
     for ( it ; it != itEnd ; ++it ) {
         xStart = it->m_start ;
         xStop = it->m_stop; 
-        if ( std::isinf<double>(xStart) ){
+        if ( Thesis::Math::isInfinite( xStart ) ){
             xStart = -400;
         }
         double xStep = (xStop - xStart) / (double)nIloscProbek;
@@ -100,7 +100,7 @@ double fl::Function2D::FunctionMixed::xStopWhereIntegratingMakesSense() const
 {
     
     double xStart ; 
-    double val ; 
+    double val =0 ; 
     static const int nIloscProbek = 10 ; 
     std::vector<FunctionRange>::const_iterator it = m_Functions.begin();
     std::vector<FunctionRange>::const_iterator itEnd = m_Functions.end();
@@ -111,7 +111,7 @@ double fl::Function2D::FunctionMixed::xStopWhereIntegratingMakesSense() const
     for ( it ; it != itEnd ; ++it ) {
         xStart = it->m_start ;
         xStop = it->m_stop; 
-        if ( std::isinf<double>(xStart) ){
+        if ( Thesis::Math::isInfinite( xStart ) ){
             xStart = -400;
         }
         double xStep = (xStop - xStart) / (double)nIloscProbek;

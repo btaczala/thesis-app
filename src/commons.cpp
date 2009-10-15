@@ -19,7 +19,7 @@
 */
 
 #include "commons.h"
-
+#include <float.h>
 using namespace Thesis ; 
 
 const QString Strings::applicationName =QObject::tr("Thesis application") ;
@@ -31,4 +31,12 @@ QDebug operator<<(QDebug dbg, const std::string& str)
 {
     dbg.nospace() << str.c_str() ;
     return dbg.space() ; 
+}
+bool Thesis::Math::isInfinite( double val ){
+#ifdef WIN32 
+    return ( _finite(val)==0 ) ; 
+#endif
+#ifdef UNIX
+    return std::isinf<double>(value) ; 
+#endif
 }

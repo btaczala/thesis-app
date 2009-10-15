@@ -113,6 +113,7 @@ namespace Thesis{
                 std::vector<QStringList> m_FunctionsDesc ; 
             private:
                 void parse() ; 
+                QStringList parseRange ( const QString & str, const QString & varName );
             private slots:
 
                 /**

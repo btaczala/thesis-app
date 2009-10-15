@@ -17,10 +17,16 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 */
+#ifndef commons_h__
+#define commons_h__
+
+
 
 #include <QString>
 #include <qobject.h>
 #include <QDebug>
+
+
 
 #define VERSION_MAJOR 0 
 #define VERSION_MINOR 1 
@@ -28,6 +34,12 @@
 
 #define LOG(a) qDebug() << Q_FUNC_INFO << "---->" << a 
 #define cLOG() qDebug() << Q_FUNC_INFO ;
+
+namespace Thesis{
+    namespace Math{
+        bool isInfinite( double val );
+    }
+}
 
 namespace Thesis{
     class Strings {
@@ -41,3 +53,5 @@ namespace Thesis{
     };
 }
 QDebug operator<< ( QDebug dbg, const std::string & str ) ;
+
+#endif // commons_h__

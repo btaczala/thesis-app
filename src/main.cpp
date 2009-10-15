@@ -23,6 +23,8 @@
 #include <QDebug>
 #include "commons.h"
 #include <QErrorMessage>
+#include <QStringList>
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

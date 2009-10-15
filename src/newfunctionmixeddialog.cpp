@@ -84,8 +84,49 @@ void NewFunctionMixedDialog::accept()
 
 void Thesis::UI::NewFunctionMixedDialog::parse()
 {
+    QTreeWidgetItem * pItem = NULL ; 
+    QStringList list ; 
+    for ( int i = 0 ; i < m_pForm->treeWidget->topLevelItemCount() ; ++i ) {
+        list.clear();
+        pItem = m_pForm->treeWidget->topLevelItem(i);
+        QStringList ll = parseRange( pItem->text(2),pItem->text(1) );
+        qDebug() <<  ll; 
+        if ( ll.size() != 4 ){
+            qDebug() << "ERROR: invalid string to parse";
+            break ; 
+        }
+        list << pItem->text(0) << pItem->text(1) << ll;
+        m_FunctionsDesc.push_back(list);
+    }
 }
+QStringList Thesis::UI::NewFunctionMixedDialog::parseRange(const QString & str, const QString & varName )
+{
+    // parse 0<x<2 
+    QStringList toRet= str.split(' ',QString::SkipEmptyParts);
+    toRet.removeAll(varName);
+    QStringList damn ; 
+    damn << toRet.at(0);
+    damn << toRet.at(1);
+    QString g = toRet.at(2);
+    if ( g == "<"){
+        g = ">";
+    }
+    else if ( g == ">"){
+        g = "<";
+    }
+    else if ( g == "<="){
+        g = ">=";
+    }
+    else if ( g == ">="){
+        g = "<=";
+    }
 
+    
+    damn << toRet.at(3);
+    damn << g ; 
+
+    return damn ;
+}
 void NewFunctionMixedDialog::reject()
 {
     QDialog::reject();
@@ -95,7 +136,6 @@ void NewFunctionMixedDialog::addRow()
     cLOG();
     QTreeWidgetItem *pTreeItem = new QTreeWidgetItem();
     pTreeItem->setText(1,"x");
-
     pTreeItem->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     m_pForm->treeWidget->addTopLevelItem(pTreeItem);
 }
