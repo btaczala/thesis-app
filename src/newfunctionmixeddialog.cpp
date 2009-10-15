@@ -33,7 +33,7 @@ Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::
     
     connect ( m_pForm->addRowButton, SIGNAL(pressed()),this,SLOT(addRow()));
     connect ( m_pForm->deleteCurrentRow, SIGNAL(pressed()),this,SLOT(deleteRow() ) );
-    m_pForm->treeWidget->setHeaderLabels(QStringList() << " f(x)" << " variable" << "range start" <<"range stop");
+    m_pForm->treeWidget->setHeaderLabels(QStringList() << " f(x)" << " variable" << "range ");
     m_pForm->treeWidget->setToolTip( Thesis::ToolTips::UI::NewMixedDialog::scMainToolTip ) ; 
     
     //m_pForm->treeWidget->setItemDelegateForColumn(2,new ComboBoxDelegate(this));
@@ -70,16 +70,22 @@ void NewFunctionMixedDialog::done(int i)
 void NewFunctionMixedDialog::accept()
 {
     cLOG() ; 
-    QTreeWidgetItem * pItem = NULL ; 
-    for ( int i = 0 ; i < m_pForm->treeWidget->topLevelItemCount() ; ++i ) {
-        pItem = m_pForm->treeWidget->topLevelItem(i);
-        QStringList l ;
-        l << pItem->text(0) << pItem->text(1) << pItem->text(2) << pItem->text(3) ; 
-        LOG(l);
-        m_FunctionsDesc.push_back( l );
-    }    
+    parse() ; 
+//     QTreeWidgetItem * pItem = NULL ; 
+//     for ( int i = 0 ; i < m_pForm->treeWidget->topLevelItemCount() ; ++i ) {
+//         pItem = m_pForm->treeWidget->topLevelItem(i);
+//         QStringList l ;
+//         l << pItem->text(0) << pItem->text(1) << pItem->text(2) << pItem->text(3) ; 
+//         LOG(l);
+//         m_FunctionsDesc.push_back( l );
+//     }
     QDialog::accept();
 }
+
+void Thesis::UI::NewFunctionMixedDialog::parse()
+{
+}
+
 void NewFunctionMixedDialog::reject()
 {
     QDialog::reject();

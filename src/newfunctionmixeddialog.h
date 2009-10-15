@@ -110,9 +110,9 @@ namespace Thesis{
             private:
                 boost::shared_ptr<Ui::newFunctionMixed> m_pForm ; 
                 int m_iCurrentRow ; 
-                
                 std::vector<QStringList> m_FunctionsDesc ; 
-                
+            private:
+                void parse() ; 
             private slots:
 
                 /**
