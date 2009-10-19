@@ -52,7 +52,7 @@ namespace fl{
     class FunctionContinousBase
     {
         public:
-			FunctionContinousBase( const std::string & _equation ) : m_pParser( new mu::Parser() ) ,m_bMinMaxEval(false)
+			FunctionContinousBase( const std::string & _equation ) : m_pParser( mu::Parser::proxyFLParser() ) ,m_bMinMaxEval(false)
 			{ 
 				m_functionEquation = _equation ; 
 				if ( !m_functionEquation.empty() )
@@ -72,7 +72,6 @@ namespace fl{
 				m_pParser->DefineVar(varName,&(m_VariableMap[varName]) );
 			}
             std::vector<char> variables() const ; 
-            
             double step() const { return m_dStep ; }
             void setStep( double _step ) { m_dStep = _step ; }
         protected:
@@ -83,7 +82,8 @@ namespace fl{
             
             mutable double m_iMin ;
             mutable double m_iMax ;
-            mutable bool m_bMinMaxEval ; 
+            mutable bool m_bMinMaxEval ;
+            
     };
 }
 

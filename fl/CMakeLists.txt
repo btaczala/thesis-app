@@ -12,9 +12,12 @@ add_subdirectory( muparser )
 set ( fl_src 
   function2dbase.cpp
   function3dbase.cpp
+  functionbase.cpp
   functiondiscrete.cpp
   functioncontinous.cpp
   functionMixed.cpp
+  iapproximation.cpp
+  polymonialapproximatio.cpp
   ) 
 set ( fl_hdrs 
   function2dbase.h
@@ -24,6 +27,9 @@ set ( fl_hdrs
   functioncontinous.h
   functionMixed.h
   functionException.h
+  iapproximation.h
+  
+  polymonialapproximatio.h
   ) 
 
 ADD_LIBRARY(fl ${fl_src} ${fl_hdrs} )

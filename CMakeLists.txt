@@ -41,10 +41,12 @@ include_directories("./fl")
 include_directories("./fl/muparser")
 include_directories("./QtColorPicker")
 include_directories("./src/operations")
+include_directories("./eigen2")
 include_directories(${CMAKE_BINARY_DIR})
 #include_directories(${QWTPLOT3D_INCLUDE_DIR})
 
 add_subdirectory(fl)
+add_subdirectory(plotting)
 
 set ( thesis_src 
   src/main.cpp
@@ -60,12 +62,6 @@ set ( thesis_src
   src/newfunctionmixeddialog.cpp
   src/convolutionpicker.cpp
   src/tooltips.cpp
-    
-  plotting/kplotaxis.cpp
-  plotting/kplotobject.cpp
-  plotting/kplotpoint.cpp
-  plotting/kplotwidget.cpp
-  
   QtColorPicker/qtcolorpicker.cpp
   ) 
 set ( thesis_hdrs 
@@ -81,12 +77,6 @@ set ( thesis_hdrs
   src/newfunctionmixeddialog.h
   src/convolutionpicker.h
   src/tooltips.h
-
-  plotting/kplotaxis.h
-  plotting/kplotobject.h
-  plotting/kplotpoint.h
-  plotting/kplotwidget.h
-  
   QtColorPicker/qtcolorpicker.h
   ) 
 set ( thesis_moc
@@ -98,8 +88,6 @@ set ( thesis_moc
   src/workspacesettingsdialog.h
   src/newfunctionmixeddialog.h
   src/convolutionpicker.h
-  
-  plotting/kplotwidget.h
   QtColorPicker/qtcolorpicker.h
   )
 set ( thesis_operations_hdrs
@@ -122,7 +110,6 @@ set( thesis_ui
     ui/convolutionpicker.ui
 ) 
 SET(TRANS
-         #translations/thesis_pl.ts
          translations/thesis_en.ts
 )
 
@@ -144,8 +131,11 @@ set ( thesis_src_all
 add_executable(Thesis-app ${VS_SUBSYSTEM} ${thesis_src_all} ${thesis_hdrs} ${trans_src} )
 add_executable( gen src/genFunctions.cpp)
 
-target_link_libraries(Thesis-app ${QT_LIBRARIES} fl ) 
+add_executable( app src/appr.cpp )
+
+target_link_libraries(Thesis-app ${QT_LIBRARIES} fl plotting ) 
 target_link_libraries(gen ${QT_LIBRARIES} )
+target_link_libraries(app ${QT_LIBRARIES} plotting muparser fl )
 
 
 IF(NOT QT_CONFIG MATCHES "static")

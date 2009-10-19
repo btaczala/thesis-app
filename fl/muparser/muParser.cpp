@@ -354,4 +354,17 @@ namespace mu
     fRes = (-f[0] + 8*f[1] - 8*f[2] + f[3]) / (12*a_fEpsilon);
     return fRes;
   }
+  
+  Parser* Parser::proxyFLParser()
+  {
+    mu::Parser * pParser = new mu::Parser() ; 
+    pParser->DefineFun("pow",&ParserFunctions::power,false);
+    return pParser ; 
+  }
+      
+
 } // namespace mu
+mu::value_type mu::ParserFunctions::power ( mu::value_type x, mu::value_type potega )
+{
+    return pow ( x, potega ) ; 
+}

@@ -48,7 +48,7 @@ namespace fl{
                 virtual double max() const ;
                 virtual double min() const ;
                 
-                virtual fl::Function2D::FunctionContinous * approximate(ApproximationType type ) const ; 
+                virtual fl::Function2D::FunctionContinous * approximate() const ; 
                 virtual double xStartWhereIntegratingMakesSense() const ;
                 virtual double xStopWhereIntegratingMakesSense() const ;
                 

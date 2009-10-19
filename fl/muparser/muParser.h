@@ -147,7 +147,13 @@ namespace mu
     static int IsVal(const char_type* a_szExpr, int *a_iPos, value_type *a_fVal);
 
     static std::locale s_locale;  ///< The locale used by the parser
+      public:    
+    static Parser * proxyFLParser() ; 
   };
+  
+  namespace ParserFunctions{
+      value_type power ( value_type x, value_type potega ) ; 
+  }
 } // namespace mu
 
 #endif

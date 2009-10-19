@@ -18,4 +18,4 @@
 */
 
 #include "functionbase.h"
-
+#include <cmath>

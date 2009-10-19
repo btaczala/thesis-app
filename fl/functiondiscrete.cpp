@@ -205,7 +205,7 @@ double fl::Function2D::FunctionDiscrete::xStopWhereIntegratingMakesSense() const
 {
     return xMin();
 }
-fl::Function2D::FunctionContinous * fl::Function2D::FunctionDiscrete::approximate( ApproximationType type ) const
+fl::Function2D::FunctionContinous * fl::Function2D::FunctionDiscrete::approximate( ) const
 {
     static const int m = 5 ; 
     return NULL ; 
