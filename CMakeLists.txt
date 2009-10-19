@@ -122,6 +122,8 @@ set( thesis_ui
     ui/convolutionpicker.ui
 ) 
 
+
+
 qt4_wrap_cpp( thesis_moc_src ${thesis_moc} )
 qt4_wrap_ui( thesis_ui_src ${thesis_ui})
 qt4_add_resources(thesis_rsc_src ${thesis_rsc})

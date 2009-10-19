@@ -158,11 +158,8 @@ namespace Thesis {
                 double yMax() const ; 
             public:
                 WorkspaceSettingsDialog * m_pParent ; 
-                Ui::RangeForm * m_pForm ; 
-                
+                Ui::RangeForm * m_pForm ;                 
         };
-            
-
     }
 
 }

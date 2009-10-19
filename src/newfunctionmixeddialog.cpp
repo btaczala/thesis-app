@@ -24,13 +24,16 @@
 #include <QComboBox>
 #include "tooltips.h"
 
+#include "functionsproxy.h"
+
 using namespace Thesis::UI ;
 
 Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f), m_pForm(new Ui::newFunctionMixed())
 {
     m_iCurrentRow = 0 ; 
     m_pForm->setupUi(this);
-    
+    m_pForm->addRowButton->setToolTip(Thesis::ToolTips::UI::NewMixedDialog::scAddRowTooltip);
+    m_pForm->deleteCurrentRow->setToolTip(Thesis::ToolTips::UI::NewMixedDialog::scDeleteRowTooltip);
     connect ( m_pForm->addRowButton, SIGNAL(pressed()),this,SLOT(addRow()));
     connect ( m_pForm->deleteCurrentRow, SIGNAL(pressed()),this,SLOT(deleteRow() ) );
     m_pForm->treeWidget->setHeaderLabels(QStringList() << " f(x)" << " variable" << "range ");
@@ -38,29 +41,6 @@ Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::
     
     //m_pForm->treeWidget->setItemDelegateForColumn(2,new ComboBoxDelegate(this));
     m_pForm->treeWidget->setRootIsDecorated(false);
-    
-    
-/*
-    QTreeWidgetItem *pTreeItem = new QTreeWidgetItem();
-    pTreeItem->setText(0,"sin(x)");
-    pTreeItem->setText(1,"x");
-    pTreeItem->setText(2,"-inf");
-    pTreeItem->setText(3,"0");
-    m_pForm->treeWidget->addTopLevelItem(pTreeItem);
-    
-    QTreeWidgetItem *pTreeItem2 = new QTreeWidgetItem();
-    pTreeItem2->setText(0,"sin(x)");
-    pTreeItem2->setText(1,"x");
-    pTreeItem2->setText(2,"0");
-    pTreeItem2->setText(3,"0");
-    m_pForm->treeWidget->addTopLevelItem(pTreeItem2);
-    
-    QTreeWidgetItem *pTreeItem3 = new QTreeWidgetItem();
-    pTreeItem3->setText(0,"cos(sin(x))");
-    pTreeItem3->setText(1,"x");
-    pTreeItem3->setText(2,"0");
-    pTreeItem3->setText(3,"+inf");
-    m_pForm->treeWidget->addTopLevelItem(pTreeItem3);*/
     
 }
 void NewFunctionMixedDialog::done(int i)
@@ -70,15 +50,7 @@ void NewFunctionMixedDialog::done(int i)
 void NewFunctionMixedDialog::accept()
 {
     cLOG() ; 
-    parse() ; 
-//     QTreeWidgetItem * pItem = NULL ; 
-//     for ( int i = 0 ; i < m_pForm->treeWidget->topLevelItemCount() ; ++i ) {
-//         pItem = m_pForm->treeWidget->topLevelItem(i);
-//         QStringList l ;
-//         l << pItem->text(0) << pItem->text(1) << pItem->text(2) << pItem->text(3) ; 
-//         LOG(l);
-//         m_FunctionsDesc.push_back( l );
-//     }
+    parse() ;
     QDialog::accept();
 }
 
@@ -86,47 +58,17 @@ void Thesis::UI::NewFunctionMixedDialog::parse()
 {
     QTreeWidgetItem * pItem = NULL ; 
     QStringList list ; 
+    QString oneFunction ;
+    
     for ( int i = 0 ; i < m_pForm->treeWidget->topLevelItemCount() ; ++i ) {
         list.clear();
         pItem = m_pForm->treeWidget->topLevelItem(i);
-        QStringList ll = parseRange( pItem->text(2),pItem->text(1) );
-        qDebug() <<  ll; 
-        if ( ll.size() != 4 ){
-            qDebug() << "ERROR: invalid string to parse";
-            break ; 
-        }
-        list << pItem->text(0) << pItem->text(1) << ll;
+        oneFunction = pItem->text(0) + "," + pItem->text(1) + "," + pItem->text(2);
+        list << Thesis::Helpers::parseOneFunction(oneFunction);
         m_FunctionsDesc.push_back(list);
     }
 }
-QStringList Thesis::UI::NewFunctionMixedDialog::parseRange(const QString & str, const QString & varName )
-{
-    // parse 0<x<2 
-    QStringList toRet= str.split(' ',QString::SkipEmptyParts);
-    toRet.removeAll(varName);
-    QStringList damn ; 
-    damn << toRet.at(0);
-    damn << toRet.at(1);
-    QString g = toRet.at(2);
-    if ( g == "<"){
-        g = ">";
-    }
-    else if ( g == ">"){
-        g = "<";
-    }
-    else if ( g == "<="){
-        g = ">=";
-    }
-    else if ( g == ">="){
-        g = "<=";
-    }
 
-    
-    damn << toRet.at(3);
-    damn << g ; 
-
-    return damn ;
-}
 void NewFunctionMixedDialog::reject()
 {
     QDialog::reject();
@@ -137,6 +79,9 @@ void NewFunctionMixedDialog::addRow()
     QTreeWidgetItem *pTreeItem = new QTreeWidgetItem();
     pTreeItem->setText(1,"x");
     pTreeItem->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    pTreeItem->setToolTip(0,Thesis::ToolTips::UI::NewMixedDialog::scFunctionHeadertooltip);
+    pTreeItem->setToolTip(1,Thesis::ToolTips::UI::NewMixedDialog::scVarHeaderTooltip);
+    pTreeItem->setToolTip(2,Thesis::ToolTips::UI::NewMixedDialog::scRangeHeaderTooltip);
     m_pForm->treeWidget->addTopLevelItem(pTreeItem);
 }
 void NewFunctionMixedDialog::deleteRow()

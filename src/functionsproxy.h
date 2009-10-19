@@ -32,6 +32,11 @@ namespace fl{
     class FunctionBase;
 }
 namespace Thesis {
+    
+    namespace Helpers{
+            QStringList parseOneFunction ( const QString & str) ; 
+            QStringList parseRange ( const QString & str, const QString & varName );
+    };
 
     /**
      * \class	FunctionsProxy
@@ -146,9 +151,14 @@ namespace Thesis {
             CustomRangeContainer m_CustomRange ; 
             Type m_Type ; 
             QString m_functionFileNamePath ; 
+            QString m_functionFileNamePathTmp ; 
             std::vector<QStringList> m_FunctionsVector ;  
-            
             QColor m_functionColor ; 
+            
+        private:
+            fl::FunctionBase * proxyMixed() ; 
+            fl::FunctionBase * proxyContinous() ; 
+            fl::FunctionBase * proxyDiscrete() ; 
     };
 }
 

@@ -25,6 +25,7 @@
 #include <QString>
 #include <qobject.h>
 #include <QDebug>
+#include <QStringList>
 
 
 
@@ -53,5 +54,6 @@ namespace Thesis{
     };
 }
 QDebug operator<< ( QDebug dbg, const std::string & str ) ;
+QDebug operator<< ( QDebug dbg, QStringList & strList ) ;
 
 #endif // commons_h__

@@ -51,16 +51,13 @@ m_pButtonBox( new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Canc
     m_pTabWidget->addTab( m_pRangeTab.get() ,tr("range"));
 }
 
-
-
 RangeTab::RangeTab(WorkspaceSettingsDialog* pParent): 
 QWidget(pParent),
 m_pParent(pParent),
 m_pForm( new Ui::RangeForm())
 {
     m_pForm->setupUi(this);
-    
-    
+        
     PlotWidgetProxy *proxy = pParent->m_pTabItem->plotProxy();
     
     m_pForm->xMinSpinBox->setValue( proxy->xMin() );

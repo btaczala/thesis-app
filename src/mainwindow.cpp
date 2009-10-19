@@ -41,6 +41,7 @@
 #include <functionbase.h>
 #include "convolutionoperation.h"
 #include "convolutionadd.h"
+#include "convolutionminus.h"
 
 using namespace Thesis::UI;
 
@@ -60,45 +61,45 @@ QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
     setWindowState(Qt::WindowMaximized);
     
     
-    newTab() ; 
-    // first funct
-    QStringList l1 ;
-    l1 << "0.5*x" << "x" << "0" << ">" << "2" << "<" ; 
-    QStringList l2 ;
-    l2 << "0" << "x" << "-inf" << ">" << "0" << "<=" ; 
-    QStringList l3;
-    l3 << "0" << "x" << "2" << ">=" << "inf" << "<";
-    
-    std::vector<QStringList> list ;
-    list.push_back(l1);
-    list.push_back(l2);
-    list.push_back(l3);
-    Thesis::FunctionsProxy prx ( list ) ;
-    fl::FunctionBase *pFunction1 = prx.proxy();
-    
-    // second func
-    list.clear();
-    l1.clear();
-    l2.clear();
-    l3.clear();
-    
-    l1 << "3/2 - 0.5*x" << "x" << "1" << ">" << "3" << "<";
-    l2 << "0" << "x" << "-inf" << ">" << "1" << "<=";
-    l3 << "0" << "x" << "3" << ">=" << "inf" << "<";
-    list.push_back(l1);
-    list.push_back(l2);
-    list.push_back(l3);
-    
-    Thesis::FunctionsProxy prx2 ( list ) ; 
-    fl::FunctionBase *pFunction2 = prx2.proxy();
-
-    QList<const fl::FunctionBase*> pFunctionList;
-    pFunctionList << pFunction1 << pFunction2;
-
-    TabWidgetItem *pTab=qobject_cast<TabWidgetItem*> ( m_pTabWidget->currentWidget());
-    //pTab->addFunction(pFunction1,Qt::white);
-    //pTab->addFunction(pFunction2,Qt::blue);
-    pTab->addFunctionAndOperation(pFunctionList,new ConvolutionAdd());
+//     newTab() ; 
+//     // first funct
+//     QStringList l1 ;
+//     l1 << "0.5*x" << "x" << "0" << ">" << "2" << "<" ; 
+//     QStringList l2 ;
+//     l2 << "0" << "x" << "-inf" << ">" << "0" << "<=" ; 
+//     QStringList l3;
+//     l3 << "0" << "x" << "2" << ">=" << "inf" << "<";
+//     
+//     std::vector<QStringList> list ;
+//     list.push_back(l1);
+//     list.push_back(l2);
+//     list.push_back(l3);
+//     Thesis::FunctionsProxy prx ( list ) ;
+//     fl::FunctionBase *pFunction1 = prx.proxy();
+//     
+//     // second func
+//     list.clear();
+//     l1.clear();
+//     l2.clear();
+//     l3.clear();
+//     
+//     l1 << "3/2 - 0.5*x" << "x" << "1" << ">" << "3" << "<";
+//     l2 << "0" << "x" << "-inf" << ">" << "1" << "<=";
+//     l3 << "0" << "x" << "3" << ">=" << "inf" << "<";
+//     list.push_back(l1);
+//     list.push_back(l2);
+//     list.push_back(l3);
+//     
+//     Thesis::FunctionsProxy prx2 ( list ) ; 
+//     fl::FunctionBase *pFunction2 = prx2.proxy();
+// 
+//     QList<const fl::FunctionBase*> pFunctionList;
+//     pFunctionList << pFunction1 << pFunction2;
+// 
+//     TabWidgetItem *pTab=qobject_cast<TabWidgetItem*> ( m_pTabWidget->currentWidget());
+//     //pTab->addFunction(pFunction1,Qt::white);
+//     //pTab->addFunction(pFunction2,Qt::blue);
+//     pTab->addFunctionAndOperation(pFunctionList,new ConvolutionMinus());
     
 
     //
@@ -377,8 +378,13 @@ void Thesis::UI::MainWindow::convolutionOperation()
                 pFunctionList.push_back(tempMap[fName]);
             }
         pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
-        pTab->addFunctionAndOperation(pFunctionList,new ConvolutionAdd() );
+        ConvolutionOperation * pOperation = NULL ; 
+        QAction *pObj = qobject_cast< QAction* >(sender());
+        if ( pObj == Thesis::Actions::convolutionAddOperation() )
+            pOperation = new ConvolutionAdd() ; 
+        else if ( pObj == Thesis::Actions::convolutionMinusOperation() ) 
+            pOperation = new ConvolutionMinus() ; 
+        pTab->addFunctionAndOperation(pFunctionList,pOperation );
     }
-//    ConvolutionOperation operation ; 
 }
 

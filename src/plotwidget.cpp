@@ -251,7 +251,7 @@ void Thesis::UI::CalculatingThread::run()
             for ( double i = m_xMin ; i < m_xMax ; i += 0.01 ) {
                 val = p2DFunc->eval(i,&bOk);
                 if ( bOk ) {
-					LOG("Adding :" << i << " - " << val);
+                    //LOG("Adding :" << i << " - " << val);
                     pPlotObject->addPoint(i,val);  
                 }
             }

@@ -102,7 +102,7 @@ double fl::Function2D::FunctionDiscrete::eval( double _xs, bool * pCorrect ) con
         return -1 ; 
     }
 }
-fl::Function2D::Function2DBase* fl::Function2D::FunctionDiscrete::integrate(double start, double stop)
+double fl::Function2D::FunctionDiscrete::integrate(double start, double stop,double dStep )
 {
     return NULL ; 
 }

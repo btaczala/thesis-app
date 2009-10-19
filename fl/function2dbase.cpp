@@ -25,3 +25,23 @@ Function2DBase::Function2DBase(const std::string& _functionName): FunctionBase(_
 {
     m_iDimension = 2;
 }
+
+double fl::Function2D::Function2DBase::integrate ( double start, double stop, double dStep )
+{
+    double a ; 
+    double b ; 
+    double fa ; 
+    double fb ;
+    bool bOk ; 
+    const double t = 2.0f ; 
+    double result = 0; 
+    for ( double iterator = start ; iterator <= stop ; iterator += dStep ) {
+        a = iterator ; 
+        b = iterator + dStep ; 
+        fa = eval(a,&bOk);
+        if ( bOk ) 
+        {
+            fb = 
+        
+    }
+}

@@ -38,8 +38,16 @@ class ConvolutionOperation : public IOperation
     public:
         ConvolutionOperation( ) ;
         virtual ~ConvolutionOperation() {}
-        virtual fl::FunctionBase* calculate() = 0 ; 
         virtual void addFunction ( fl::FunctionBase* pPtr ) ;
+    protected:
+        enum OperationType{
+            eAdd=0,
+            eMinus,
+            eTimes,
+            eDiv
+        }m_typeOp ; 
+        virtual fl::FunctionBase* calculate() ; 
+        bool areIntegratingToOne() ; 
 };
 
 #endif // CONVOLUTIONOPERATION_H

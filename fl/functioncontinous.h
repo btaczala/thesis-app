@@ -35,7 +35,7 @@ namespace fl{
                 virtual void addVariable(const std::string & varName );
                 virtual double eval(double point, bool *pCorrect ) const ;
                 
-                virtual Function2DBase* integrate(double start, double stop);
+                virtual double integrate(double start, double stop,double dStep );
                 virtual double max() const;
                 virtual double min() const;
                 

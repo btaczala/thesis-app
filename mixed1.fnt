@@ -1,5 +1,4 @@
 mixed
-sin(x) x -inf > -2 <
-cos(x) x -2 0 
-x*x x 0 15
-1/x x 15 +inf
+(1/2)*x,x,0 < x < 2
+0,x,-inf < x <= 0 
+0,x,2 <= x < inf 

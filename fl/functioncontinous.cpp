@@ -63,7 +63,7 @@ double fl::Function2D::FunctionContinous::eval(double point, bool *pCorrect) con
     return toRet ; 
 }
 
-fl::Function2D::Function2DBase* fl::Function2D::FunctionContinous::integrate(double start, double stop)
+double fl::Function2D::FunctionContinous::integrate(double start, double stop,double dStep )
 {
     //TODO:implement ?!
 	return NULL ; 

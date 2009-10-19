@@ -49,7 +49,7 @@ namespace fl{
                 virtual ~FunctionMixed(){}
 
                 virtual double eval( double point , bool *pOk ) const ;
-                virtual Function2DBase * integrate( double start, double stop ) ; 
+                virtual double integrate( double start, double stop,double dStep )  ; 
 
                 virtual double max() const ; 
                 virtual double min() const  ; 

@@ -61,8 +61,9 @@ double fl::Function2D::FunctionMixed::max( ) const {
     return -1 ; 
 }
 
-fl::Function2D::Function2DBase* fl::Function2D::FunctionMixed::integrate(double start, double stop)
+double fl::Function2D::FunctionMixed::integrate(double start, double stop,double dStep)
 {
+    //TODO: implement ?!
     return NULL ; 
 }
 

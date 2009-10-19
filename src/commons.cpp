@@ -32,6 +32,14 @@ QDebug operator<<(QDebug dbg, const std::string& str)
     dbg.nospace() << str.c_str() ;
     return dbg.space() ; 
 }
+QDebug operator<< ( QDebug dbg, QStringList & strList )
+{
+    foreach( QString str, strList){
+        dbg.nospace() << str ;
+    }
+    return dbg.space();
+}
+
 bool Thesis::Math::isInfinite( double val ){
 #ifdef WIN32 
     return ( _finite(val)==0 ) ; 
