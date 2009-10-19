@@ -102,10 +102,7 @@ double fl::Function2D::FunctionDiscrete::eval( double _xs, bool * pCorrect ) con
         return -1 ; 
     }
 }
-double fl::Function2D::FunctionDiscrete::integrate(double start, double stop,double dStep )
-{
-    return NULL ; 
-}
+
 double fl::Function2D::FunctionDiscrete::max() const 
 {
     if ( m_xy.size() == 0 ) 
@@ -142,7 +139,7 @@ fl::Function3D::FunctionDiscrete::FunctionDiscrete( const std::vector< double >&
 	m_Type = eDiscrete;
     if ( _x.size() != _y.size() || _x.size() != _z.size() )
         throw fl::FunctionException("Unable to construct function3D with incorect domain, range") ; 
-    for ( int i = 0 ; i < _x.size() ; ++i ) 
+    for ( unsigned int i = 0 ; i < _x.size() ; ++i ) 
     {
         m_xyz.push_back( boost::make_tuple(_x.at(i), _y.at(i), _z.at(i) ) ) ;
     }
@@ -207,4 +204,9 @@ double fl::Function2D::FunctionDiscrete::xStartWhereIntegratingMakesSense() cons
 double fl::Function2D::FunctionDiscrete::xStopWhereIntegratingMakesSense() const 
 {
     return xMin();
+}
+fl::Function2D::FunctionContinous * fl::Function2D::FunctionDiscrete::approximate( ApproximationType type ) const
+{
+    static const int m = 5 ; 
+    return NULL ; 
 }

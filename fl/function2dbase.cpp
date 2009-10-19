@@ -26,7 +26,7 @@ Function2DBase::Function2DBase(const std::string& _functionName): FunctionBase(_
     m_iDimension = 2;
 }
 
-double fl::Function2D::Function2DBase::integrate ( double start, double stop, double dStep )
+double fl::Function2D::Function2DBase::integrate ( double start, double stop, double dStep ) const
 {
     double a ; 
     double b ; 
@@ -41,7 +41,11 @@ double fl::Function2D::Function2DBase::integrate ( double start, double stop, do
         fa = eval(a,&bOk);
         if ( bOk ) 
         {
-            fb = 
-        
+            fb = eval ( b, &bOk );
+            if ( bOk ){
+                result += (b-a) * ((fa+fb)/t);
+            }
+        }
     }
+    return result ; 
 }

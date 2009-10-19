@@ -24,10 +24,15 @@
 #include "commons.h"
 #include <QErrorMessage>
 #include <QStringList>
+#include <QTranslator>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    QTranslator translator;
+    translator.load("thesis_en");
+    app.installTranslator(&translator);
     Q_INIT_RESOURCE(main);
     qDebug() << Thesis::Strings::applicationVersionString() ; 
     Thesis::UI::MainWindow wnd ;

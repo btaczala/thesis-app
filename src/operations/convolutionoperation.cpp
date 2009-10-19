@@ -36,6 +36,13 @@ void ConvolutionOperation::addFunction ( fl::FunctionBase* pPtr )
 fl::FunctionBase* ConvolutionOperation::calculate()
 {
     cLOG();
+
+    if ( ! areIntegratingToOne() )
+    {
+
+        LOG("Functions does not intergrate to 1 !!");
+        return NULL ; 
+    }
     int n = 100 ; 
     double startRange = 0 ; 
     double endRange = 5 ; 
@@ -44,8 +51,6 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     int a1 = 0 ;
     int b1 = 2 ;
     double delta = (b1 - a1) /(double)n_discrete ; 
-    
-    
     const fl::Function2D::Function2DBase * pFirst = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
     const fl::Function2D::Function2DBase * pSecond = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[1].get() ); 
     
@@ -59,6 +64,7 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     LOG( "stops " << f1XStop  << " " << f2XStop );
     
     
+
     startRange = f1XStart + f2XStart ; 
     endRange = f1XStop+f2XStop ; 
     
@@ -120,7 +126,7 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     return pResult;
 }
 
-bool ConvolutionOperation::areIntegratingToOne()
+bool ConvolutionOperation::areIntegratingToOne() const 
 {
     cLOG();
     const fl::Function2D::Function2DBase * pFirst = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
@@ -134,7 +140,15 @@ bool ConvolutionOperation::areIntegratingToOne()
     double f1XStop  = pFirst->xStopWhereIntegratingMakesSense() ; 
     double f2XStop  = pSecond->xStopWhereIntegratingMakesSense() ;
     
+    double firstIntergral = pFirst->integrate(f1XStart,f1XStop,0.01);
+    double secondIntergral = pSecond->integrate(f2XStart,f2XStop,0.01);
 
+    double delta = 0.01 ; 
+    // if firstIntegral - delta < 1 < firstIntergral + delta 
+    if ( firstIntergral + delta > 1 && firstIntergral - delta < 1 && secondIntergral + delta > 1 && secondIntergral - delta < 1 )
+        return true ; 
+
+    return false ; 
 }
 
 

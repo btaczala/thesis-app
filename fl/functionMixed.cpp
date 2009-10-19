@@ -31,7 +31,7 @@ bool fl::Function2D::FunctionMixed::isHere (double point, const FunctionRange & 
         if ( point < funRange.m_stop ){
             return true ; 
         }
-        else if ( point == funRange.m_stop && funRange.m_operatorStop==eLessEqual ){
+        else if ( point == funRange.m_stop && funRange.m_operatorStop==eGreaterEqual ){
             return true ; 
         }
     }
@@ -61,11 +61,11 @@ double fl::Function2D::FunctionMixed::max( ) const {
     return -1 ; 
 }
 
-double fl::Function2D::FunctionMixed::integrate(double start, double stop,double dStep)
-{
-    //TODO: implement ?!
-    return NULL ; 
-}
+//double fl::Function2D::FunctionMixed::integrate(double start, double stop,double dStep)
+//{
+//    //TODO: implement ?!
+//    return NULL ; 
+//}
 
 
 double fl::Function2D::FunctionMixed::xStartWhereIntegratingMakesSense() const 

@@ -23,6 +23,7 @@
 
 #include "function2dbase.h"
 #include "function3dbase.h"
+#include "functioncontinous.h"
 
 #include <boost/tuple/tuple.hpp>
 
@@ -32,6 +33,9 @@ namespace fl{
         class FunctionDiscrete : public fl::Function2D::Function2DBase
         {
             public:
+                enum ApproximationType{
+                    eWielAlg=0
+                };
                 typedef std::vector<std::pair<double,double> > DomainRange ;
                 typedef DomainRange::iterator DomainRangeIterator  ;
                 
@@ -39,11 +43,12 @@ namespace fl{
                 virtual ~FunctionDiscrete();                
                 virtual double eval( double point, bool * pCorrect ) const;
                 
-                virtual double integrate(double start, double stop,double dStep );
+                //virtual double integrate(double start, double stop,double dStep );
                 
                 virtual double max() const ;
                 virtual double min() const ;
                 
+                virtual fl::Function2D::FunctionContinous * approximate(ApproximationType type ) const ; 
                 virtual double xStartWhereIntegratingMakesSense() const ;
                 virtual double xStopWhereIntegratingMakesSense() const ;
                 

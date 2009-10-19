@@ -27,16 +27,15 @@ namespace Thesis
     namespace ToolTips{
         namespace UI {
             namespace NewMixedDialog{
-                static const QString scMainToolTip = QObject::tr(
-                            "Enter function with specified range. <br> \
+                static const QString scMainToolTip = QObject::tr("\
+                             Enter function with specified range. <br> \
                              Example: <br> \
-                             For function ss[s_]:=If[ 0 &lt; x &lt; 2,(1/2) * x, 0]<br>\
-                             You should insert:\
-                             <ul> \
+                             For function :") + QString("ss[s_]:=If[ 0 &lt; x &lt; 2,(1/2) * x, 0]<br>") + QObject::tr("\
+                             You should insert:") + QString ( "<ul> \
                              <li> (1/2)*x || x || 0 &lt; x &lt; 2 </li>\
                              <li> 0 || x || -inf &lt; x &lt;= 0 </li>\
                              <li> 0 || x || 2 &lt;= x &lt; inf </li>\
-                             </ul> <br>\
+                             </ul> <br>") + QObject::tr("\
                              <b>NOTE:</b><br>\
                              When specifing range, remember about spaces, since parser splits this expresion by space char. \
                              " ); 

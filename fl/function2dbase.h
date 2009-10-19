@@ -33,7 +33,7 @@ namespace fl{
                 Function2DBase( const std::string & _functionName = "unnamed" ) ; 
                 virtual ~Function2DBase() {}
                 virtual double eval( double point, bool * pCorrect ) const  = 0 ; 
-                virtual double integrate( double start, double stop, double dStep ) ; 
+                virtual double integrate( double start, double stop, double dStep ) const; 
                 
                 virtual double max() const = 0 ; 
                 virtual double min() const = 0 ; 

@@ -46,8 +46,20 @@ class ConvolutionOperation : public IOperation
             eTimes,
             eDiv
         }m_typeOp ; 
+
+        /**
+            @fn virtual fl::FunctionBase* calculate()
+        
+            @brief  Calculates convolution of m_function[0] and m_function[1].
+        
+            @author Bartosz Taczala
+            @date   2009-10-19
+        
+            @return null if functions does not integrate to 1 on specified range. 
+        */
+
         virtual fl::FunctionBase* calculate() ; 
-        bool areIntegratingToOne() ; 
+        bool areIntegratingToOne() const ; 
 };
 
 #endif // CONVOLUTIONOPERATION_H

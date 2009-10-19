@@ -63,11 +63,11 @@ double fl::Function2D::FunctionContinous::eval(double point, bool *pCorrect) con
     return toRet ; 
 }
 
-double fl::Function2D::FunctionContinous::integrate(double start, double stop,double dStep )
-{
-    //TODO:implement ?!
-	return NULL ; 
-}
+//double fl::Function2D::FunctionContinous::integrate(double start, double stop,double dStep )
+//{
+//    //TODO:implement ?!
+//	return NULL ; 
+//}
 
 double fl::Function2D::FunctionContinous::max() const 
 {

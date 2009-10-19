@@ -121,7 +121,12 @@ set( thesis_ui
     ui/functionMixed.ui
     ui/convolutionpicker.ui
 ) 
+SET(TRANS
+         #translations/thesis_pl.ts
+         translations/thesis_en.ts
+)
 
+QT4_ADD_TRANSLATION(trans_src ${TRANS})
 
 
 qt4_wrap_cpp( thesis_moc_src ${thesis_moc} )
@@ -136,7 +141,7 @@ set ( thesis_src_all
     ${thesis_src}
 )
 
-add_executable(Thesis-app ${VS_SUBSYSTEM} ${thesis_src_all} ${thesis_hdrs} )
+add_executable(Thesis-app ${VS_SUBSYSTEM} ${thesis_src_all} ${thesis_hdrs} ${trans_src} )
 add_executable( gen src/genFunctions.cpp)
 
 target_link_libraries(Thesis-app ${QT_LIBRARIES} fl ) 
