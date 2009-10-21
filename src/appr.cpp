@@ -49,13 +49,10 @@ string approximate( vector<double> & xs, vector<double> & ys, int m ) {
         }
         T(k,0) = var ; 
         var = 0 ; 
-    }
-    //cout << S << endl ; 
-    //cout << T << endl ; 
+    } 
     MatrixXd A(realM,1); 
     MatrixXd invS = S.inverse();
     A = invS * T ;
-    //cout << A ;
     stringstream stream ;
     for ( int j = 0 ; j < A.rows() ; ++j ) 
         stream << "a("<< j << ") =" << A(j,0) <<endl ;
@@ -85,24 +82,20 @@ int main(int argc, char *argv[])
     
     
     
-    
+	fl::Function2D::FunctionDiscrete::DomainRange range ; 
     for ( float t=0.0; t<=6.28; t+=0.04 ) {
         x.push_back(t);
-        y.push_back(sin(t));
-        sineobj->addPoint( t, sin(t) );
+        y.push_back(sin(t)*cos(t));
+        sineobj->addPoint( t, sin(t)*cos(t) );
+		range.push_back(make_pair(t,sin(t)*cos(t)));
     }
     
-    fl::Function2D::PolymonialApproximation pA ( 4 )  ; 
-    string appr= approximate(x,y,9);
-    mu::Parser *parser = mu::Parser::proxyFLParser();
-    double xVal ; 
-    parser->DefineVar("x",&xVal);
-    parser->SetExpr(appr);
+    fl::Function2D::PolymonialApproximation pA ( 9,range)  ; 
+	fl::Function2D::FunctionContinous *pFunc = pA.approximate() ; 
     
-    
+    bool bOk ; 
     for ( float t=0.0; t<=6.28; t+=0.04 ) {
-        xVal = t; 
-        sineobj2->addPoint(xVal,parser->Eval());
+        sineobj2->addPoint(t,pFunc->eval(t,&bOk));
     }
     
     pWid->addPlotObject( sineobj );

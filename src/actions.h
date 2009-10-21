@@ -61,6 +61,7 @@ namespace Thesis {
             static QAction * convolutionMinusOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionMinusOperation.get() ; }
             static QAction * convolutionTimesOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionTimesOperation.get() ; }
             static QAction * convolutionDevideOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionDevideOperation.get() ; }
+			static QAction * approximateOperation() { Actions * pInstance = instance() ; return pInstance->m_pApproximateOperation.get() ; }
             
 	    
 	    void init() ;
@@ -91,6 +92,8 @@ namespace Thesis {
             boost::shared_ptr<QAction> m_pConvolutionTimesOperation;
             boost::shared_ptr<QAction> m_pConvolutionDevideOperation;
 
+			boost::shared_ptr<QAction> m_pApproximateOperation ; 
+
 
             
 
@@ -99,3 +102,5 @@ namespace Thesis {
 }
 
 #endif // THESIS_ACTIONS_H
+
+

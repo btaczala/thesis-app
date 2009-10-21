@@ -214,6 +214,8 @@ namespace Thesis {
                  * \date    2009-08-07
                 **/
                 void convolutionOperation() ; 
+
+				void approximate();
             private:
                 Q_DISABLE_COPY(MainWindow) ;
                 

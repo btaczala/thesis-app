@@ -26,9 +26,11 @@ namespace fl{
         class PolymonialApproximation : public IApproximation
         {
             public:    
-                PolymonialApproximation( int m ) ; 
-                virtual FunctionContinous* approximate();
+                PolymonialApproximation( int m, const Function2D::FunctionDiscrete::DomainRange & _range ) ; 
+                virtual FunctionContinous* approximate() const ;
             private:
+				PolymonialApproximation ( const PolymonialApproximation & rhs );
+				PolymonialApproximation & operator=( const PolymonialApproximation & rhs );
                 int _m ;
         };
     }

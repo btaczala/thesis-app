@@ -29,20 +29,15 @@ Actions::Actions()
     cLOG() ;
     addDefaultActions();
 }
-
 Actions::~Actions()
 {
     cLOG() ;
 }
-
-
 Actions* Actions::instance()
 {
-    cLOG() ;
     static std::auto_ptr<Actions> apInstance ( new Actions()) ; 
     return apInstance.get();
 }
-
 void Actions::addDefaultActions()
 {   
     LOG("adding default actions") ; 
@@ -112,4 +107,7 @@ void Actions::addDefaultActions()
     
     m_pConvolutionDevideOperation.reset( new QAction(NULL));
     m_pConvolutionDevideOperation->setText(QObject::tr(" Devine " ) ) ;
+
+	m_pApproximateOperation.reset( new QAction(NULL)) ; 
+	m_pApproximateOperation->setText(QObject::tr("Approximate"));
 }

@@ -27,7 +27,9 @@
 #include <QDebug>
 #include <QStringList>
 
-
+#include "plotting/kplotobject.h"
+#include "fl/functionbase.h"
+#include "fl/function2dbase.h"
 
 #define VERSION_MAJOR 0 
 #define VERSION_MINOR 1 
@@ -52,8 +54,10 @@ namespace Thesis{
         public:
             static const QString applicationVersionString() { return applicationName + " : " + applicationVersion ; } 
     };
+	KPlotObject * kplotobjFromFunction ( fl::Function2D::Function2DBase * pFunc, double startx, double stopx );
 }
 QDebug operator<< ( QDebug dbg, const std::string & str ) ;
 QDebug operator<< ( QDebug dbg, QStringList & strList ) ;
 
 #endif // commons_h__
+

@@ -19,7 +19,7 @@
 
 #include "iapproximation.h"
 
-fl::Function2D::IApproximation::IApproximation()
+fl::Function2D::IApproximation::IApproximation(const Function2D::FunctionDiscrete::DomainRange & _range) : m_range( _range )
 {
 }
 fl::Function2D::IApproximation::~IApproximation()

@@ -48,3 +48,17 @@ bool Thesis::Math::isInfinite( double val ){
     return std::isinf<double>(value) ; 
 #endif
 }
+
+KPlotObject * Thesis::kplotobjFromFunction( fl::Function2D::Function2DBase * pFunc, double startx, double stopx )
+{
+	KPlotObject *obj = new KPlotObject( Qt::red, KPlotObject::Lines, 2 );
+	bool bOk ; 
+	double valD ; 
+	for ( double d = startx ; d < stopx ; d+=0.1){
+		valD = pFunc->eval(d,&bOk);
+		if ( bOk)
+			obj->addPoint(d,valD);
+	}
+
+	return obj ; 
+}

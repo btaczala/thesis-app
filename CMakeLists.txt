@@ -57,6 +57,7 @@ set ( thesis_src
   src/plotwidget.cpp
   src/tabwidgetitem.cpp
   src/newcontinousfunctiondialog.cpp
+  src/approximatedialog.cpp
   src/functionsproxy.cpp
   src/workspacesettingsdialog.cpp
   src/newfunctionmixeddialog.cpp
@@ -72,6 +73,7 @@ set ( thesis_hdrs
   src/plotwidget.h
   src/tabwidgetitem.h
   src/newcontinousfunctiondialog.h
+  src/approximatedialog.h
   src/functionsproxy.h	
   src/workspacesettingsdialog.h
   src/newfunctionmixeddialog.h
@@ -87,6 +89,7 @@ set ( thesis_moc
   src/plotwidget.h
   src/workspacesettingsdialog.h
   src/newfunctionmixeddialog.h
+  src/approximatedialog.h
   src/convolutionpicker.h
   QtColorPicker/qtcolorpicker.h
   )
@@ -108,6 +111,7 @@ set( thesis_ui
     ui/range.ui
     ui/functionMixed.ui
     ui/convolutionpicker.ui
+    ui/approximation.ui
 ) 
 SET(TRANS
          translations/thesis_en.ts

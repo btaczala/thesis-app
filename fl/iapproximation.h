@@ -31,9 +31,9 @@ namespace fl{
         class IApproximation
         {
             public:
-                IApproximation() ; 
+                IApproximation(const Function2D::FunctionDiscrete::DomainRange & _range) ; 
                 virtual ~IApproximation() ; 
-                virtual Function2D::FunctionContinous * approximate() = 0 ; 
+                virtual Function2D::FunctionContinous * approximate() const  = 0 ; 
             protected:
                 Function2D::FunctionDiscrete::DomainRange m_range ;  
         };

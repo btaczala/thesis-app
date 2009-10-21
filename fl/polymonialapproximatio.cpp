@@ -29,22 +29,24 @@ using namespace std ;
 using namespace fl::Function2D;
 
 
-fl::Function2D::PolymonialApproximation::PolymonialApproximation ( int m ) : _m ( m )
+fl::Function2D::PolymonialApproximation::PolymonialApproximation ( int m, const Function2D::FunctionDiscrete::DomainRange & _range) : 
+fl::Function2D::IApproximation( _range ),
+_m ( m )
 {
 }
 
 
-fl::Function2D::FunctionContinous* fl::Function2D::PolymonialApproximation::approximate()
+fl::Function2D::FunctionContinous* fl::Function2D::PolymonialApproximation::approximate() const 
 {
     fl::Function2D::FunctionContinous *pFunction ; 
     
     string ret ; 
-    if ( ! ( m_range.size() > _m+1 ) ) {
+    if ( ! ( (int)m_range.size() > _m+1 ) ) {
         return NULL;
     }
     vector<double> xs ; 
     vector<double> ys ; 
-    for ( int i = 0 ; i < m_range.size() ; ++i ) {
+    for ( unsigned int i = 0 ; i < m_range.size() ; ++i ) {
         xs.push_back(m_range.at(i).first);
         ys.push_back(m_range.at(i).second);
     }
@@ -57,7 +59,7 @@ fl::Function2D::FunctionContinous* fl::Function2D::PolymonialApproximation::appr
     double var =0 ; 
     
     for ( int k = 0 ; k < 2 * realM ; ++k ) {
-        for ( int j = 0 ; j < xs.size() ; ++j ) {
+        for ( unsigned int j = 0 ; j < xs.size() ; ++j ) {
             var += pow(xs.at(j),k);
         }
         Sk.push_back(var);
@@ -70,7 +72,7 @@ fl::Function2D::FunctionContinous* fl::Function2D::PolymonialApproximation::appr
     }
     MatrixXd T(realM,1) ; 
     for ( int k = 0 ; k < realM ; ++k ) {
-        for ( int j = 0 ; j < xs.size() ; ++j ) {
+        for ( unsigned int j = 0 ; j < xs.size() ; ++j ) {
             var += pow(xs.at(j),k)*ys.at(j);
         }
         T(k,0) = var ; 
@@ -92,6 +94,7 @@ fl::Function2D::FunctionContinous* fl::Function2D::PolymonialApproximation::appr
         if ( i != A.rows() -1 ) 
             result << " + " ;
     }
+	pFunction = new fl::Function2D::FunctionContinous();
     pFunction->setEquation(result.str());
     pFunction->addVariable("x");
     return pFunction;

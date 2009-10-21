@@ -29,6 +29,7 @@
 #include "workspacesettingsdialog.h"
 #include "tabwidgetitem.h"
 #include "convolutionpicker.h"
+#include "approximatedialog.h"
 
 #include <QStatusBar>
 #include <QMenuBar>
@@ -39,6 +40,7 @@
 #include <QFileDialog>
 #include <QToolBar>
 #include <functionbase.h>
+#include <functioncontinous.h>
 #include "convolutionoperation.h"
 #include "convolutionadd.h"
 #include "convolutionminus.h"
@@ -135,11 +137,13 @@ void MainWindow::createUI()
     m_pWorkspaceMenu->addSeparator();
     m_pWorkspaceMenu->addAction( Thesis::Actions::closeWorkspaceAction() );
     
+	m_pAritmeticOperationMenu->addAction( Thesis::Actions::approximateOperation());
     m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionAddOperation() ) ;
     m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionMinusOperation() ) ; 
     m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionTimesOperation() ) ; 
     m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionDevideOperation() ) ; 
     m_pAritmeticOperationMenu->addMenu(m_pConvolutionBasedAritmeticOperationMenu);
+
     
     m_pAboutMenu->addAction(Thesis::Actions::aboutAction());
     m_pAboutMenu->addAction(Thesis::Actions::aboutQtAction());
@@ -223,6 +227,8 @@ void MainWindow::initSignals()
     connect ( Thesis::Actions::convolutionMinusOperation(),SIGNAL(triggered()),this,SLOT(convolutionOperation()));
     connect ( Thesis::Actions::convolutionTimesOperation(),SIGNAL(triggered()),this,SLOT(convolutionOperation()));
     connect ( Thesis::Actions::convolutionDevideOperation(),SIGNAL(triggered()),this,SLOT(convolutionOperation()));
+
+	connect ( Thesis::Actions::approximateOperation(), SIGNAL(triggered()), this, SLOT(approximate()));
     
 }
 
@@ -388,3 +394,28 @@ void Thesis::UI::MainWindow::convolutionOperation()
     }
 }
 
+void Thesis::UI::MainWindow::approximate()
+{
+	cLOG();
+	TabWidgetItem *pTab=NULL;
+	ApproximateDialog dlg ; 
+	QList<fl::FunctionBase *> allFuncs ; 
+	int i = m_pTabWidget->count();
+	for ( int j=0 ; j < i ; ++j)
+	{
+		pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->widget(j)); 
+		PlotWidgetProxy::FunctionsPlotMapType map = pTab->plotProxy()->plotMap() ; 
+		allFuncs.append(map.keys());
+	}
+	dlg.setAllFunctions(allFuncs);
+	pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
+	PlotWidgetProxy::FunctionsPlotMapType map = pTab->plotProxy()->plotMap() ; 
+	dlg.setCurrentWorkspaceFunctions(map.keys());
+	
+	if ( dlg.show() == QDialog::Accepted ) {
+		pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
+		fl::Function2D::FunctionContinous * aa = dlg.resultFunction() ;
+		fl::FunctionBase * pF = dynamic_cast<fl::Function2D::FunctionContinous *>(aa);
+		pTab->addFunction(pF,Qt::blue);
+	}
+}
