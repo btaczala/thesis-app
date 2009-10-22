@@ -78,7 +78,6 @@ fl::FunctionBase* ConvolutionOperation::calculate()
         to_insert+= a1 ; 
         t.push_back( to_insert ) ;
     }
-    LOG( " Xs: [" << t );
     std::vector<double> xs ; 
     std::vector<double> ys ; 
     std::vector<double> ys2 ; 
@@ -120,6 +119,7 @@ fl::FunctionBase* ConvolutionOperation::calculate()
         x=0;
         y=0;
     }
+	qDebug() << xs ; 
     qDebug() << ys ; 
     std::string funName = "Convolution : "  + pFirst->name() + pSecond->name() ;
     fl::Function2D::Function2DBase * pResult = new fl::Function2D::FunctionDiscrete(xs,ys,funName);

@@ -23,6 +23,7 @@
 #include <Eigen/LU>
 #include <vector>
 #include <utility>
+#include "commons.h"
 USING_PART_OF_NAMESPACE_EIGEN
 
 using namespace std ; 
@@ -78,22 +79,19 @@ fl::Function2D::FunctionContinous* fl::Function2D::PolymonialApproximation::appr
         T(k,0) = var ; 
         var = 0 ; 
     }
-    //cout << S << endl ; 
-    //cout << T << endl ; 
     MatrixXd A(realM,1); 
     MatrixXd invS = S.inverse();
     A = invS * T ;
-    //cout << A ;
     stringstream stream ;
     for ( int j = 0 ; j < A.rows() ; ++j ) 
         stream << "a("<< j << ") =" << A(j,0) <<endl ;
-    cout << stream.str();
     stringstream result ; 
     for ( int i = 0 ; i < A.rows() ; ++ i ) {
         result << A(i,0)<< "*pow(x," << i <<")";
         if ( i != A.rows() -1 ) 
             result << " + " ;
     }
+	LOG( "Result function" << result.str().c_str() );
 	pFunction = new fl::Function2D::FunctionContinous();
     pFunction->setEquation(result.str());
     pFunction->addVariable("x");

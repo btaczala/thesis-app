@@ -259,7 +259,6 @@ void Thesis::UI::CalculatingThread::run()
     }
     m_mutex.unlock();
 }
-
 void Thesis::UI::CalculatingThread::setFunctions(const Thesis::UI::PlotWidgetProxy::FunctionsPlotMapType& pFunctionPlotMap)
 {
     cLOG();
@@ -312,4 +311,19 @@ void Thesis::UI::PlotWidgetProxy::zoomOut()
         xMx += 1 ; 
     changeRange(xMn,xMx,yMin(),yMax());
 
+}
+
+KPlotObject * Thesis::UI::PlotWidgetProxy::plotForFunction( const QString & fID )
+{
+	cLOG();
+	KPlotObject * pRet = NULL ; 
+	FunctionsPlotMapType::iterator it = m_PlotsFunctions.begin() ; 
+	FunctionsPlotMapType::iterator itEnd = m_PlotsFunctions.end() ; 
+	for ( it ; it != itEnd ; ++ it ) {
+		if ( it.key()->name() == fID.toStdString() ) {
+			pRet = it.value();
+			break ; 
+		}
+	}
+	return pRet ; 
 }

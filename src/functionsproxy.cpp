@@ -180,7 +180,7 @@ fl::FunctionBase* FunctionsProxy::proxyDiscrete()
         arr = file.readLine();
         arr.remove(arr.size()-1,1);
         if ( ! arr.isEmpty() ) {
-            //LOG(arr);
+            //LOG(arr);	
             sp = arr.split(' ');
             dimensions = sp.size(); 
             QByteArray num1 =  removeJunk( sp.at(0) );

@@ -67,6 +67,51 @@ string approximate( vector<double> & xs, vector<double> & ys, int m ) {
     return result.str();
 }
 
+
+std::list<string> splineInterpolation( vector<double> & xs, vector<double> & ys, int m, double z0) {
+	//http://en.wikipedia.org/wiki/Spline_interpolation
+	// S_i(x) = y_i + z_i * ( x - x_i ) + ( z_{i+1} - z_i ) / ( 2* ( x_{i+1} - x_i)) * (x - x_i)^2
+	list<string> result ; 
+
+	const int mainI = m; 
+	vector<double> z,c1,c2; 
+	double zVal,c1Val,c2Val ;   
+	for ( int i = 0 ; i < m+1 ; ++i ){
+		if ( i ==0 )
+			z.push_back(z0);
+		else{
+			double licznik, mianownik ; 
+			licznik = ys.at(i) - ys.at(i-1) ; 
+			mianownik = xs.at(i)-xs.at(i-1);
+			zVal = -1*z.at(i-1) ; 
+			zVal += 2 * licznik/mianownik ; 
+			z.push_back(zVal);
+		}
+	}
+	for ( int i = 0 ; i < m ; ++i ){
+		c1Val = ys.at(i) - z.at(i)*xs.at(i);
+		c1.push_back(c1Val);
+	}
+	list<string> S_ ; 
+	for ( int i = 0 ; i < m ; ++i ){
+		stringstream res2 ; 
+		res2 << ys.at(i) << " + " << z.at(i) << "*( x - " << xs.at(i) << " ) + " << "( " << z.at(i+1) - z.at(i) << ") / " << 2*(xs.at(i+1) - xs.at(i)) << "* ( x - " << xs.at(i) << ")^2";
+		S_.push_back(res2.str());
+
+
+
+		stringstream res ; 
+		c2Val = ( (z.at(i+1) - z.at(i)) / ((double)2 * (xs.at(i+1)- xs.at(i) )));
+		c2.push_back(c2Val);
+		res << c1.at(i) << " + " << z.at(i)<< " *x + " << c2.at(i)<< "x*x - 2*" << c2.at(i)*xs.at(i)<< " *x + "<< c2.at(i)*xs.at(i)*xs.at(i);
+		result.push_back(res.str());
+		cout << "F(x), for x in [" << xs.at(i) <<" , "<< xs.at(i+1) << " ] " <<res.str() << endl ; 
+		res.clear();
+	}
+	
+	cout << endl << endl ;
+	return result ; 
+}
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -75,26 +120,43 @@ int main(int argc, char *argv[])
     
     
     
-    KPlotWidget * pWid = new KPlotWidget( NULL ) ;
-    pWid->setLimits( -0.1, 6.38, -1.1, 1.1 );
+   /* KPlotWidget * pWid = new KPlotWidget( NULL ) ;
+    pWid->setLimits( -0.1, 10, -1.1, 1.1 );
     KPlotObject *sineobj = new KPlotObject( Qt::red, KPlotObject::Lines, 2 );
-    KPlotObject *sineobj2 = new KPlotObject( Qt::red, KPlotObject::Points, 2 );
+    KPlotObject *sineobj2 = new KPlotObject( Qt::red, KPlotObject::Points, 2 );*/
     
     
     
-	fl::Function2D::FunctionDiscrete::DomainRange range ; 
-    for ( float t=0.0; t<=6.28; t+=0.04 ) {
+	/*fl::Function2D::FunctionDiscrete::DomainRange range ; */
+	x.push_back(0);
+	x.push_back(1);
+	x.push_back(2);
+	x.push_back(3);
+	x.push_back(4);
+	x.push_back(5);
+	x.push_back(6);
+
+	y.push_back(0);
+	y.push_back(0.8415);
+	y.push_back(0.9093);
+	y.push_back(0.1411);
+	y.push_back(-0.7568);
+	y.push_back(-0.9589);
+	y.push_back(-0.2794);
+    /*for ( float t=0.0; t<=10; t+=1 ) {
         x.push_back(t);
-        y.push_back(sin(t)*cos(t));
-        sineobj->addPoint( t, sin(t)*cos(t) );
-		range.push_back(make_pair(t,sin(t)*cos(t)));
-    }
+        y.push_back(sin(t));
+        sineobj->addPoint( t, sin(t) );
+		range.push_back(make_pair(t,sin(t)));
+    }*/
+
+	list<string> l = splineInterpolation(x,y,x.size()-1,-1);
     
-    fl::Function2D::PolymonialApproximation pA ( 9,range)  ; 
+    /*fl::Function2D::PolymonialApproximation pA ( 4,range)  ; 
 	fl::Function2D::FunctionContinous *pFunc = pA.approximate() ; 
     
     bool bOk ; 
-    for ( float t=0.0; t<=6.28; t+=0.04 ) {
+    for ( float t=0.0; t<=10; t+=0.04 ) {
         sineobj2->addPoint(t,pFunc->eval(t,&bOk));
     }
     
@@ -105,5 +167,5 @@ int main(int argc, char *argv[])
     pWid->update();
     
      
-    app.exec();
+    app.exec();*/
 }

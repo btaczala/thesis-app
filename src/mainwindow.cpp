@@ -47,7 +47,6 @@
 
 using namespace Thesis::UI;
 
-
 MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags) : 
 QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
 {
@@ -334,14 +333,16 @@ void Thesis::UI::MainWindow::newMixedFunction()
 void Thesis::UI::MainWindow::newMixedFunctionFromFile()
 {
     cLOG() ; 
-    QString fileName = QFileDialog::getOpenFileName( this , tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)" ) );
-    if ( fileName.isEmpty() ) {
-        LOG("Not opening file");
+    QStringList fileNames = QFileDialog::getOpenFileNames( this , tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)" ) );
+    if ( fileNames.isEmpty() ) {
+        LOG("Not opening files");
         return ; 
     }
-    LOG("Opening file:" << fileName );
-	Thesis::FunctionsProxy prx ( fileName, Thesis::FunctionsProxy::eMixed ) ; 
-    m_pTabWidget->addFunction(prx);
+	foreach ( QString fileName, fileNames){
+		LOG("Opening file:" << fileName );
+		Thesis::FunctionsProxy prx ( fileName, Thesis::FunctionsProxy::eMixed ) ; 
+		m_pTabWidget->addFunction(prx);
+	}
 }
 void Thesis::UI::MainWindow::zoomIn()
 {

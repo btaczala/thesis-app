@@ -25,6 +25,7 @@
 #include <QMessageBox>
 
 #include "fl/functionbase.h"
+#include "fl/function2dbase.h"
 #include "plotting/kplotwidget.h"
 #include "plotting/kplotobject.h"
 #include "fl/iapproximation.h"
@@ -32,7 +33,8 @@
 
 Thesis::UI::ApproximateDialog::ApproximateDialog( QWidget *pParent /*= NULL*/ ) : QDialog(pParent),
 m_pDialog( new Ui::ApproximateDialogUI()),
-m_calculatedFunc( NULL ) 
+m_calculatedFunc( NULL ),
+m_pKPlotWidget( new KPlotWidget(this))
 {
 	m_pDialog->setupUi(this);
 	
@@ -40,6 +42,8 @@ m_calculatedFunc( NULL )
 	connect ( m_pDialog->okButton, SIGNAL(pressed()), this, SLOT(accept()));
 	connect ( m_pDialog->cancelButton, SIGNAL(pressed()), this, SLOT(reject()));
 	connect ( m_pDialog->previewButton, SIGNAL(pressed()), this, SLOT(preview()));
+
+	m_pDialog->previewLayout->addWidget(m_pKPlotWidget.get());
 }
 Thesis::UI::ApproximateDialog::~ApproximateDialog()
 {
@@ -68,11 +72,28 @@ void Thesis::UI::ApproximateDialog::populateList(int index )
 }
 void Thesis::UI::ApproximateDialog::preview()
 {
-
-	KPlotWidget * pWid = new KPlotWidget( this ) ;
-	
 	KPlotObject *obj = new KPlotObject( Qt::red, KPlotObject::Lines, 2 );
+	fl::Function2D::Function2DBase *pFunction = proxy() ;
+	if ( pFunction == NULL)
+		return ; 
+	m_pKPlotWidget->addPlotObject(kplotobjFromFunction(pFunction,-1,7));
+	m_pKPlotWidget->show();	
+}
+fl::Function2D::FunctionContinous * Thesis::UI::ApproximateDialog::resultFunction()
+{
+	if ( m_calculatedFunc != NULL )
+		return m_calculatedFunc;
+	return proxy() ; 
+}
+fl::Function2D::FunctionContinous * Thesis::UI::ApproximateDialog::proxy()
+{
 	fl::Function2D::IApproximation *pApproxAlgorithm = NULL ;
+	if ( m_pDialog->listWidget->currentItem()== NULL){
+		QMessageBox msgBox;
+		msgBox.setText(QObject::tr("Select a function to be approximated."));
+		msgBox.exec();
+		return NULL ; // from what i have to approximate ??? 
+	}
 	std::string funName = m_pDialog->listWidget->currentItem()->text().toStdString();
 	fl::FunctionBase *pFunction = NULL ; 
 	foreach ( fl::FunctionBase *pF, m_allWorkspaceFunctions){
@@ -82,36 +103,19 @@ void Thesis::UI::ApproximateDialog::preview()
 		}
 	}
 	Q_ASSERT(pFunction != NULL );
-	
 	if ( pFunction->type() != fl::FunctionBase::eDiscrete){
 		QMessageBox msgBox;
 		msgBox.setText(QObject::tr("Only discrete functions can be approximated."));
 		msgBox.exec();
-		return ; 
+		return NULL; 
 	}
 	fl::Function2D::FunctionDiscrete *pFunctionD = dynamic_cast<fl::Function2D::FunctionDiscrete *> ( pFunction);
-
-	pWid->setLimits( pFunctionD->xMin(), pFunctionD->xMax(), pFunctionD->min(),pFunctionD->max());
-
-	pApproxAlgorithm = new fl::Function2D::PolymonialApproximation(10,pFunctionD->range());
+	m_pKPlotWidget->setLimits( pFunctionD->xMin(), pFunctionD->xMax(), pFunctionD->min(),pFunctionD->max());
+	pApproxAlgorithm = new fl::Function2D::PolymonialApproximation(m_pDialog->polymonialDegreeSpinbox->value(),pFunctionD->range());
 
 	fl::Function2D::FunctionContinous *pResultFunc = pApproxAlgorithm->approximate();
 	pResultFunc->setName("APPROXIMATION");
 
 	m_calculatedFunc = pResultFunc ; 
-
-	pWid->addPlotObject(kplotobjFromFunction(pResultFunc,-1,7));
-	pWid->show();	
-}
-
-fl::Function2D::FunctionContinous * Thesis::UI::ApproximateDialog::resultFunction()
-{
-	if ( m_calculatedFunc != NULL )
-		return m_calculatedFunc;
-
-}
-
-fl::Function2D::FunctionContinous * Thesis::UI::ApproximateDialog::proxy()
-{
-
+	return m_calculatedFunc ; 
 }

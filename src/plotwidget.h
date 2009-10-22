@@ -208,6 +208,10 @@ namespace Thesis {
                 void changeRange( double xstart,double xstop,double ystart,double ystop ) ;
                 
                 const FunctionsPlotMapType plotMap() const { return m_PlotsFunctions ; } 
+
+				KPlotObject * plotForFunction( const QString & fID);
+
+				KPlotWidget * plotWidget() const { return m_pKPlotWidget.get() ; } 
             public slots:
 
                 /**

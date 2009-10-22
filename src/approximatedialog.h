@@ -26,6 +26,7 @@
 #include <boost/shared_ptr.hpp>
 
 class QtColorPicker;
+class KPlotWidget;
 namespace Ui{
     class ApproximateDialogUI ; 
 }
@@ -52,6 +53,8 @@ namespace Thesis {
 				QList<fl::FunctionBase*> m_currentWorkspaceFunctions;
 				QList<fl::FunctionBase*> m_allWorkspaceFunctions;
 				fl::Function2D::FunctionContinous * m_calculatedFunc ;
+
+				boost::shared_ptr<KPlotWidget> m_pKPlotWidget ; 
 
 				fl::Function2D::FunctionContinous * proxy() ; 
 			private slots:

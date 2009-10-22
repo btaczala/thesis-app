@@ -107,6 +107,8 @@ public:
      */
     PlotTypes plotTypes() const;
 
+	PlotType plotType() const;
+
     /**
      * Set whether points will be drawn for this object
      * @param b if true, points will be drawn

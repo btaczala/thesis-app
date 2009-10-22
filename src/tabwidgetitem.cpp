@@ -28,6 +28,10 @@
 #include <QListWidget>
 #include <QButtonGroup>
 #include <QPushButton>
+#include <QColorDialog>
+
+#include <plotting/kplotwidget.h>
+
 
 
 using namespace Thesis::UI ; 
@@ -39,17 +43,18 @@ m_pPlotProxy( new PlotWidgetProxy(this) ),
 m_pLayout( new QHBoxLayout(this) ),
 m_pLeftLayout(new QVBoxLayout(this)),
 m_pDeleteButton ( new QPushButton(tr("Delete me"))),
-m_pListWidget( new QListWidget(this))
+m_pListWidget( new QListWidget(this)),
+m_pContextMenu( new ContextMenu(this,m_pListWidget))
 {
     cLOG();
-    
-    
     m_pDeleteButton->setEnabled(false);
     m_pLeftLayout->addWidget(m_pListWidget);
     m_pLeftLayout->addWidget(m_pDeleteButton);
     
     m_pPlotProxy->widget()->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
     m_pListWidget->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred));
+	
+	m_pListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     
     m_pLayout->addLayout(m_pLeftLayout);
     m_pLayout->addWidget(m_pPlotProxy->widget());
@@ -59,6 +64,11 @@ m_pListWidget( new QListWidget(this))
     connect ( m_pPlotProxy.get(), SIGNAL(functionAdded(const FunctionInfo & )),this,SLOT(functionAdded(const FunctionInfo & )));
     connect ( m_pListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(itemDoubleClicked(QListWidgetItem*)));
     connect ( m_pDeleteButton, SIGNAL(pressed()),this,SLOT(deleteFunction()));
+
+	connect ( m_pListWidget, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showContextMenuForWidget(const QPoint &)));
+
+	connect ( m_pContextMenu->_delete, SIGNAL(triggered()),this,SLOT(deleteFunction()));
+	connect ( m_pContextMenu->_changeColor, SIGNAL(triggered()),this,SLOT(changeColorForFunction()));
 }
 TabWidgetItem::~TabWidgetItem()
 {
@@ -75,6 +85,7 @@ PlotWidgetProxy* TabWidgetItem::plotProxy()
 void Thesis::UI::TabWidgetItem::functionAdded(const FunctionInfo & fInfo )
 {
     cLOG();
+	//m_mutex.unlock();
     m_pDeleteButton->setEnabled(true);
     QListWidgetItem *pItem = new QListWidgetItem(m_pListWidget);
     pItem->setText(fInfo._fId);
@@ -105,13 +116,75 @@ void Thesis::UI::TabWidgetItem::itemDoubleClicked(const QListWidgetItem* pItem)
 }
 void Thesis::UI::TabWidgetItem::addFunction(fl::FunctionBase* pFunction, const QColor& color)
 {
+	//m_mutex.lock();
     m_pPlotProxy->addFunction(pFunction,color);
 }
 void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl::FunctionBase* >& list, IOperation* pOperation )
 {
+	//m_mutex.lock();
     fl::FunctionBase *pFunction=NULL ; 
     foreach( const fl::FunctionBase *pFunc, list)
         pOperation->addFunction(pFunc) ;
     pFunction = pOperation->calculate() ; 
     addFunction(pFunction,Qt::green);
+}
+
+void Thesis::UI::TabWidgetItem::showContextMenuForWidget( const QPoint & pos )
+{
+	cLOG() ; 
+
+	m_pContextMenu->exec(mapToGlobal(pos));
+	/*QMenu contextMenu(tr("Context menu"), this);
+	contextMenu.addAction(new QAction(tr("Delete"), this));
+	contextMenu.exec();*/
+}
+
+void Thesis::UI::TabWidgetItem::changeColorForFunction()
+{
+	cLOG();
+	QListWidgetItem *pItem = m_pListWidget->currentItem();
+	if  (pItem == NULL ) 
+		return ; 
+	KPlotObject * pObj = m_pPlotProxy->plotForFunction(pItem->text()) ; 
+
+	QColor c = QColorDialog::getColor(pObj->brush().color(),this,tr("Pick a color"));
+	if ( c.isValid()){
+		pObj->setBrush(c);
+		m_pPlotProxy->plotWidget()->update();
+	}
+
+
+}
+Thesis::UI::TabWidgetItem::ContextMenu::ContextMenu( QWidget *pParent, const QListWidget  *pW ) : QMenu(pParent),_pListWidget(pW) 
+{
+	_delete = new QAction(tr("Delete"),this);
+	_changeColor = new QAction(tr("Change color"),this);
+
+	addAction(_delete);
+	addAction(_changeColor);	
+}
+
+Thesis::UI::TabWidgetItem::ContextMenu::~ContextMenu()
+{
+	delete _delete;
+	delete _changeColor; 
+}
+
+QAction * Thesis::UI::TabWidgetItem::ContextMenu::exec( const QPoint & p )
+{
+	cLOG() ; 
+	LOG(p);
+	//LOG(mapTo(const_cast<QListWidget*>( _pListWidget ),p));
+	LOG(mapFromGlobal(p));
+	if ( _pListWidget->selectedItems().isEmpty() ){
+		_delete->setEnabled(false);
+		_changeColor->setEnabled(false);
+	}
+	else
+	{
+		_delete->setEnabled(true);
+		_changeColor->setEnabled(true);
+
+	}
+	return QMenu::exec(p);
 }

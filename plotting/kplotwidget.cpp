@@ -255,8 +255,11 @@ void KPlotWidget::removeObject(KPlotObject* plotObject)
 	QList<KPlotObject*> obj  = d->objectList;
 	d->objectList.clear();
 	foreach( KPlotObject * pPlot, obj) {
-		if ( pPlot == plotObject)
+		if ( pPlot == plotObject){
+			delete pPlot ; 
+			pPlot = NULL ; 
 			continue ; 
+		}
 		else
 			addPlotObject(pPlot);
 	}

@@ -44,6 +44,7 @@ class KPlotObject::Private
 
         QList<KPlotPoint*> pList;
         PlotTypes type;
+		PlotType type1 ; 
         PointStyle pointStyle;
         double size;
         QPen pen, linePen, barPen, labelPen;
@@ -62,6 +63,7 @@ KPlotObject::KPlotObject( const QColor &c, PlotType t, double size, PointStyle p
     setLabelPen( pen() );
 
     d->type |= t;
+	d->type1 = t ; 
     setSize( size );
     setPointStyle( ps );
 }
@@ -74,6 +76,10 @@ KPlotObject::~KPlotObject()
 KPlotObject::PlotTypes KPlotObject::plotTypes() const
 {
     return d->type;
+}
+KPlotObject::PlotType KPlotObject::plotType() const
+{
+	return d->type1;
 }
 
 void KPlotObject::setShowPoints( bool b )
@@ -263,6 +269,7 @@ void KPlotObject::draw( QPainter *painter, KPlotWidget *pw ) {
     //Draw lines:
     if ( d->type & Lines ) {
         painter->setPen( linePen() );
+		painter->setBrush( brush());
 
         QPointF Previous = QPointF();  //Initialize to null
 

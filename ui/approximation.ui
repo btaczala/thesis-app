@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>442</width>
-    <height>223</height>
+    <width>504</width>
+    <height>241</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Approximation method</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -126,6 +126,11 @@
          <string>Polymonial approximation</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Quadratic spline interpolation</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
@@ -134,6 +139,33 @@
         <string>Settings</string>
        </property>
       </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Polymonial degree:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="polymonialDegreeSpinbox"/>
      </item>
     </layout>
    </item>
@@ -174,6 +206,9 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="previewLayout"/>
    </item>
   </layout>
  </widget>

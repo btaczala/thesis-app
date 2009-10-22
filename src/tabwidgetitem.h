@@ -24,6 +24,7 @@
 #include <QWidget>
 #include <boost/shared_ptr.hpp>
 #include <QPointer>
+#include <QMenu>
 #include "plotwidget.h"
 
 class QListWidgetItem;
@@ -171,6 +172,19 @@ namespace Thesis{
                 QPointer<QPushButton> m_pDeleteButton ; 
                 QPointer<QListWidget> m_pListWidget ; 
                 int m_NumberOfPlots ; 
+				QMutex m_mutex ; 
+
+				class ContextMenu : public QMenu {
+					public:
+						ContextMenu(QWidget *pParent, const QListWidget * pW) ; 
+						~ContextMenu();
+						QAction * _delete; 
+						QAction * _changeColor; 
+						virtual QAction * exec( const QPoint & p ) ; 
+					private:
+						const QListWidget * _pListWidget ; 
+				} * m_pContextMenu ; 
+
             private slots:
 
                 /**
@@ -209,6 +223,10 @@ namespace Thesis{
                 **/
 
                 void itemDoubleClicked ( const QListWidgetItem * pItem ) ; 
+
+				void showContextMenuForWidget( const QPoint & );
+
+				void changeColorForFunction() ; 
         };
     }
 }
