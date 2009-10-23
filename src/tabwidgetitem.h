@@ -180,6 +180,7 @@ namespace Thesis{
 						~ContextMenu();
 						QAction * _delete; 
 						QAction * _changeColor; 
+						QAction * _showInfo ; 
 						virtual QAction * exec( const QPoint & p ) ; 
 					private:
 						const QListWidget * _pListWidget ; 
@@ -227,6 +228,8 @@ namespace Thesis{
 				void showContextMenuForWidget( const QPoint & );
 
 				void changeColorForFunction() ; 
+
+				void showFunctionInformation() ; 
         };
     }
 }

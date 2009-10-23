@@ -40,7 +40,6 @@ _m ( m )
 fl::Function2D::FunctionContinous* fl::Function2D::PolymonialApproximation::approximate() const 
 {
     fl::Function2D::FunctionContinous *pFunction ; 
-    
     string ret ; 
     if ( ! ( (int)m_range.size() > _m+1 ) ) {
         return NULL;

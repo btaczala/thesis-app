@@ -22,7 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "fl/functiondiscrete.h"
 #include <QDebug>
 #include "commons.h"
-
+#include <algorithm>
+#include <vector>
 ConvolutionOperation::ConvolutionOperation ( ) : IOperation ()
 {
 }
@@ -48,9 +49,7 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     double endRange = 5 ; 
     double epsilon = ( endRange - startRange ) / ((double)n) ; 
     int n_discrete = 100 ; 
-    int a1 = 0 ;
-    int b1 = 2 ;
-    double delta = (b1 - a1) /(double)n_discrete ; 
+    
     const fl::Function2D::Function2DBase * pFirst = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[0].get() ); 
     const fl::Function2D::Function2DBase * pSecond = dynamic_cast<const fl::Function2D::Function2DBase*>( m_functions[1].get() ); 
     
@@ -63,11 +62,47 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     double f2XStop  = pSecond->xStopWhereIntegratingMakesSense() ;
     LOG( "stops " << f1XStop  << " " << f2XStop );
     
-    
+	int a1 = f1XStart;
+	int b1 = f1XStop ; 
+    double delta = (b1 - a1) /(double)n_discrete ; 
 
-    startRange = f1XStart + f2XStart ; 
-    endRange = f1XStop+f2XStop ; 
-    
+	switch ( m_typeOp){
+		case eAdd:
+			{
+				startRange = f1XStart + f2XStart ; 
+				endRange = f1XStop+f2XStop ; 
+				break;
+			}
+		case eMinus:
+			{
+				std::vector<double> findMinMax ; 
+				startRange = f1XStart - f2XStop ; 
+				endRange = f1XStop  - f2XStart; 
+				break ; 
+			}
+		case eTimes:
+			{
+				std::vector<double> findMinMax ; 
+				findMinMax.push_back(f1XStart*f2XStart);
+				findMinMax.push_back(f1XStart*f2XStop);
+				findMinMax.push_back(f2XStart*f1XStop);
+				findMinMax.push_back(f2XStop*f1XStop);
+				endRange = *(std::max_element(findMinMax.begin(),findMinMax.end()));
+				startRange = *(std::min_element(findMinMax.begin(),findMinMax.end()));
+				break;
+			}
+		case eDiv:
+			{
+				std::vector<double> findMinMax ; 
+				findMinMax.push_back(f1XStart/f2XStart);
+				findMinMax.push_back(f1XStart/f2XStop);
+				findMinMax.push_back(f2XStart/f1XStop);
+				findMinMax.push_back(f2XStop/f1XStop);
+				endRange = *(std::max_element(findMinMax.begin(),findMinMax.end()));
+				startRange = *(std::min_element(findMinMax.begin(),findMinMax.end()));
+				break;
+			}
+	}
     LOG( "Meaning full range [  "<< startRange << " , " << endRange<<" ]");
 
     std::vector<double> t ; // those are my x's
@@ -85,12 +120,11 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     bool bOk ; 
     double x=0; 
     double y=0; 
-    for ( double sIter = startRange ; sIter < endRange+0.5 ; sIter +=0.1){
+    for ( double sIter = startRange ; sIter < endRange; sIter += epsilon){
         x = sIter ; 
         double pp2=0;
         double pp1=0;
         for ( int jIter = 0 ; jIter < n_discrete;++jIter ){
-            //int realIter = t.size() - jIter ; 
             pp1 = pFirst->eval( t[jIter],&bOk );
             if ( bOk ) {
                 switch ( m_typeOp ) {
@@ -98,16 +132,23 @@ fl::FunctionBase* ConvolutionOperation::calculate()
                         pp2 = pSecond->eval(sIter - t[jIter],&bOk);
                         break ; 
                     case eMinus : 
-                        pp2 = pSecond->eval(sIter + t[jIter],&bOk);
+                        pp2 = pSecond->eval(t[jIter] - sIter ,&bOk);
                         break ; 
                     case eTimes:
+						if ( t[jIter] == 0  ){
+							qDebug() << t[jIter] << "is null ! " ;
+							continue ; 
+						}
                         pp2 = pSecond->eval(sIter / t[jIter],&bOk);
                         break ; 
                     case eDiv:
-                        pp2 = pSecond->eval(sIter * t[jIter],&bOk);
+						if ( sIter == 0 ){
+							qDebug() << "sIter is null ! " ;
+							continue ; 
+						}
+                        pp2 = pSecond->eval(t[jIter]/sIter,&bOk);
                         break ; 
                 }
-                //pp2 = pSecond->eval(sIter - t[jIter],&bOk);
                 if ( bOk ) {
                     y += pp1 * pp2 ;
                 }
@@ -151,4 +192,25 @@ bool ConvolutionOperation::areIntegratingToOne() const
     return false ; 
 }
 
+fl::FunctionBase* ConvolutionAdd::calculate()
+{
+	m_typeOp = eAdd ; 
+	return ConvolutionOperation::calculate() ; 
+}
 
+fl::FunctionBase* ConvolutionMinus::calculate()
+{
+	//m_typeOp = eTimes ; 
+	m_typeOp = eMinus ; 
+	return ConvolutionOperation::calculate() ; 
+}
+fl::FunctionBase* ConvolutionTimes::calculate()
+{
+	m_typeOp = eTimes ; 
+	return ConvolutionOperation::calculate() ; 
+}
+fl::FunctionBase* ConvolutionDiv::calculate()
+{
+	m_typeOp = eDiv; 
+	return ConvolutionOperation::calculate() ; 
+}

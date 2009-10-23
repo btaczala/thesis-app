@@ -34,6 +34,7 @@ namespace fl{
 	class FunctionBase ; 
 	namespace Function2D{
 		class FunctionContinous ; 
+		class Function2DBase;
 	}
 }
 namespace Thesis {
@@ -47,16 +48,16 @@ namespace Thesis {
 				void setCurrentWorkspaceFunctions(const QList<fl::FunctionBase*> & functionList ) { m_currentWorkspaceFunctions = functionList;}
 				void setAllFunctions(const QList<fl::FunctionBase*> & functionList ) { m_allWorkspaceFunctions = functionList ; } 
 				int show() ; 
-				fl::Function2D::FunctionContinous * resultFunction(); 
+				fl::Function2D::Function2DBase * resultFunction(); 
             protected:
                 boost::shared_ptr<Ui::ApproximateDialogUI> m_pDialog ; 
 				QList<fl::FunctionBase*> m_currentWorkspaceFunctions;
 				QList<fl::FunctionBase*> m_allWorkspaceFunctions;
-				fl::Function2D::FunctionContinous * m_calculatedFunc ;
+				fl::Function2D::Function2DBase  * m_calculatedFunc ;
 
 				boost::shared_ptr<KPlotWidget> m_pKPlotWidget ; 
 
-				fl::Function2D::FunctionContinous * proxy() ; 
+				fl::Function2D::Function2DBase * proxy() ; 
 			private slots:
 				void populateList(int) ; 
 				void preview() ;

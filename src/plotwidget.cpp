@@ -22,6 +22,8 @@
 #include "commons.h"
 #include "kplotwidget.h"
 #include "kplotobject.h"
+#include "kplotpoint.h"
+#include "kplotaxis.h"
 
 //#include <qwt3d_surfaceplot.h>
 
@@ -61,6 +63,10 @@ m_pLastAddedFunction(NULL)
     m_pKPlotWidget->setLimits( m_xMin,m_xMax,m_yMin,m_yMax);
 	m_pKPlotWidget->setShowGrid(true);
 	m_pKPlotWidget->setObjectToolTipShown(true);
+	m_pKPlotWidget->setBackgroundColor(Qt::white);
+	m_pKPlotWidget->setForegroundColor(Qt::black);
+	m_pKPlotWidget->axis(KPlotWidget::Axis::BottomAxis)->setLabel("x");
+	m_pKPlotWidget->axis(KPlotWidget::Axis::LeftAxis)->setLabel("y");
     
 }
 PlotWidgetProxy::~PlotWidgetProxy()
@@ -97,6 +103,10 @@ void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction, const QColor & co
         pPlotObject = new KPlotObject( fnColor, KPlotObject::Points, 2 );
     else if ( pFunction2D->type() == fl::FunctionBase::eContinous || pFunction2D->type() == fl::FunctionBase::eMixed ) 
         pPlotObject = new KPlotObject( fnColor, KPlotObject::Lines, 2 );
+	QList<KPlotPoint*> points = pPlotObject->points();
+	foreach ( KPlotPoint *onePoint, points)
+		
+		onePoint->setLabel(pFunction2D->name().c_str());
     m_pLastAddedFunction = pFunction ; 
 	LOG("inserting :" <<pFunction <<pPlotObject);
     m_PlotsFunctions.insert(pFunction,pPlotObject);

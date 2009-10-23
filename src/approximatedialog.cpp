@@ -26,6 +26,7 @@
 
 #include "fl/functionbase.h"
 #include "fl/function2dbase.h"
+#include "fl/functioncontinous.h"
 #include "plotting/kplotwidget.h"
 #include "plotting/kplotobject.h"
 #include "fl/iapproximation.h"
@@ -72,6 +73,12 @@ void Thesis::UI::ApproximateDialog::populateList(int index )
 }
 void Thesis::UI::ApproximateDialog::preview()
 {
+	if ( m_pDialog->listWidget->currentItem()== NULL){
+		QMessageBox msgBox;
+		msgBox.setText(QObject::tr("Select a function to be approximated."));
+		msgBox.exec();
+		return ; // from what i have to approximate ??? 
+	}
 	KPlotObject *obj = new KPlotObject( Qt::red, KPlotObject::Lines, 2 );
 	fl::Function2D::Function2DBase *pFunction = proxy() ;
 	if ( pFunction == NULL)
@@ -79,21 +86,17 @@ void Thesis::UI::ApproximateDialog::preview()
 	m_pKPlotWidget->addPlotObject(kplotobjFromFunction(pFunction,-1,7));
 	m_pKPlotWidget->show();	
 }
-fl::Function2D::FunctionContinous * Thesis::UI::ApproximateDialog::resultFunction()
+fl::Function2D::Function2DBase  * Thesis::UI::ApproximateDialog::resultFunction()
 {
 	if ( m_calculatedFunc != NULL )
 		return m_calculatedFunc;
 	return proxy() ; 
 }
-fl::Function2D::FunctionContinous * Thesis::UI::ApproximateDialog::proxy()
+fl::Function2D::Function2DBase  * Thesis::UI::ApproximateDialog::proxy()
 {
 	fl::Function2D::IApproximation *pApproxAlgorithm = NULL ;
-	if ( m_pDialog->listWidget->currentItem()== NULL){
-		QMessageBox msgBox;
-		msgBox.setText(QObject::tr("Select a function to be approximated."));
-		msgBox.exec();
-		return NULL ; // from what i have to approximate ??? 
-	}
+	if ( m_pDialog->listWidget->currentItem() == NULL )
+		return NULL ; 
 	std::string funName = m_pDialog->listWidget->currentItem()->text().toStdString();
 	fl::FunctionBase *pFunction = NULL ; 
 	foreach ( fl::FunctionBase *pF, m_allWorkspaceFunctions){
@@ -117,5 +120,14 @@ fl::Function2D::FunctionContinous * Thesis::UI::ApproximateDialog::proxy()
 	pResultFunc->setName("APPROXIMATION");
 
 	m_calculatedFunc = pResultFunc ; 
+
+	QMessageBox msgBox;
+	msgBox.setText(tr("Crop approximation function"));
+	msgBox.setInformativeText(tr("Do you want to crop appoximation function to range where it acctually make sense?"));
+	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No) ; 
+	int ret = msgBox.exec();
+	if ( ret == QMessageBox::Yes ){
+		m_calculatedFunc = fl::Function2D::IApproximation::cropFunction(m_calculatedFunc,pFunctionD->xMin(),pFunctionD->xMax());
+	}
 	return m_calculatedFunc ; 
 }

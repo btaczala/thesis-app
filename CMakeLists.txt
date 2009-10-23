@@ -96,14 +96,10 @@ set ( thesis_moc
 set ( thesis_operations_hdrs
     src/operations/ioperation.h
     src/operations/convolutionoperation.h
-    src/operations/convolutionadd.h
-    src/operations/convolutionminus.h
 )
 set ( thesis_operations_src
     src/operations/ioperation.cpp
     src/operations/convolutionoperation.cpp
-    src/operations/convolutionadd.cpp
-    src/operations/convolutionminus.cpp
 )
 set(thesis_rsc resources/main.qrc )
 set( thesis_ui 
@@ -156,6 +152,8 @@ set ( FUNCTIONS_EXAMPLES
     sin.fnt
     test.fnt
     mixed1.fnt
+    mixed2.fnt
+    aa.fnt
     )
 INSTALL(FILES ${FUNCTIONS_EXAMPLES} DESTINATION functions-samples ) 
 INSTALL(TARGETS Thesis-app

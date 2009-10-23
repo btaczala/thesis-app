@@ -121,10 +121,11 @@ void Thesis::UI::TabWidgetItem::addFunction(fl::FunctionBase* pFunction, const Q
 }
 void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl::FunctionBase* >& list, IOperation* pOperation )
 {
-	//m_mutex.lock();
+	
     fl::FunctionBase *pFunction=NULL ; 
-    foreach( const fl::FunctionBase *pFunc, list)
+	foreach( const fl::FunctionBase *pFunc, list){
         pOperation->addFunction(pFunc) ;
+	}	
     pFunction = pOperation->calculate() ; 
     addFunction(pFunction,Qt::green);
 }
@@ -152,14 +153,25 @@ void Thesis::UI::TabWidgetItem::changeColorForFunction()
 		pObj->setBrush(c);
 		m_pPlotProxy->plotWidget()->update();
 	}
-
+}
+void Thesis::UI::TabWidgetItem::showFunctionInformation()
+{
+	cLOG() ; 
+	QListWidgetItem *pItem = m_pListWidget->currentItem() ;
+	if ( pItem == NULL)
+		return ; 
+	//QMessageBox b ; 
 
 }
 Thesis::UI::TabWidgetItem::ContextMenu::ContextMenu( QWidget *pParent, const QListWidget  *pW ) : QMenu(pParent),_pListWidget(pW) 
 {
+	_showInfo = new QAction(tr("Show information"),this);
 	_delete = new QAction(tr("Delete"),this);
 	_changeColor = new QAction(tr("Change color"),this);
 
+	
+	addAction(_showInfo);
+	addSeparator();
 	addAction(_delete);
 	addAction(_changeColor);	
 }

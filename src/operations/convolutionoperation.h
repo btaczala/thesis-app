@@ -61,5 +61,22 @@ class ConvolutionOperation : public IOperation
         virtual fl::FunctionBase* calculate() ; 
         bool areIntegratingToOne() const ; 
 };
+class ConvolutionAdd : public ConvolutionOperation
+{
+	virtual fl::FunctionBase* calculate();
+};
+class ConvolutionMinus : public ConvolutionOperation
+{
+	virtual fl::FunctionBase* calculate();
+};
+class ConvolutionTimes : public ConvolutionOperation
+{
+	virtual fl::FunctionBase* calculate();
+};
+class ConvolutionDiv : public ConvolutionOperation
+{
+	virtual fl::FunctionBase* calculate();
+};
+
 
 #endif // CONVOLUTIONOPERATION_H

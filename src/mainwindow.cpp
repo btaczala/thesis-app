@@ -40,10 +40,9 @@
 #include <QFileDialog>
 #include <QToolBar>
 #include <functionbase.h>
+#include <function2dbase.h>
 #include <functioncontinous.h>
 #include "convolutionoperation.h"
-#include "convolutionadd.h"
-#include "convolutionminus.h"
 
 using namespace Thesis::UI;
 
@@ -173,10 +172,10 @@ void MainWindow::createUI()
     setCentralWidget(m_pTabWidget);
     setWindowIcon(QIcon(":/app_icon.png"));
     
-    if ( m_pTabWidget->count() == 0 ) 
+	if ( m_pTabWidget->count() == 0 ) {
         m_pWorkspaceMenu->setEnabled(false);
-    
-//     m_pTabWidget->addTab(/*pProxy->widget(),"test"*/);
+		m_pAritmeticOperationMenu->setEnabled(false);
+	}
     
 }
 
@@ -252,6 +251,7 @@ void Thesis::UI::MainWindow::newTab(bool setFocus )
     m_pTabWidget->addTab(setFocus);
     setStatusBarStatus(tr("New Workspace added"),false);
     m_pWorkspaceMenu->setEnabled(true);
+	m_pAritmeticOperationMenu->setEnabled(true);
 }
 
 void Thesis::UI::MainWindow::about()
@@ -380,10 +380,18 @@ void Thesis::UI::MainWindow::convolutionOperation()
             newTab(true);
         }
         QStringList listOfFunctionsToAdd = picker.selectedFunctions() ; 
-            QList<const fl::FunctionBase*> pFunctionList; 
-            foreach ( QString fName, listOfFunctionsToAdd ) {
-                pFunctionList.push_back(tempMap[fName]);
-            }
+        QList<const fl::FunctionBase*> pFunctionList; 
+        foreach ( QString fName, listOfFunctionsToAdd ) {
+			const fl::FunctionBase* pF = tempMap[fName];
+			if ( pF == NULL ){
+				qDebug() << "Why are you giving me NULL for ? Dummy"; 
+			}
+			else
+				pFunctionList.push_back(pF);
+        }
+		if ( pFunctionList.size() != 2 ){
+			LOG("Incorrect number of functions to calculate splot. Bye-bye");
+		}
         pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
         ConvolutionOperation * pOperation = NULL ; 
         QAction *pObj = qobject_cast< QAction* >(sender());
@@ -391,10 +399,20 @@ void Thesis::UI::MainWindow::convolutionOperation()
             pOperation = new ConvolutionAdd() ; 
         else if ( pObj == Thesis::Actions::convolutionMinusOperation() ) 
             pOperation = new ConvolutionMinus() ; 
+		else if ( pObj == Thesis::Actions::convolutionTimesOperation())
+			pOperation = new ConvolutionTimes() ; 
+		else if ( pObj == Thesis::Actions::convolutionDevideOperation())
+			pOperation = new ConvolutionDiv() ; 
+		else
+			pOperation = NULL ; 
+		
+		if ( pOperation== NULL){
+			LOG("Dummy U're trying to give me NULL as IOperation.Not cool ;(");
+			return ; 
+		}
         pTab->addFunctionAndOperation(pFunctionList,pOperation );
     }
 }
-
 void Thesis::UI::MainWindow::approximate()
 {
 	cLOG();
@@ -415,8 +433,10 @@ void Thesis::UI::MainWindow::approximate()
 	
 	if ( dlg.show() == QDialog::Accepted ) {
 		pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
-		fl::Function2D::FunctionContinous * aa = dlg.resultFunction() ;
-		fl::FunctionBase * pF = dynamic_cast<fl::Function2D::FunctionContinous *>(aa);
+		fl::Function2D::Function2DBase * aa = dlg.resultFunction() ;
+		if ( aa == NULL )
+			return ; 
+		fl::FunctionBase * pF = dynamic_cast<fl::FunctionBase *>(aa);
 		pTab->addFunction(pF,Qt::blue);
 	}
 }

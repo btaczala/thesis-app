@@ -18,10 +18,31 @@
 */
 
 #include "iapproximation.h"
-
+#include <limits>
+#include <fl/function2dbase.h>
+#include <fl/functioncontinous.h>
 fl::Function2D::IApproximation::IApproximation(const Function2D::FunctionDiscrete::DomainRange & _range) : m_range( _range )
 {
 }
 fl::Function2D::IApproximation::~IApproximation()
 {
+}
+
+fl::Function2D::FunctionMixed * fl::Function2D::IApproximation::cropFunction( fl::Function2D::Function2DBase * pFunc, double xstart, double xstop )
+{
+	fl::Function2D::FunctionMixed *pFun = new fl::Function2D::FunctionMixed("cropped");
+	fl::Function2D::FunctionContinous *pOne = new fl::Function2D::FunctionContinous("0");
+	pOne->addVariable("x");
+	fl::Function2D::FunctionContinous *pTwo= new fl::Function2D::FunctionContinous("0");
+	pTwo->addVariable("x");
+
+	double d = pFunc->integrate(xstart,xstop,0.01);
+	fl::Function2D::FunctionContinous *pC = dynamic_cast<fl::Function2D::FunctionContinous *>(pFunc) ;
+	std::stringstream aa ; 
+	aa << "(" << pC->equation() << ")/" << d ; 
+	pC->setEquation(aa.str());
+	pFun->addFunction(pC,xstart,fl::Function2D::FunctionMixed::eGreaterEqual,xstop,fl::Function2D::FunctionMixed::eGreaterEqual);
+	pFun->addFunction(pOne,-1* std::numeric_limits<double>::infinity(), fl::Function2D::FunctionMixed::eGreater, xstart, fl::Function2D::FunctionMixed::eGreater ) ; 
+	pFun->addFunction(pTwo,xstop, fl::Function2D::FunctionMixed::eGreater, std::numeric_limits<double>::infinity(), fl::Function2D::FunctionMixed::eGreater ) ; 
+	return pFun ; 
 }

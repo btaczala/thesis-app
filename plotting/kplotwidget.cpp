@@ -23,6 +23,7 @@
 
 #include <math.h>
 #include <QDebug>
+#include <QMouseEvent>
 
 #include <QtGui/QActionEvent>
 #include <QHash>
@@ -411,6 +412,17 @@ bool KPlotWidget::event( QEvent* e ) {
         e->accept();
         return true;
     }
+	else if ( e->type() == QEvent::MouseButtonPress){
+		QMouseEvent * me = static_cast<QMouseEvent*>(e);
+		//QRectF d = dataRect() ; 
+		//QRectF d2 = pixRect();
+		QPointF p = me->pos() ; 
+
+		//float px = (p.x() - d->pixRect.left())*d->dataRect.width()/d->pixRect.width() - d->dataRect.x() ; 
+		//float py = d->dataRect.y() + d->dataRect.height() - d->dataRect.height()*(p.y()-d->pixRect.top())/d->pixRect.height();
+		int z = 1 ; 
+		return QFrame::event(e);
+	}
     else
         return QFrame::event( e );
 }

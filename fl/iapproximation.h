@@ -23,6 +23,7 @@
 #include "functionbase.h"
 #include "functioncontinous.h"
 #include "functiondiscrete.h"
+#include "functionMixed.h"
 
 #include <vector>
 
@@ -35,7 +36,9 @@ namespace fl{
                 virtual ~IApproximation() ; 
                 virtual Function2D::FunctionContinous * approximate() const  = 0 ; 
             protected:
-                Function2D::FunctionDiscrete::DomainRange m_range ;  
+                Function2D::FunctionDiscrete::DomainRange m_range ;
+		public:
+			static fl::Function2D::FunctionMixed * cropFunction (fl::Function2D::Function2DBase * pFunc, double xstart, double xstop);
         };
     }
 }
