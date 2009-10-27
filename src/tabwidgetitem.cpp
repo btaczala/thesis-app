@@ -127,7 +127,7 @@ void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl:
         pOperation->addFunction(pFunc) ;
 	}	
     pFunction = pOperation->calculate() ; 
-    addFunction(pFunction,Qt::green);
+    addFunction(pFunction);
 }
 
 void Thesis::UI::TabWidgetItem::showContextMenuForWidget( const QPoint & pos )

@@ -159,7 +159,7 @@ namespace Thesis{
                  * \param	color		The color. 
                 **/
 
-                void addFunction( fl::FunctionBase* pFunction, const QColor & color) ; 
+                void addFunction( fl::FunctionBase* pFunction, const QColor & color = QColor() ) ; 
                 
                 
                 void addFunctionAndOperation( const QList<const fl::FunctionBase*> & list, IOperation * pOperation ) ; 

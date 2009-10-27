@@ -139,16 +139,6 @@ namespace Thesis {
 
                 void newContinousFunction();
 
-                /**
-                 * \fn	void newDiscreteFunctionFromFile()
-                 *
-                 * \brief	New discrete function from file. 
-                 *
-                 * \author	Bartosz Taczala
-                 * \date	2009-08-07
-                **/
-
-                void newDiscreteFunctionFromFile() ; 
 
                 /**
                  * \fn	void newMixedFunction()
@@ -161,16 +151,7 @@ namespace Thesis {
 
                 void newMixedFunction() ; 
 
-                /**
-                 * \fn	void newMixedFunctionFromFile()
-                 *
-                 * \brief	New mixed function from file. 
-                 *
-                 * \author	Bartosz Taczala
-                 * \date	2009-08-07
-                **/
-
-                void newMixedFunctionFromFile();
+                void newFunctionFromFile() ; 
 
                 /**
                  * \fn	void workspaceSettings()

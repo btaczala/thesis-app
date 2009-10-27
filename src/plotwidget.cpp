@@ -38,11 +38,13 @@
 
 using namespace Thesis::UI;
 
-static int g_colors[] = {Qt::white,Qt::green, Qt::darkRed, Qt::darkGreen, Qt::blue, Qt::darkBlue, Qt::cyan, Qt::darkCyan};
+static int g_colors[] = {Qt::green, Qt::darkRed, Qt::darkGreen, Qt::blue, Qt::darkBlue, Qt::cyan, Qt::darkCyan,Qt::lightGray,Qt::darkGray,Qt::magenta,
+Qt::darkMagenta,Qt::yellow,Qt::darkYellow};
 
 QColor randomColor()  {
     srand(time(NULL));
-    return QColor(rand()%32*8,rand()%32*8,rand()%32*8);
+    int index = rand() % (sizeof(g_colors)/sizeof(g_colors[0]));
+    return QColor(Qt::GlobalColor(g_colors[index]));
 }
 
 PlotWidgetProxy::PlotWidgetProxy(QWidget* pParent ) : 
@@ -320,9 +322,7 @@ void Thesis::UI::PlotWidgetProxy::zoomOut()
     else
         xMx += 1 ; 
     changeRange(xMn,xMx,yMin(),yMax());
-
 }
-
 KPlotObject * Thesis::UI::PlotWidgetProxy::plotForFunction( const QString & fID )
 {
 	cLOG();

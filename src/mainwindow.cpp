@@ -39,6 +39,7 @@
 #include <QLabel>
 #include <QFileDialog>
 #include <QToolBar>
+#include <QFile>
 #include <functionbase.h>
 #include <function2dbase.h>
 #include <functioncontinous.h>
@@ -207,9 +208,9 @@ void MainWindow::initSignals()
     connect ( Thesis::Actions::newTabAction(),SIGNAL(triggered()), this,SLOT(newTab()));
     
     connect( Thesis::Actions::newContinousFunctionAction(),SIGNAL(triggered()),this,SLOT(newContinousFunction()));
-    connect ( Thesis::Actions::newDiscreteFromFileAction(),SIGNAL(triggered()),this,SLOT(newDiscreteFunctionFromFile()));
+    connect ( Thesis::Actions::newDiscreteFromFileAction(),SIGNAL(triggered()),this,SLOT(newFunctionFromFile()));
     connect ( Thesis::Actions::newMixedFunctionAction(),SIGNAL(triggered()),this,SLOT(newMixedFunction()));
-    connect ( Thesis::Actions::newMixedFromFileAction(),SIGNAL(triggered()),this,SLOT(newMixedFunctionFromFile()));
+    connect ( Thesis::Actions::newMixedFromFileAction(),SIGNAL(triggered()),this,SLOT(newFunctionFromFile()));
     
     connect ( Thesis::Actions::workspaceSettingsAction(), SIGNAL(triggered()),this,SLOT(workspaceSettings()));
     
@@ -293,19 +294,6 @@ void Thesis::UI::MainWindow::newContinousFunction()
         return ; 
     }
 }
-void Thesis::UI::MainWindow::newDiscreteFunctionFromFile()
-{
-    cLOG() ; 
-	
-    QString fileName = QFileDialog::getOpenFileName(this,tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)"));
-    if ( fileName.isEmpty() ) {
-        LOG("Not opening file");
-        return ; 
-    }
-    LOG("Opening file:" << fileName );
-    Thesis::FunctionsProxy prx ( fileName ) ; 
-    m_pTabWidget->addFunction(prx);
-}
 void Thesis::UI::MainWindow::workspaceSettings()
 {
     cLOG() ; 
@@ -330,19 +318,28 @@ void Thesis::UI::MainWindow::newMixedFunction()
         m_pTabWidget->addFunction( prx );
     }
 }
-void Thesis::UI::MainWindow::newMixedFunctionFromFile()
-{
-    cLOG() ; 
-    QStringList fileNames = QFileDialog::getOpenFileNames( this , tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)" ) );
-    if ( fileNames.isEmpty() ) {
-        LOG("Not opening files");
+void Thesis::UI::MainWindow::newFunctionFromFile(){
+    QString fileName = QFileDialog::getOpenFileName ( this , tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)" ) );
+    if ( fileName.isEmpty()){
+        LOG("Not opening file");
         return ; 
     }
-	foreach ( QString fileName, fileNames){
-		LOG("Opening file:" << fileName );
-		Thesis::FunctionsProxy prx ( fileName, Thesis::FunctionsProxy::eMixed ) ; 
-		m_pTabWidget->addFunction(prx);
-	}
+    QFile f ( fileName);
+    Thesis::FunctionsProxy::Type _type ; 
+    if ( f.open(QIODevice::ReadOnly)){
+        QByteArray decision= f.readLine() ; 
+        if ( decision.contains("mixed"))
+            _type = Thesis::FunctionsProxy::eMixed;
+        else if ( decision.contains("discrete"))
+            _type = Thesis::FunctionsProxy::eDiscrete;
+        f.close() ;
+        Thesis::FunctionsProxy prx ( fileName, _type) ; 
+        m_pTabWidget->addFunction(prx);
+    }
+    else{
+        LOG("Unable to open file:" << fileName);
+    }
+
 }
 void Thesis::UI::MainWindow::zoomIn()
 {
@@ -437,6 +434,6 @@ void Thesis::UI::MainWindow::approximate()
 		if ( aa == NULL )
 			return ; 
 		fl::FunctionBase * pF = dynamic_cast<fl::FunctionBase *>(aa);
-		pTab->addFunction(pF,Qt::blue);
+		pTab->addFunction(pF);
 	}
 }

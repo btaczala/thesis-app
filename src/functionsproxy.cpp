@@ -178,6 +178,11 @@ fl::FunctionBase* FunctionsProxy::proxyDiscrete()
         bool bOk3 ; 
         int dimensions ;
         arr = file.readLine();
+        if ( !arr.contains("discrete")){
+            LOG("This shouldn't happen. This is not discrete function");
+            return NULL ; 
+        }
+        arr = file.readLine();
         arr.remove(arr.size()-1,1);
         if ( ! arr.isEmpty() ) {
             //LOG(arr);	
