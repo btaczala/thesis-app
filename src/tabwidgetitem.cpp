@@ -31,6 +31,7 @@
 #include <QColorDialog>
 
 #include <plotting/kplotwidget.h>
+#include "functioninfodialog.h"
 
 
 
@@ -69,6 +70,7 @@ m_pContextMenu( new ContextMenu(this,m_pListWidget))
 
 	connect ( m_pContextMenu->_delete, SIGNAL(triggered()),this,SLOT(deleteFunction()));
 	connect ( m_pContextMenu->_changeColor, SIGNAL(triggered()),this,SLOT(changeColorForFunction()));
+    connect ( m_pContextMenu->_showInfo, SIGNAL(triggered()),this,SLOT(showFunctionInformation()));
 }
 TabWidgetItem::~TabWidgetItem()
 {
@@ -160,7 +162,12 @@ void Thesis::UI::TabWidgetItem::showFunctionInformation()
 	QListWidgetItem *pItem = m_pListWidget->currentItem() ;
 	if ( pItem == NULL)
 		return ; 
-	//QMessageBox b ; 
+    const fl::FunctionBase * pF = m_pPlotProxy->plot(pItem->text());
+    if ( pF ) {
+        Thesis::UI::FunctionInfoDialog dlg ; 
+        dlg.setFunction(pF);
+        dlg.show() ; 
+    }
 
 }
 Thesis::UI::TabWidgetItem::ContextMenu::ContextMenu( QWidget *pParent, const QListWidget  *pW ) : QMenu(pParent),_pListWidget(pW) 

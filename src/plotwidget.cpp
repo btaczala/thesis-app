@@ -67,8 +67,8 @@ m_pLastAddedFunction(NULL)
 	m_pKPlotWidget->setObjectToolTipShown(true);
 	m_pKPlotWidget->setBackgroundColor(Qt::white);
 	m_pKPlotWidget->setForegroundColor(Qt::black);
-	m_pKPlotWidget->axis(KPlotWidget::Axis::BottomAxis)->setLabel("x");
-	m_pKPlotWidget->axis(KPlotWidget::Axis::LeftAxis)->setLabel("y");
+	m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->setLabel("x");
+	m_pKPlotWidget->axis(KPlotWidget::LeftAxis)->setLabel("y");
     
 }
 PlotWidgetProxy::~PlotWidgetProxy()
@@ -336,4 +336,20 @@ KPlotObject * Thesis::UI::PlotWidgetProxy::plotForFunction( const QString & fID 
 		}
 	}
 	return pRet ; 
+}
+
+const fl::FunctionBase* Thesis::UI::PlotWidgetProxy::plot ( const QString& fID ) 
+{
+    cLOG();
+    const fl::FunctionBase* pRet = NULL ; 
+    FunctionsPlotMapType::iterator it = m_PlotsFunctions.begin() ; 
+    FunctionsPlotMapType::iterator itEnd = m_PlotsFunctions.end() ; 
+    for ( it ; it != itEnd ; ++ it ) {
+        if ( it.key()->name() == fID.toStdString() ) {
+            pRet = it.key();
+            break ; 
+        }
+    }
+    return pRet ; 
+
 }

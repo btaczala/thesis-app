@@ -30,6 +30,8 @@ IF(WIN32)
 	ENDIF (CONSOLE)
 ENDIF (WIN32)
 
+set ( QT_USE_QTXML 1 ) 
+
 include(${QT_USE_FILE})
 
 
@@ -47,6 +49,7 @@ include_directories(${CMAKE_BINARY_DIR})
 
 add_subdirectory(fl)
 add_subdirectory(plotting)
+add_subdirectory(qtmmlwidget)
 
 set ( thesis_src 
   src/main.cpp
@@ -63,6 +66,7 @@ set ( thesis_src
   src/newfunctionmixeddialog.cpp
   src/convolutionpicker.cpp
   src/tooltips.cpp
+  src/functioninfodialog.cpp
   QtColorPicker/qtcolorpicker.cpp
   ) 
 set ( thesis_hdrs 
@@ -79,6 +83,7 @@ set ( thesis_hdrs
   src/newfunctionmixeddialog.h
   src/convolutionpicker.h
   src/tooltips.h
+  src/functioninfodialog.h
   QtColorPicker/qtcolorpicker.h
   ) 
 set ( thesis_moc
@@ -91,6 +96,7 @@ set ( thesis_moc
   src/newfunctionmixeddialog.h
   src/approximatedialog.h
   src/convolutionpicker.h
+  src/functioninfodialog.h
   QtColorPicker/qtcolorpicker.h
   )
 set ( thesis_operations_hdrs
@@ -108,6 +114,7 @@ set( thesis_ui
     ui/functionMixed.ui
     ui/convolutionpicker.ui
     ui/approximation.ui
+    ui/functioninfo.ui
 ) 
 SET(TRANS
          translations/thesis_en.ts
@@ -133,7 +140,7 @@ add_executable( gen src/genFunctions.cpp)
 
 add_executable( app src/appr.cpp )
 
-target_link_libraries(Thesis-app ${QT_LIBRARIES} fl plotting ) 
+target_link_libraries(Thesis-app ${QT_LIBRARIES} fl plotting qtmml) 
 target_link_libraries(gen ${QT_LIBRARIES} )
 target_link_libraries(app ${QT_LIBRARIES} plotting muparser fl )
 

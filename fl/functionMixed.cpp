@@ -9,7 +9,7 @@ fl::Function2D::Function2DBase(_functionName)
     m_Type = eMixed;
 }
 
-void fl::Function2D::FunctionMixed::addFunction( fl::Function2D::Function2DBase * pFunction, double start, Operator startOperator, double stop, Operator stopOperator )
+void fl::Function2D::FunctionMixed::addFunction( fl::Function2D::FunctionContinous* pFunction, double start, fl::Function2D::FunctionMixed::Operator startOperator, double stop, fl::Function2D::FunctionMixed::Operator stopOperator )
 {
     FunctionRange frFunction ; 
     frFunction.m_spFunction.reset(pFunction);

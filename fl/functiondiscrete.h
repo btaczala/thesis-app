@@ -55,7 +55,7 @@ namespace fl{
                 double xMin() const ; 
                 double xMax() const ;
 				
-				DomainRange range() const { return m_xy;}
+				const DomainRange & range() const { return m_xy;}
 
             private:
                 mutable DomainRange m_xy ; 

@@ -210,6 +210,7 @@ namespace Thesis {
                 const FunctionsPlotMapType plotMap() const { return m_PlotsFunctions ; } 
 
 				KPlotObject * plotForFunction( const QString & fID);
+                const fl::FunctionBase * plot ( const QString & fID ) ; 
 
 				KPlotWidget * plotWidget() const { return m_pKPlotWidget.get() ; } 
             public slots:

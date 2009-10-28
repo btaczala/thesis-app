@@ -43,7 +43,7 @@ m_pDialog( new Ui::PasswordDialog())
     m_pDialog->RangeXSpinBox->setEnabled(false);
     m_pDialog->RangeYSpinBox->setEnabled(false);
     m_pColorPicker = new QtColorPicker(this) ;
-    m_pColorPicker->insertColor(QColor("white"), "White");
+    //m_pColorPicker->insertColor(QColor("white"), "White");
     m_pColorPicker->insertColor(QColor("black"), "Black");
     m_pColorPicker->insertColor(QColor("green"), "Green");
     m_pColorPicker->insertColor(QColor("darkGreen"), "Dark green");
@@ -64,77 +64,23 @@ m_pDialog( new Ui::PasswordDialog())
     m_pDialog->functionLineEdit->setToolTip(Thesis::ToolTips::UI::NewContinousFunctionDialog::scFunctionEditLineToolTip);
     m_pDialog->variableLineEdit->setToolTip(Thesis::ToolTips::UI::NewContinousFunctionDialog::scVariablesEditLineToolTip);
     
-    connect ( m_pDialog->CustomRangeCheckBox, SIGNAL(toggled(bool)),this,SLOT(customRangeChecked(bool)));
+
     connect ( m_pTimer, SIGNAL(timeout()),this,SLOT(checkIfOk()));
+    connect ( m_pDialog->toolButton_mathMLPreview, SIGNAL(triggered()), this, SLOT(mathMLPreview())) ; 
     
     m_pTimer->start(2000);
 }
 
 void NewContinousFunctionDialog::accept()
 {
-//     mu::Parser mParser ;
-//     QString expresion = m_pDialog->functionLineEdit->text();
-//     QString variables = m_pDialog->variableLineEdit->text() ; 
-//     
-//     variables.remove(',');
-//     variables.remove(' ');
-//     QList<double*> lVariables ; 
-//     QString t ; 
-//     for ( int i = 0 ; i < variables.size() ; ++i ) {
-//         lVariables.push_back(new double());
-//         t = variables.at(i);
-//         mParser.DefineVar( t.toStdString() , lVariables.at(i) );
-//     }
-//     mParser.SetExpr(expresion.toStdString());
-//     
-//     int value ; 
-//     qsrand(time(NULL));
-//     int testValue=0;
-//     for ( int i = 0 ; i < 10 ; ++i ) {
-//         for ( int j = 0 ; j < lVariables.size() ; ++j ) {
-//             value = ( qrand()%100 ) - 50 ;
-//             *lVariables[j] = value ; 
-//         }
-//         try{
-//             mParser.Eval();
-//             testValue++;
-//         }
-//         catch( mu::Parser::exception_type & e ) {
-//         }
-//     }
-//     qDeleteAll(lVariables.begin(), lVariables.end());
-//     
-//     if ( testValue < 6 ) {
-//         QMessageBox msgBox ; 
-//         msgBox.setText(tr("This could not be properly defined function"));
-//         msgBox.setInformativeText(tr("Do U really want to add this function?"));
-//         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-//         msgBox.setDefaultButton(QMessageBox::No);
-//         int ret = msgBox.exec();
-//         if ( ret == QMessageBox::Yes ) {
-//             return QDialog::accept();
-//         }
-//         else if ( ret == QMessageBox::No ) {
-//             return QDialog::reject();
-//         }
-//     }
+
     return QDialog::accept() ; 
 }
 void NewContinousFunctionDialog::done(int done)
 {
     QDialog::done(done);
 }
-void NewContinousFunctionDialog::customRangeChecked(bool checked)
-{
-    if ( checked ) {
-        m_pDialog->RangeXSpinBox->setEnabled(true);
-        m_pDialog->RangeYSpinBox->setEnabled(true);
-    }
-    else {
-        m_pDialog->RangeXSpinBox->setEnabled(false);
-        m_pDialog->RangeYSpinBox->setEnabled(false);
-    }
-}
+
 void NewContinousFunctionDialog::checkIfOk()
 {
     cLOG() ; 
@@ -191,4 +137,11 @@ int Thesis::UI::NewContinousFunctionDialog::dimensions() const
 QColor Thesis::UI::NewContinousFunctionDialog::color() const
 {
     return m_pColorPicker->currentColor();
+}
+
+void Thesis::UI::NewContinousFunctionDialog::mathMLPreview()
+{
+    QString funEq = m_pDialog->functionLineEdit->text() ; 
+    //funEq.split();  // *,+,-,/ pow(x,2), exp, e^2
+    QRegExp regExp ; 
 }

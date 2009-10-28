@@ -23,7 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <boost/shared_ptr.hpp>
 #include <string>
 
-#include "function2dbase.h"
+#include "functioncontinous.h"
 
 namespace fl{
     namespace Function2D{
@@ -38,7 +38,7 @@ namespace fl{
                     eWTF
                 };
                 struct FunctionRange{
-                    boost::shared_ptr< fl::Function2D::Function2DBase> m_spFunction ; 
+                    boost::shared_ptr< fl::Function2D::FunctionContinous> m_spFunction ; 
                     double m_start ; 
                     double m_stop ; 
                     Operator m_operatorStart ; 
@@ -47,17 +47,14 @@ namespace fl{
             public:
                 FunctionMixed(const std::string & _functionName );
                 virtual ~FunctionMixed(){}
-
                 virtual double eval( double point , bool *pOk ) const ;
-                //virtual double integrate( double start, double stop,double dStep )  ; 
-
                 virtual double max() const ; 
                 virtual double min() const  ; 
-                
                 virtual double xStartWhereIntegratingMakesSense() const ; 
                 virtual double xStopWhereIntegratingMakesSense() const ; 
-
-                void addFunction(  fl::Function2D::Function2DBase * pFunction, double start, Operator startOperator, double stop, Operator stopOperator);
+                void addFunction(  fl::Function2D::FunctionContinous * pFunction, double start, Operator startOperator, double stop, Operator stopOperator);
+                
+                const std::vector<FunctionRange> & functionRages() const { return m_Functions ; } 
             private:
                 mutable std::vector<FunctionRange> m_Functions ; 
             private:

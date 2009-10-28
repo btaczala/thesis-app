@@ -153,8 +153,8 @@ namespace Thesis {
                 QPointer<QTimer> m_pTimer ; 
                 QPointer<QtColorPicker> m_pColorPicker ; 
             private slots:
-                void customRangeChecked( bool checked ) ; 
                 void checkIfOk() ; 
+                void mathMLPreview() ; 
         };
 
     }

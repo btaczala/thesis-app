@@ -97,7 +97,6 @@ namespace Thesis {
                 */
                 void addFunction (FunctionsProxy & fProxy, int index=-1);
                 
-                
             protected:
                 int m_currentWorkspace ; 
                 std::vector<bool> m_isWorkspaceUsed ; 

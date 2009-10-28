@@ -26,9 +26,15 @@
 #include <QStringList>
 #include <QTranslator>
 
+#include "qtmmlwidget/src/qtmmlwidget.h"
+void isPrimaryExpression( const QString & expression ) {
+    ;
+}
 int main(int argc, char *argv[])
 {
+  #ifdef WIN32
     QApplication::setStyle("plastique");
+  #endif
     QApplication app(argc, argv);
 
     QTranslator translator;
@@ -38,5 +44,22 @@ int main(int argc, char *argv[])
     qDebug() << Thesis::Strings::applicationVersionString() ; 
     Thesis::UI::MainWindow wnd ;
     wnd.show();
+//     QtMmlWidget widget ;
+//     widget.setContent(QString("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">\
+//     <mrow>\
+//       <mi>a</mi>\
+//       <msup>\
+//         <mi>x</mi>\
+//         <mn>2</mn>\
+//       </msup>\
+//       <mo>+</mo>\
+//       <mi>b</mi>\
+//       <mi>x</mi>\
+//       <mo>+</mo>\
+//       <mi>c</mi>\
+//     </mrow>\
+//   </math>"));
+//     widget.show() ; 
+
     return app.exec()  ; 
 }
