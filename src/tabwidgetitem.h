@@ -185,6 +185,8 @@ namespace Thesis{
 					private:
 						const QListWidget * _pListWidget ; 
 				} * m_pContextMenu ; 
+            public:
+                virtual void keyPressEvent(QKeyEvent *pKeyEvent);
 
             private slots:
 
@@ -200,6 +202,8 @@ namespace Thesis{
                 **/
 
                 void functionAdded( const FunctionInfo & fInfo ) ; 
+
+                void functionNameChanged( const QString & oldFunName, const QString & newFunName );
 
                 /**
                  * \fn	void deleteFunction()

@@ -40,8 +40,7 @@ fl::FunctionBase* ConvolutionOperation::calculate()
 
     if ( ! areIntegratingToOne() )
     {
-
-        LOG("Functions does not intergrate to 1 !!");
+        LOG("One or both functions does not intergrate to 1.");
         return NULL ; 
     }
     int n = 100 ; 
@@ -62,9 +61,9 @@ fl::FunctionBase* ConvolutionOperation::calculate()
     double f2XStop  = pSecond->xStopWhereIntegratingMakesSense() ;
     LOG( "stops " << f1XStop  << " " << f2XStop );
     
-	int a1 = f1XStart;
-	int b1 = f1XStop ; 
-    double delta = (b1 - a1) /(double)n_discrete ; 
+	double a1 = f1XStart;
+	double b1 = f1XStop ; 
+    double delta = ((b1) - (a1)) /(double)n_discrete ; 
 
 	switch ( m_typeOp){
 		case eAdd:
@@ -189,6 +188,7 @@ bool ConvolutionOperation::areIntegratingToOne() const
     if ( firstIntergral + delta > 1 && firstIntergral - delta < 1 && secondIntergral + delta > 1 && secondIntergral - delta < 1 )
         return true ; 
 
+    m_error = IOperation::eNotIntegratingToOne ; 
     return false ; 
 }
 

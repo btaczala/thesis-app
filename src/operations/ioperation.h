@@ -23,17 +23,26 @@
 #include "fl/functionbase.h"
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <string>
 
 class IOperation
 {
     public:
+        enum Errors{
+            eUndefined=0,
+            eSuccess,
+            eNotIntegratingToOne
+        };
         typedef boost::shared_ptr<const fl::FunctionBase> FunctionBaseShPtr ; 
+        IOperation::IOperation() : m_error(eUndefined){}
         virtual ~IOperation() {}
         virtual void addFunction( const fl::FunctionBase* pPtr ) ; 
         
         virtual fl::FunctionBase * calculate() = 0 ; 
+        Errors error () const { return m_error ; } 
     protected:
         std::vector<FunctionBaseShPtr> m_functions ; 
+        mutable Errors m_error ; 
 };
 
 #endif // IOPERATION_H

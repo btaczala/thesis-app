@@ -353,3 +353,24 @@ const fl::FunctionBase* Thesis::UI::PlotWidgetProxy::plot ( const QString& fID )
     return pRet ; 
 
 }
+
+void Thesis::UI::PlotWidgetProxy::moveLeft()
+{
+    changeRange(xMin()-1,xMax()-1,yMin(),yMax());
+}
+
+void Thesis::UI::PlotWidgetProxy::moveRight()
+{
+    changeRange(xMin()+1,xMax()+1,yMin(),yMax());
+
+}
+
+void Thesis::UI::PlotWidgetProxy::moveUp()
+{
+    changeRange(xMin(),xMax(),yMin()+1,yMax()+1);
+}
+
+void Thesis::UI::PlotWidgetProxy::moveDown()
+{
+    changeRange(xMin(),xMax(),yMin()-1,yMax()-1);
+}

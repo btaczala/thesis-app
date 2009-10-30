@@ -19,6 +19,7 @@
 
 #include "functioninfodialog.h"
 #include "ui_functioninfo.h"
+#include "commons.h"
 
 #include <QWidget>
 #include <functionbase.h>
@@ -28,6 +29,7 @@
 
 Thesis::UI::FunctionInfoDialog::FunctionInfoDialog ( const fl::FunctionBase* pFun, QWidget* pParent ) : QDialog ( pParent ), m_pDialog( new Ui::FunctionDialogUI() ), m_pFun(NULL)
 {
+    SET_MAIN_APPLICATION_ICON ;
     m_pDialog->setupUi ( this ) ; 
     setFunction(pFun);
     
@@ -110,10 +112,10 @@ void Thesis::UI::FunctionInfoDialog::setFunction ( const fl::FunctionBase* pFun 
 int Thesis::UI::FunctionInfoDialog::show()
 {
     if ( m_pFun == NULL ) {
-        ;
+        return QDialog::Rejected;
     }
     else{
-        int r = QDialog::exec();
+        return QDialog::exec();
     }
 }
 
@@ -122,4 +124,14 @@ void Thesis::UI::FunctionInfoDialog::listWidgetItemDoubleClicked(QTreeWidgetItem
     QMessageBox msg ; 
     msg.setText(pItem->text(0));
     msg.exec() ;
+}
+
+QString Thesis::UI::FunctionInfoDialog::oldFunctionName() const
+{
+    return m_pFun->name().c_str();
+}
+
+QString Thesis::UI::FunctionInfoDialog::newFunctionName() const
+{
+    return m_pDialog->lineEdit_functionName->text();
 }

@@ -29,6 +29,8 @@
 #include <QButtonGroup>
 #include <QPushButton>
 #include <QColorDialog>
+#include <QErrorMessage>
+#include <QKeyEvent>
 
 #include <plotting/kplotwidget.h>
 #include "functioninfodialog.h"
@@ -50,7 +52,7 @@ m_pContextMenu( new ContextMenu(this,m_pListWidget))
     cLOG();
     m_pDeleteButton->setEnabled(false);
     m_pLeftLayout->addWidget(m_pListWidget);
-    m_pLeftLayout->addWidget(m_pDeleteButton);
+    //m_pLeftLayout->addWidget(m_pDeleteButton);
     
     m_pPlotProxy->widget()->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
     m_pListWidget->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred));
@@ -60,6 +62,15 @@ m_pContextMenu( new ContextMenu(this,m_pListWidget))
     m_pLayout->addLayout(m_pLeftLayout);
     m_pLayout->addWidget(m_pPlotProxy->widget());
     setLayout(m_pLayout);
+
+    m_pContextMenu->_showInfo = new QAction(tr("Show information"),this);
+    m_pContextMenu->_delete = new QAction(tr("Delete"),this);
+    m_pContextMenu->_changeColor = new QAction(tr("Change color"),this);
+
+    m_pContextMenu->addAction(m_pContextMenu->_showInfo);
+    m_pContextMenu->addSeparator();
+    m_pContextMenu->addAction(m_pContextMenu->_delete);
+    m_pContextMenu->addAction(m_pContextMenu->_changeColor);	
     
     
     connect ( m_pPlotProxy.get(), SIGNAL(functionAdded(const FunctionInfo & )),this,SLOT(functionAdded(const FunctionInfo & )));
@@ -87,11 +98,11 @@ PlotWidgetProxy* TabWidgetItem::plotProxy()
 void Thesis::UI::TabWidgetItem::functionAdded(const FunctionInfo & fInfo )
 {
     cLOG();
-	//m_mutex.unlock();
     m_pDeleteButton->setEnabled(true);
     QListWidgetItem *pItem = new QListWidgetItem(m_pListWidget);
     pItem->setText(fInfo._fId);
-    pItem->setBackground(fInfo._fColor);
+    //pItem->setBackground(fInfo._fColor);
+    pItem->setForeground(fInfo._fColor);
     
     m_pListWidget->addItem(pItem);
 }
@@ -129,6 +140,13 @@ void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl:
         pOperation->addFunction(pFunc) ;
 	}	
     pFunction = pOperation->calculate() ; 
+    if ( pOperation == NULL ){
+        if ( pOperation->error() == IOperation::eNotIntegratingToOne){
+            QErrorMessage em ; 
+            em.showMessage(tr("One or both functions does not integrating to 1"));
+        }
+        return ; 
+    }
     addFunction(pFunction);
 }
 
@@ -137,9 +155,6 @@ void Thesis::UI::TabWidgetItem::showContextMenuForWidget( const QPoint & pos )
 	cLOG() ; 
 
 	m_pContextMenu->exec(mapToGlobal(pos));
-	/*QMenu contextMenu(tr("Context menu"), this);
-	contextMenu.addAction(new QAction(tr("Delete"), this));
-	contextMenu.exec();*/
 }
 
 void Thesis::UI::TabWidgetItem::changeColorForFunction()
@@ -166,27 +181,47 @@ void Thesis::UI::TabWidgetItem::showFunctionInformation()
     if ( pF ) {
         Thesis::UI::FunctionInfoDialog dlg ; 
         dlg.setFunction(pF);
-        dlg.show() ; 
+        if ( dlg.show() == QDialog::Accepted ) {
+            functionNameChanged(dlg.oldFunctionName(),dlg.newFunctionName());
+        }
+    }
+}
+
+void Thesis::UI::TabWidgetItem::functionNameChanged( const QString & oldFunName, const QString & newFunName )
+{
+    if ( oldFunName == newFunName )
+        return ; 
+    cLOG() ; 
+    QList<QListWidgetItem*> l = m_pListWidget->findItems(oldFunName,Qt::MatchExactly);
+    if ( l.size() == 1){
+        QListWidgetItem *pItem = l.at(0);
+        pItem->setText( newFunName );
     }
 
 }
+
+void Thesis::UI::TabWidgetItem::keyPressEvent( QKeyEvent *pKeyEvent )
+{
+    int k = pKeyEvent->key();
+    if ( k == Qt::Key_Left){
+        m_pPlotProxy->moveLeft();
+    }
+    else if ( k == Qt::Key_Right){
+        m_pPlotProxy->moveRight();
+    }
+    else if ( k == Qt::Key_Down ){
+        m_pPlotProxy->moveDown();
+    }
+    else if( k == Qt::Key_Up){
+        m_pPlotProxy->moveUp();
+    }
+}
 Thesis::UI::TabWidgetItem::ContextMenu::ContextMenu( QWidget *pParent, const QListWidget  *pW ) : QMenu(pParent),_pListWidget(pW) 
 {
-	_showInfo = new QAction(tr("Show information"),this);
-	_delete = new QAction(tr("Delete"),this);
-	_changeColor = new QAction(tr("Change color"),this);
-
-	
-	addAction(_showInfo);
-	addSeparator();
-	addAction(_delete);
-	addAction(_changeColor);	
 }
 
 Thesis::UI::TabWidgetItem::ContextMenu::~ContextMenu()
 {
-	delete _delete;
-	delete _changeColor; 
 }
 
 QAction * Thesis::UI::TabWidgetItem::ContextMenu::exec( const QPoint & p )
@@ -198,11 +233,13 @@ QAction * Thesis::UI::TabWidgetItem::ContextMenu::exec( const QPoint & p )
 	if ( _pListWidget->selectedItems().isEmpty() ){
 		_delete->setEnabled(false);
 		_changeColor->setEnabled(false);
+        _showInfo->setEnabled(false);
 	}
 	else
 	{
 		_delete->setEnabled(true);
 		_changeColor->setEnabled(true);
+        _showInfo->setEnabled(true);
 
 	}
 	return QMenu::exec(p);

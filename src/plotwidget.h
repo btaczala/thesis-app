@@ -207,6 +207,11 @@ namespace Thesis {
 
                 void changeRange( double xstart,double xstop,double ystart,double ystop ) ;
                 
+                void moveLeft() ; 
+                void moveRight() ; 
+                void moveUp() ; 
+                void moveDown() ; 
+
                 const FunctionsPlotMapType plotMap() const { return m_PlotsFunctions ; } 
 
 				KPlotObject * plotForFunction( const QString & fID);

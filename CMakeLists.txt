@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.6)
 PROJECT(Thesis_application)
 
 SET( APP_VERSION_MAJOR "0" )
-SET( APP_VERSION_MINOR "0" )
-SET( APP_VERSION_PATCH "1a" )
+SET( APP_VERSION_MINOR "5" )
+SET( APP_VERSION_PATCH "0" )
 
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
@@ -45,7 +45,6 @@ include_directories("./QtColorPicker")
 include_directories("./src/operations")
 include_directories("./eigen2")
 include_directories(${CMAKE_BINARY_DIR})
-#include_directories(${QWTPLOT3D_INCLUDE_DIR})
 
 add_subdirectory(fl)
 add_subdirectory(plotting)
@@ -88,6 +87,7 @@ set ( thesis_hdrs
   ) 
 set ( thesis_moc
   src/mainwindow.h
+  src/commons.h
   src/tabwidget.h
   src/tabwidgetitem.h
   src/newcontinousfunctiondialog.h
@@ -117,7 +117,7 @@ set( thesis_ui
     ui/functioninfo.ui
 ) 
 SET(TRANS
-         translations/thesis_en.ts
+    translations/thesis_pl.ts
 )
 
 QT4_ADD_TRANSLATION(trans_src ${TRANS})
@@ -136,13 +136,12 @@ set ( thesis_src_all
 )
 
 add_executable(Thesis-app ${VS_SUBSYSTEM} ${thesis_src_all} ${thesis_hdrs} ${trans_src} )
-add_executable( gen src/genFunctions.cpp)
-
-add_executable( app src/appr.cpp )
-
 target_link_libraries(Thesis-app ${QT_LIBRARIES} fl plotting qtmml) 
-target_link_libraries(gen ${QT_LIBRARIES} )
-target_link_libraries(app ${QT_LIBRARIES} plotting muparser fl )
+#add_executable( gen src/genFunctions.cpp)
+#add_executable( app src/appr.cpp )
+
+#target_link_libraries(gen ${QT_LIBRARIES} )
+#target_link_libraries(app ${QT_LIBRARIES} plotting muparser fl )
 
 
 IF(NOT QT_CONFIG MATCHES "static")
@@ -163,21 +162,25 @@ set ( FUNCTIONS_EXAMPLES
     aa.fnt
     )
 INSTALL(FILES ${FUNCTIONS_EXAMPLES} DESTINATION functions-samples ) 
+INSTALL( FILES ${CMAKE_BINARY_DIR}/thesis_pl.qm DESTINATION bin ) 
 INSTALL(TARGETS Thesis-app
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
+   RUNTIME DESTINATION bin
+   LIBRARY DESTINATION lib
+   ARCHIVE DESTINATION lib
 )
+SET(CPACK_SOURCE_GENERATOR "NSIS;ZIP")
 INCLUDE(InstallRequiredSystemLibraries)
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Thesis application")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Aplikacja pracy magisterskiej")
 SET(CPACK_PACKAGE_VENDOR "Bartosz Taczala")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/GPL.txt")
 SET(CPACK_PACKAGE_VERSION_MAJOR ${APP_VERSION_MAJOR})
 SET(CPACK_PACKAGE_VERSION_MINOR ${APP_VERSION_MINOR})
 SET(CPACK_PACKAGE_VERSION_PATCH ${APP_VERSION_PATCH})
-SET(CPACK_PACKAGE_INSTALL_DIRECTORY "bta-thesis")
+SET(CPACK_PACKAGE_INSTALL_DIRECTORY "btaczala-mgr")
 IF(WIN32 AND NOT UNIX)
-	SET(CPACK_NSIS_DISPLAY_NAME ${CPACK_PACKAGE_INSTALL_DIRECTORY} "thesis_app")
+	SET(CPACK_NSIS_DISPLAY_NAME ${CPACK_PACKAGE_INSTALL_DIRECTORY} "Aplikacja pracy magisterskiej")
 	SET(CPACK_NSIS_CONTACT "btaczala@wi.ps.pl")
 ENDIF(WIN32 AND NOT UNIX)
+
+SET(CPACK_PACKAGE_EXECUTABLES "Thesis-app" "Aplikacja pracy magisterskiej")
 INCLUDE(CPack)

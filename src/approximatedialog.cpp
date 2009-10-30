@@ -37,6 +37,7 @@ m_pDialog( new Ui::ApproximateDialogUI()),
 m_calculatedFunc( NULL ),
 m_pKPlotWidget( new KPlotWidget(this))
 {
+    SET_MAIN_APPLICATION_ICON;
 	m_pDialog->setupUi(this);
 	
 	connect ( m_pDialog->showFromCombobox, SIGNAL(currentIndexChanged ( int )),this,SLOT(populateList(int)));
@@ -83,7 +84,7 @@ void Thesis::UI::ApproximateDialog::preview()
 	fl::Function2D::Function2DBase *pFunction = proxy() ;
 	if ( pFunction == NULL)
 		return ; 
-	m_pKPlotWidget->addPlotObject(kplotobjFromFunction(pFunction,-1,7));
+	m_pKPlotWidget->addPlotObject(kplotobjFromFunction(pFunction,pFunction->xStartWhereIntegratingMakesSense(),pFunction->xStopWhereIntegratingMakesSense()));
 	m_pKPlotWidget->show();	
 }
 fl::Function2D::Function2DBase  * Thesis::UI::ApproximateDialog::resultFunction()

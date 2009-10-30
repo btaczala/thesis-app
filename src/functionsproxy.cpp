@@ -35,7 +35,7 @@ QByteArray removeJunk( const QString & bArray){
     char sign ; 
     for ( int i = 0; i< bArray.size() ; ++i ){
         sign = bArray.at(i).toAscii();
-        if ( isdigit(sign) || sign =='-' || sign =='.' || isalpha(sign) || sign =='(' || sign ==')' || sign == '+' || sign == '*' || sign == '/' || sign == '<' || sign == '=' || sign == '>' ){
+        if ( isdigit(sign) || sign =='-' || sign =='.' || isalpha(sign) || sign =='(' || sign ==')' || sign == '+' || sign == '*' || sign == '/' || sign == '<' || sign == '=' || sign == '>' || sign==',' || sign==';'){
             arr += sign ; 
         }
     }
@@ -45,10 +45,10 @@ QByteArray removeJunk( const QString & bArray){
 QStringList Helpers::parseOneFunction ( const QString& str)
 {
     /*
-        str has to have format sin(x),x,0 < x < 2
+        str has to have format sin(x);x;0 < x < 2
     */
     QStringList toRet ; 
-    QStringList parsed = str.split(',') ;
+    QStringList parsed = str.split(';') ;
     if ( parsed.size() != 3 ) {
         qDebug() << "Error while parsing one function!" ; 
         return QStringList() ; 
@@ -265,7 +265,7 @@ fl::FunctionBase* FunctionsProxy::proxyContinous()
     return pFunction ; 
 }
 
-fl::FunctionBase* Thesis::FunctionsProxy::proxyMixed()
+fl::FunctionBase* FunctionsProxy::proxyMixed()
 {
     fl::FunctionBase * pFunction = NULL ;
     cLOG() ;
@@ -350,7 +350,7 @@ fl::FunctionBase* Thesis::FunctionsProxy::proxyMixed()
                     arr = file.readLine();
                     if ( arr.isEmpty())
                         break ; 
-                    oneFunction = Helpers::parseOneFunction( arr ) ; 
+                    oneFunction = Helpers::parseOneFunction( (arr) ) ; 
                     LOG(oneFunction);
                     functionVector.push_back(oneFunction);
                     oneFunction.clear();

@@ -1,0 +1,4 @@
+mixed
+1/sqrt(2*3.14)*exp(-1*pow(x,2)/2);x;-1 < x < 2
+0;x;-inf < x <= -1
+0;x;2 <= x < inf

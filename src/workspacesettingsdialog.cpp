@@ -21,6 +21,7 @@
 #include "workspacesettingsdialog.h"
 #include "tabwidgetitem.h"
 #include "ui_range.h"
+#include "commons.h"
 
 #include <QTabWidget>
 #include <QDialogButtonBox>
@@ -36,6 +37,7 @@ m_pTabItem(pTabItem),
 m_pButtonBox( new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel) )
 
 {
+    SET_MAIN_APPLICATION_ICON;
     m_pRangeTab.reset( new RangeTab(this) );
      QVBoxLayout *mainLayout = new QVBoxLayout;
      mainLayout->addWidget(m_pTabWidget);

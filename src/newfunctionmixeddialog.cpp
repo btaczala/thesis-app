@@ -30,6 +30,7 @@ using namespace Thesis::UI ;
 
 Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::WindowFlags f): QDialog(parent, f), m_pForm(new Ui::newFunctionMixed())
 {
+    SET_MAIN_APPLICATION_ICON;
     m_iCurrentRow = 0 ; 
     m_pForm->setupUi(this);
     m_pForm->addRowButton->setToolTip(Thesis::ToolTips::UI::NewMixedDialog::scAddRowTooltip);
@@ -37,9 +38,8 @@ Thesis::UI::NewFunctionMixedDialog::NewFunctionMixedDialog(QWidget* parent, Qt::
     connect ( m_pForm->addRowButton, SIGNAL(pressed()),this,SLOT(addRow()));
     connect ( m_pForm->deleteCurrentRow, SIGNAL(pressed()),this,SLOT(deleteRow() ) );
     m_pForm->treeWidget->setHeaderLabels(QStringList() << " f(x)" << " variable" << "range ");
-    m_pForm->treeWidget->setToolTip( Thesis::ToolTips::UI::NewMixedDialog::scMainToolTip ) ; 
+    m_pForm->treeWidget->setToolTip(  tr(Thesis::ToolTips::UI::NewMixedDialog::scMainToolTip)) ; 
     
-    //m_pForm->treeWidget->setItemDelegateForColumn(2,new ComboBoxDelegate(this));
     m_pForm->treeWidget->setRootIsDecorated(false);
     
 }
@@ -63,7 +63,7 @@ void Thesis::UI::NewFunctionMixedDialog::parse()
     for ( int i = 0 ; i < m_pForm->treeWidget->topLevelItemCount() ; ++i ) {
         list.clear();
         pItem = m_pForm->treeWidget->topLevelItem(i);
-        oneFunction = pItem->text(0) + "," + pItem->text(1) + "," + pItem->text(2);
+        oneFunction = pItem->text(0) + ";" + pItem->text(1) + ";" + pItem->text(2);
         list << Thesis::Helpers::parseOneFunction(oneFunction);
         m_FunctionsDesc.push_back(list);
     }
@@ -79,10 +79,11 @@ void NewFunctionMixedDialog::addRow()
     QTreeWidgetItem *pTreeItem = new QTreeWidgetItem();
     pTreeItem->setText(1,"x");
     pTreeItem->setFlags(Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-    pTreeItem->setToolTip(0,Thesis::ToolTips::UI::NewMixedDialog::scFunctionHeadertooltip);
-    pTreeItem->setToolTip(1,Thesis::ToolTips::UI::NewMixedDialog::scVarHeaderTooltip);
-    pTreeItem->setToolTip(2,Thesis::ToolTips::UI::NewMixedDialog::scRangeHeaderTooltip);
+    pTreeItem->setToolTip(0,tr(Thesis::ToolTips::UI::NewMixedDialog::scFunctionHeadertooltip));
+    pTreeItem->setToolTip(1,tr(Thesis::ToolTips::UI::NewMixedDialog::scVarHeaderTooltip));
+    pTreeItem->setToolTip(2,tr(Thesis::ToolTips::UI::NewMixedDialog::scRangeHeaderTooltip));
     m_pForm->treeWidget->addTopLevelItem(pTreeItem);
+    
 }
 void NewFunctionMixedDialog::deleteRow()
 {

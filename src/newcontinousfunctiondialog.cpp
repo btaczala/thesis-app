@@ -38,6 +38,7 @@ NewContinousFunctionDialog::NewContinousFunctionDialog(QWidget* parent, Qt::Wind
 QDialog(parent,f),
 m_pDialog( new Ui::PasswordDialog())
 {
+    SET_MAIN_APPLICATION_ICON;
     cLOG() ; 
     m_pDialog->setupUi(this);
     m_pDialog->RangeXSpinBox->setEnabled(false);
@@ -61,8 +62,8 @@ m_pDialog( new Ui::PasswordDialog())
     
     m_pTimer = new QTimer(this);
 
-    m_pDialog->functionLineEdit->setToolTip(Thesis::ToolTips::UI::NewContinousFunctionDialog::scFunctionEditLineToolTip);
-    m_pDialog->variableLineEdit->setToolTip(Thesis::ToolTips::UI::NewContinousFunctionDialog::scVariablesEditLineToolTip);
+    m_pDialog->functionLineEdit->setToolTip(tr(Thesis::ToolTips::UI::NewContinousFunctionDialog::scFunctionEditLineToolTip));
+    m_pDialog->variableLineEdit->setToolTip(tr(Thesis::ToolTips::UI::NewContinousFunctionDialog::scVariablesEditLineToolTip));
     
 
     connect ( m_pTimer, SIGNAL(timeout()),this,SLOT(checkIfOk()));

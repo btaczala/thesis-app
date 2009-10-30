@@ -27,42 +27,35 @@ namespace Thesis
     namespace ToolTips{
         namespace UI {
             namespace NewMixedDialog{
-                static const QString scMainToolTip = QObject::tr("\
-                             Enter function with specified range. <br> \
+                static const char* scMainToolTip = QT_TRANSLATE_NOOP("Thesis::UI::NewFunctionMixedDialog","Enter function with specified range. <br> \
                              Example: <br> \
-                             For function :") + QString("ss[s_]:=If[ 0 &lt; x &lt; 2,(1/2) * x, 0]<br>") + QObject::tr("\
-                             You should insert:") + QString ( "<ul> \
+                             For function : ss[s_]:=If[ 0 &lt; x &lt; 2,(1/2) * x, 0]<br>\
+                             You should insert: <ul> \
                              <li> (1/2)*x || x || 0 &lt; x &lt; 2 </li>\
                              <li> 0 || x || -inf &lt; x &lt;= 0 </li>\
-                             <li> 0 || x || 2 &lt;= x &lt; inf </li>\
-                             </ul> <br>") + QObject::tr("\
-                             <b>NOTE:</b><br>\
-                             When specifing range, remember about spaces, since parser splits this expresion by space char. \
-                             " ); 
-                static const QString scLineEditTooltip = QObject::tr(" Enter function for specified range. <ul> \
-                             <li> (1/2)*x || x || 0 &lt; x &lt; 2 </li></ul>\
-                             ");
-                static const QString scFunctionHeadertooltip = QObject::tr(" Enter function equation");
-                static const QString scVarHeaderTooltip = QObject::tr(" Enter function variable");
-                static const QString scRangeHeaderTooltip = QObject::tr(" Enter range where function is defined<br> \
-                             Scheme is following: <br>\
+                             <li> 0 || x || 2 &lt;= x &lt; inf </li></ul> <br> \
+                             <b>NOTE:</b><br> \
+                             When specifing range, remember about spaces, since parser splits this expresion by space char.");
+                static const char* scLineEditTooltip = QT_TRANSLATE_NOOP("Thesis::UI::NewFunctionMixedDialog"," Enter function for specified range.\
+                             <ul><li> (1/2)*x || x || 0 &lt; x &lt; 2 </li></ul>");
+                static const char* scFunctionHeadertooltip = QT_TRANSLATE_NOOP("Thesis::UI::NewFunctionMixedDialog"," Enter function equation");
+                static const char* scVarHeaderTooltip = QT_TRANSLATE_NOOP("Thesis::UI::NewFunctionMixedDialog"," Enter function variable");
+                static const char* scRangeHeaderTooltip = QT_TRANSLATE_NOOP("Thesis::UI::NewFunctionMixedDialog"," Enter range where function is defined<br> \
                              lowerBoundary &lt; ( or &lt;= ) variable ( or &lt;= ) upperBoundary<br>\
                              Examples:<br>\
-                             0 &lt; x &lt; 2<br> \
-                             -inf &lt; x &lt;= -1<br> \
-                             -inf &lt; x &lt; inf ");
-                static const QString scAddRowTooltip = QObject::tr("Add function part for specified range");
-                static const QString scDeleteRowTooltip = QObject::tr("Delete current function part");
+                             0 &lt; x &lt; 2<br>-inf &lt; x &lt;= -1<br>-inf &lt; x &lt; inf ");
+                static const char* scAddRowTooltip = QT_TRANSLATE_NOOP("Thesis::UI::NewFunctionMixedDialog","Add function part for specified range");
+                static const char* scDeleteRowTooltip = QT_TRANSLATE_NOOP("Thesis::UI::NewFunctionMixedDialog","Delete current function part");
             }
             namespace NewContinousFunctionDialog{
-                static const QString scFunctionEditLineToolTip = QObject::tr("Place here a valid function equation. <br> Examples: \
+                static const char* scFunctionEditLineToolTip = QT_TRANSLATE_NOOP("Thesis::UI::NewContinousFunctionDialog","Place here a valid function equation. <br> Examples: \
                 <ul> \
                 <li> sin(x) </li>\
                 <li> sin(cos(x)) </li>\
                 <li> x*x*exp(x) </li>\
                 </ul>\
                 ") ; 
-                static const QString scVariablesEditLineToolTip = QObject::tr("Place here coma separated characters which will be treated as function variables. Examples: \
+                static const char* scVariablesEditLineToolTip = QT_TRANSLATE_NOOP("Thesis::UI::NewContinousFunctionDialog","Place here coma separated characters which will be treated as function variables. Examples: \
                 <ul> \
                 <li> x </li>\
                 <li> x,y </li>\
@@ -71,7 +64,6 @@ namespace Thesis
             }
         }
     };
-
 }
 
 #endif // THESIS_TOOLTIPS_H

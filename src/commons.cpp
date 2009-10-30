@@ -22,9 +22,8 @@
 #include <float.h>
 using namespace Thesis ; 
 
-const QString Strings::applicationName =QObject::tr("Thesis application") ;
-const QString Strings::applicationAuthor =  QObject::tr("Bartosz Taczała") ;
-const QString Strings::applicationEmail =QObject::tr("bartosz.taczala@wi.ps.pl") ;
+const QString Strings::applicationAuthor = ("Bartosz Taczala") ;
+const QString Strings::applicationEmail = ("bartosz.taczala@wi.ps.pl") ;
 const QString Strings::applicationVersion = QString::number(VERSION_MAJOR) +"."+ QString::number(VERSION_MINOR) +"."+ QString::number(VERSION_PATCH); 
 
 QDebug operator<<(QDebug dbg, const std::string& str)

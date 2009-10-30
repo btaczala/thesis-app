@@ -32,16 +32,15 @@ void isPrimaryExpression( const QString & expression ) {
 }
 int main(int argc, char *argv[])
 {
-  #ifdef WIN32
+  /*#ifdef WIN32
     QApplication::setStyle("plastique");
-  #endif
+  #endif*/
     QApplication app(argc, argv);
 
     QTranslator translator;
-    translator.load("thesis_en");
+    translator.load("thesis_pl");
     app.installTranslator(&translator);
     Q_INIT_RESOURCE(main);
-    qDebug() << Thesis::Strings::applicationVersionString() ; 
     Thesis::UI::MainWindow wnd ;
     wnd.show();
 //     QtMmlWidget widget ;

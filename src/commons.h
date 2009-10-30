@@ -37,6 +37,7 @@
 
 #define LOG(a) qDebug() << Q_FUNC_INFO << "---->" << a 
 #define cLOG() qDebug() << Q_FUNC_INFO ;
+#define SET_MAIN_APPLICATION_ICON setWindowIcon(QIcon(":/app_icon.png"))
 
 namespace Thesis{
     namespace Math{
@@ -45,14 +46,14 @@ namespace Thesis{
 }
 
 namespace Thesis{
-    class Strings {
+    class Strings : public QObject{
+        Q_OBJECT
         public:
-            static const QString applicationName /*= QObject::tr("Thesis application") */; 
             static const QString applicationAuthor /*= QObject::tr("Bartosz Taczała") */; 
             static const QString applicationEmail /*= QObject::tr("bartosz.taczala@wi.ps.pl")*/ ;
             static const QString applicationVersion /*= QObject::tr( QString::number(VERSION_MAJOR) + QString::number(VERSION_MINOR) + QString::number(VERSION_PATCH) ) */; 
         public:
-            static const QString applicationVersionString() { return applicationName + " : " + applicationVersion ; } 
+            //static const QString applicationVersionString() { return applicationName + " : " + applicationVersion ; } 
     };
 	KPlotObject * kplotobjFromFunction ( fl::Function2D::Function2DBase * pFunc, double startx, double stopx );
 }

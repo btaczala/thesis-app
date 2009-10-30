@@ -253,6 +253,9 @@ namespace Thesis {
                 QPointer<TabWidget> m_pTabWidget ; 
 
                 int m_iNumberOfWorkspaces ; 
+            protected:
+                virtual void keyPressEvent(QKeyEvent *);
+
         };
     }
 }

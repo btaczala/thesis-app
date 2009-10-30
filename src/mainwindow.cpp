@@ -33,6 +33,7 @@
 
 #include <QStatusBar>
 #include <QMenuBar>
+#include <QKeyEvent>
 
 #include <kplotwidget.h>
 #include <QApplication>
@@ -51,7 +52,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags flags) :
 QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
 {
     cLOG() ;
-    setWindowTitle( Thesis::Strings::applicationName );
+    setWindowTitle( tr("Thesis application") );
     
     createWidgets();
     createUI();
@@ -177,7 +178,6 @@ void MainWindow::createUI()
         m_pWorkspaceMenu->setEnabled(false);
 		m_pAritmeticOperationMenu->setEnabled(false);
 	}
-    
 }
 
 void MainWindow::createWidgets()
@@ -436,4 +436,15 @@ void Thesis::UI::MainWindow::approximate()
 		fl::FunctionBase * pF = dynamic_cast<fl::FunctionBase *>(aa);
 		pTab->addFunction(pF);
 	}
+}
+
+void Thesis::UI::MainWindow::keyPressEvent( QKeyEvent * p)
+{
+    int k = p->key();
+    if ( k == Qt::Key_Left || k == Qt::Key_Right || k == Qt::Key_Down ||k == Qt::Key_Up ){
+        TabWidgetItem *pItem = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
+        if ( pItem != NULL ){
+            pItem->keyPressEvent(p);
+        }
+    }
 }

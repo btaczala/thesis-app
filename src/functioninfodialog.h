@@ -40,6 +40,8 @@ namespace Thesis{
                 FunctionInfoDialog(const fl::FunctionBase *pFun =NULL,  QWidget *pParent=NULL) ; 
                 void setFunction( const fl::FunctionBase * pFun ) ; 
                 int show() ; 
+                QString oldFunctionName() const ; 
+                QString newFunctionName() const ; 
             private:
                 boost::shared_ptr<Ui::FunctionDialogUI> m_pDialog ; 
                 const fl::FunctionBase * m_pFun;
