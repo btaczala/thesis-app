@@ -34,7 +34,7 @@ class IOperation
             eNotIntegratingToOne
         };
         typedef boost::shared_ptr<const fl::FunctionBase> FunctionBaseShPtr ; 
-        IOperation::IOperation() : m_error(eUndefined){}
+	IOperation() ;
         virtual ~IOperation() {}
         virtual void addFunction( const fl::FunctionBase* pPtr ) ; 
         

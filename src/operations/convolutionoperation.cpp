@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "commons.h"
 #include <algorithm>
 #include <vector>
+#include "settings.h"
 ConvolutionOperation::ConvolutionOperation ( ) : IOperation ()
 {
 }
@@ -180,8 +181,13 @@ bool ConvolutionOperation::areIntegratingToOne() const
     double f1XStop  = pFirst->xStopWhereIntegratingMakesSense() ; 
     double f2XStop  = pSecond->xStopWhereIntegratingMakesSense() ;
     
-    double firstIntergral = pFirst->integrate(f1XStart,f1XStop,0.01);
-    double secondIntergral = pSecond->integrate(f2XStart,f2XStop,0.01);
+    double dStep = Thesis::Settings::instance()->value(Thesis::SettingsNames::MathLib::scDefaultDiscreteStep).toDouble(); 
+    
+    double firstIntergral = pFirst->integrate(f1XStart,f1XStop,dStep);
+    double secondIntergral = pSecond->integrate(f2XStart,f2XStop,dStep);
+    
+    LOG( pFirst->name().c_str() << " is integrating of range [" << f1XStart << " , " << f1XStop << "] to " << firstIntergral ) ; 
+    LOG( pSecond->name().c_str() << " is integrating of range [" << f2XStart << " , " << f2XStop << "] to " << secondIntergral ) ; 
 
     double delta = 0.01 ; 
     // if firstIntegral - delta < 1 < firstIntergral + delta 

@@ -67,6 +67,7 @@ set ( thesis_src
   src/tooltips.cpp
   src/functioninfodialog.cpp
   QtColorPicker/qtcolorpicker.cpp
+  src/settings.cpp
   ) 
 set ( thesis_hdrs 
   src/mainwindow.h
@@ -83,6 +84,7 @@ set ( thesis_hdrs
   src/convolutionpicker.h
   src/tooltips.h
   src/functioninfodialog.h
+  src/settings.h
   QtColorPicker/qtcolorpicker.h
   ) 
 set ( thesis_moc

@@ -35,8 +35,8 @@
 #define VERSION_MINOR 1 
 #define VERSION_PATCH 0
 
-#define LOG(a) qDebug() << Q_FUNC_INFO << "---->" << a 
-#define cLOG() qDebug() << Q_FUNC_INFO ;
+#define LOG(a) qDebug() << __FILE__ << "at:" << __LINE__<< " --" << Q_FUNC_INFO << "---->" << a 
+#define cLOG() qDebug() << __FILE__ << "at:" << __LINE__<< " --" << Q_FUNC_INFO ;
 #define SET_MAIN_APPLICATION_ICON setWindowIcon(QIcon(":/app_icon.png"))
 
 namespace Thesis{
@@ -44,7 +44,6 @@ namespace Thesis{
         bool isInfinite( double val );
     }
 }
-
 namespace Thesis{
     class Strings : public QObject{
         Q_OBJECT

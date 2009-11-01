@@ -31,12 +31,12 @@ class QAction ;
 namespace Thesis {
 
     /**
-     * \class	Actions
+     * \class   Actions
      *
-     * \brief	Actions. 
+     * \brief   Actions. 
      *
-     * \author	Bartosz Taczala
-     * \date	2009-08-07
+     * \author  Bartosz Taczala
+     * \date    2009-08-07
     **/
 
     class Actions
@@ -61,7 +61,8 @@ namespace Thesis {
             static QAction * convolutionMinusOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionMinusOperation.get() ; }
             static QAction * convolutionTimesOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionTimesOperation.get() ; }
             static QAction * convolutionDevideOperation() { Actions * pInstance = instance() ; return pInstance->m_pConvolutionDevideOperation.get() ; }
-			static QAction * approximateOperation() { Actions * pInstance = instance() ; return pInstance->m_pApproximateOperation.get() ; }
+            static QAction * approximateOperation() { Actions * pInstance = instance() ; return pInstance->m_pApproximateOperation.get() ; }
+
             
 	    
 	    void init() ;
@@ -92,7 +93,8 @@ namespace Thesis {
             boost::shared_ptr<QAction> m_pConvolutionTimesOperation;
             boost::shared_ptr<QAction> m_pConvolutionDevideOperation;
 
-			boost::shared_ptr<QAction> m_pApproximateOperation ; 
+            boost::shared_ptr<QAction> m_pApproximateOperation ; 
+
 
 
             

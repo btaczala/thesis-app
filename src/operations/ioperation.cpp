@@ -19,7 +19,7 @@
 
 #include "ioperation.h"
 
-
+IOperation::IOperation() : m_error( eUndefined ){}
 void IOperation::addFunction ( const fl::FunctionBase* pPtr )
 {
     m_functions.push_back( FunctionBaseShPtr ( pPtr)  );

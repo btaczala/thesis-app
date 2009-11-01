@@ -49,3 +49,27 @@ double fl::Function2D::Function2DBase::integrate ( double start, double stop, do
     }
     return result ; 
 }
+
+double fl::Function2D::Function2DBase::centerOfMass(double start, double stop, double dStep) const
+{
+    double a ; 
+    double b ; 
+    double fa ; 
+    double fb ;
+    bool bOk ; 
+    const double t = 2.0f ; 
+    double result = 0; 
+    for ( double iterator = start ; iterator <= stop ; iterator += dStep ) {
+        a = iterator ; 
+        b = iterator + dStep ; 
+        fa = eval(a,&bOk) * a;
+        if ( bOk ) 
+        {
+            fb = eval ( b, &bOk )*b;
+            if ( bOk ){
+                result += (b-a) * ((fa+fb)/t);
+            }
+        }
+    }
+    return result ; 
+}

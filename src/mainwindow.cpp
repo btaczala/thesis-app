@@ -143,6 +143,8 @@ void MainWindow::createUI()
     m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionTimesOperation() ) ; 
     m_pConvolutionBasedAritmeticOperationMenu->addAction(Thesis::Actions::convolutionDevideOperation() ) ; 
     m_pAritmeticOperationMenu->addMenu(m_pConvolutionBasedAritmeticOperationMenu);
+    
+    //m_pAritmeticOperationMenu->addAction(Thesis::Actions::calculateCenterOfMassOperatation());
 
     
     m_pAboutMenu->addAction(Thesis::Actions::aboutAction());

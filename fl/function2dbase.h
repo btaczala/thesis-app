@@ -35,6 +35,8 @@ namespace fl{
                 virtual double eval( double point, bool * pCorrect ) const  = 0 ; 
                 virtual double integrate( double start, double stop, double dStep ) const; 
                 
+                virtual double centerOfMass( double start, double stop, double step ) const ; 
+                
                 virtual double max() const = 0 ; 
                 virtual double min() const = 0 ; 
                 

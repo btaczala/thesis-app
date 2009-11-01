@@ -110,4 +110,5 @@ void Actions::addDefaultActions()
 
 	m_pApproximateOperation.reset( new QAction(NULL)) ; 
 	m_pApproximateOperation->setText(QObject::tr("Approximate"));
+    
 }

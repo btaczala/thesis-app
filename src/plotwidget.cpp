@@ -63,12 +63,14 @@ m_pLastAddedFunction(NULL)
     
     m_pKPlotWidget->setAntialiasing( true );
     m_pKPlotWidget->setLimits( m_xMin,m_xMax,m_yMin,m_yMax);
-	m_pKPlotWidget->setShowGrid(true);
-	m_pKPlotWidget->setObjectToolTipShown(true);
-	m_pKPlotWidget->setBackgroundColor(Qt::white);
-	m_pKPlotWidget->setForegroundColor(Qt::black);
-	m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->setLabel("x");
-	m_pKPlotWidget->axis(KPlotWidget::LeftAxis)->setLabel("y");
+    m_pKPlotWidget->setShowGrid(true);
+    m_pKPlotWidget->setObjectToolTipShown(true);
+    m_pKPlotWidget->setBackgroundColor(Qt::white);
+    m_pKPlotWidget->setForegroundColor(Qt::black);
+    m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->setLabel("x");
+    m_pKPlotWidget->axis(KPlotWidget::LeftAxis)->setLabel("y");
+    
+//     m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->set
     
 }
 PlotWidgetProxy::~PlotWidgetProxy()

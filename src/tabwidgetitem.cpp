@@ -22,6 +22,7 @@
 #include "plotwidget.h"
 #include "commons.h"
 #include "ioperation.h"
+#include "settings.h"
 
 #include <QLayout>
 #include <QScrollBar>
@@ -34,6 +35,9 @@
 
 #include <plotting/kplotwidget.h>
 #include "functioninfodialog.h"
+#include <QMessageBox>
+
+#include <fl/function2dbase.h>
 
 
 
@@ -66,11 +70,15 @@ m_pContextMenu( new ContextMenu(this,m_pListWidget))
     m_pContextMenu->_showInfo = new QAction(tr("Show information"),this);
     m_pContextMenu->_delete = new QAction(tr("Delete"),this);
     m_pContextMenu->_changeColor = new QAction(tr("Change color"),this);
+    
+    m_pContextMenu->_calculateCenterOfMass = new QAction(tr("Calculate center of mass"),this); 
 
     m_pContextMenu->addAction(m_pContextMenu->_showInfo);
     m_pContextMenu->addSeparator();
     m_pContextMenu->addAction(m_pContextMenu->_delete);
-    m_pContextMenu->addAction(m_pContextMenu->_changeColor);	
+    m_pContextMenu->addAction(m_pContextMenu->_changeColor);
+    m_pContextMenu->addAction(m_pContextMenu->_calculateCenterOfMass);
+    
     
     
     connect ( m_pPlotProxy.get(), SIGNAL(functionAdded(const FunctionInfo & )),this,SLOT(functionAdded(const FunctionInfo & )));
@@ -82,6 +90,8 @@ m_pContextMenu( new ContextMenu(this,m_pListWidget))
 	connect ( m_pContextMenu->_delete, SIGNAL(triggered()),this,SLOT(deleteFunction()));
 	connect ( m_pContextMenu->_changeColor, SIGNAL(triggered()),this,SLOT(changeColorForFunction()));
     connect ( m_pContextMenu->_showInfo, SIGNAL(triggered()),this,SLOT(showFunctionInformation()));
+    
+    connect ( m_pContextMenu->_calculateCenterOfMass, SIGNAL(triggered()),this,SLOT(calculateCenterOfMass()));
 }
 TabWidgetItem::~TabWidgetItem()
 {
@@ -197,7 +207,24 @@ void Thesis::UI::TabWidgetItem::functionNameChanged( const QString & oldFunName,
         QListWidgetItem *pItem = l.at(0);
         pItem->setText( newFunName );
     }
+}
 
+void Thesis::UI::TabWidgetItem::calculateCenterOfMass()
+{
+    QListWidgetItem *pItem = m_pListWidget->currentItem();
+    if ( pItem == NULL ) {
+        ;
+    }
+    const fl::FunctionBase * pF = m_pPlotProxy->plot(pItem->text()) ; 
+    if ( pF ) {
+        const fl::Function2D::Function2DBase *pF2D = dynamic_cast<const fl::Function2D::Function2DBase *>( pF ) ; 
+        double dRes = -1 ;
+        dRes = pF2D->centerOfMass(pF2D->xStartWhereIntegratingMakesSense(),pF2D->xStopWhereIntegratingMakesSense(),Thesis::Settings::instance()->value(SettingsNames::MathLib::scDefaultDiscreteStep).toDouble());
+        //double res = pF2D->centerOfMass()
+        QMessageBox b ; 
+        b.setText(QString::number(dRes)) ;
+        b.exec() ;
+    }
 }
 
 void Thesis::UI::TabWidgetItem::keyPressEvent( QKeyEvent *pKeyEvent )
@@ -234,12 +261,14 @@ QAction * Thesis::UI::TabWidgetItem::ContextMenu::exec( const QPoint & p )
 		_delete->setEnabled(false);
 		_changeColor->setEnabled(false);
         _showInfo->setEnabled(false);
+        _calculateCenterOfMass->setEnabled(false);
 	}
 	else
 	{
 		_delete->setEnabled(true);
 		_changeColor->setEnabled(true);
         _showInfo->setEnabled(true);
+        _calculateCenterOfMass->setEnabled(true);
 
 	}
 	return QMenu::exec(p);

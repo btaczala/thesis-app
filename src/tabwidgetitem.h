@@ -181,6 +181,7 @@ namespace Thesis{
 						QAction * _delete; 
 						QAction * _changeColor; 
 						QAction * _showInfo ; 
+                        QAction *_calculateCenterOfMass ;
 						virtual QAction * exec( const QPoint & p ) ; 
 					private:
 						const QListWidget * _pListWidget ; 
@@ -229,11 +230,13 @@ namespace Thesis{
 
                 void itemDoubleClicked ( const QListWidgetItem * pItem ) ; 
 
-				void showContextMenuForWidget( const QPoint & );
+                void showContextMenuForWidget( const QPoint & );
 
-				void changeColorForFunction() ; 
+                void changeColorForFunction() ; 
 
-				void showFunctionInformation() ; 
+                void showFunctionInformation() ; 
+                
+                void calculateCenterOfMass() ; 
         };
     }
 }
