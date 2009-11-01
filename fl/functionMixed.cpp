@@ -1,6 +1,7 @@
 
 #include "functionMixed.h"
 #include "commons.h"
+#include <algorithm>
 
 
 fl::Function2D::FunctionMixed::FunctionMixed( const std::string & _functionName ) :
@@ -70,6 +71,7 @@ double fl::Function2D::FunctionMixed::max( ) const {
 
 double fl::Function2D::FunctionMixed::xStartWhereIntegratingMakesSense() const 
 {
+    std::vector<double> results ; 
     double xStart ; 
     double val = 0 ; 
     static const int nIloscProbek = 10 ; 
@@ -83,7 +85,10 @@ double fl::Function2D::FunctionMixed::xStartWhereIntegratingMakesSense() const
         xStart = it->m_start ;
         xStop = it->m_stop; 
         if ( Thesis::Math::isInfinite( xStart ) ){
-            xStart = -400;
+            xStart = -4000;
+        }
+        if ( Thesis::Math::isInfinite(xStop) ) {
+            xStop = 4000 ; 
         }
         double xStep = (xStop - xStart) / (double)nIloscProbek;
         for ( int i = 0 ; i < nIloscProbek ; ++i ) {
@@ -92,14 +97,15 @@ double fl::Function2D::FunctionMixed::xStartWhereIntegratingMakesSense() const
         }
         if ( val != 0 ) {
             result = it-> m_start ; 
-            break  ;
+            results.push_back(result);
         }
     }
-    return result ;
+    double r = *( std::min_element( results.begin(),results.end() ) );
+    return r ;
 }
 double fl::Function2D::FunctionMixed::xStopWhereIntegratingMakesSense() const
 {
-    
+    std::vector<double> results ; 
     double xStart ; 
     double val =0 ; 
     static const int nIloscProbek = 10 ; 
@@ -113,7 +119,10 @@ double fl::Function2D::FunctionMixed::xStopWhereIntegratingMakesSense() const
         xStart = it->m_start ;
         xStop = it->m_stop; 
         if ( Thesis::Math::isInfinite( xStart ) ){
-            xStart = -400;
+            xStart = -4000;
+        }
+        if ( Thesis::Math::isInfinite(xStop) ) {
+            xStop = 4000 ; 
         }
         double xStep = (xStop - xStart) / (double)nIloscProbek;
         for ( int i = 0 ; i < nIloscProbek ; ++i ) {
@@ -122,9 +131,10 @@ double fl::Function2D::FunctionMixed::xStopWhereIntegratingMakesSense() const
         }
         if ( val != 0 ) {
             result = it-> m_stop ; 
-            break  ;
+            results.push_back(result);
         }
     }
+    double r = *(std::max_element(results.begin(),results.end()));
     return result ;
 
 }

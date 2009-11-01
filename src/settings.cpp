@@ -22,6 +22,7 @@
 
 #include <QCoreApplication>
 #include <QSettings>
+#include <QDir>
 
 
 
@@ -46,6 +47,8 @@ bool Thesis::Settings::init()
      m_pSettings.reset(new QSettings());
      
      m_defaults[SettingsNames::MathLib::scDefaultDiscreteStep] = 0.01;
+     m_defaults[SettingsNames::UI::scLastDirectoryOpened] = QDir::homePath() ; 
+     
 }
 
 void Settings::setValue(const QString& scValName, const QVariant& variant)

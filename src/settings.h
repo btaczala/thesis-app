@@ -48,6 +48,7 @@ namespace Thesis {
         }
         namespace UI{
             static const QString scMaximizedWindow = "UI/maximizedWindow";
+            static const QString scLastDirectoryOpened = "UI/lastDirOpened" ; 
         }
     }
 

@@ -30,6 +30,7 @@
 #include "tabwidgetitem.h"
 #include "convolutionpicker.h"
 #include "approximatedialog.h"
+#include "settings.h"
 
 #include <QStatusBar>
 #include <QMenuBar>
@@ -164,7 +165,6 @@ void MainWindow::createUI()
     
     m_pToolBar->addAction(Thesis::Actions::workspaceZoomIn());
     m_pToolBar->addAction(Thesis::Actions::workspaceZoomOut());
-    
     
     
     m_pStatusBar->addPermanentWidget(m_pStatusBarWidget);
@@ -321,7 +321,8 @@ void Thesis::UI::MainWindow::newMixedFunction()
     }
 }
 void Thesis::UI::MainWindow::newFunctionFromFile(){
-    QString fileName = QFileDialog::getOpenFileName ( this , tr("choose file to open"),QDir::currentPath(),tr("Function files( *.fnt)" ) );
+    QString path = Thesis::Settings::instance()->value(Thesis::SettingsNames::UI::scLastDirectoryOpened).toString();
+    QString fileName = QFileDialog::getOpenFileName ( this , tr("choose file to open"),path,tr("Function files( *.fnt)" ) );
     if ( fileName.isEmpty()){
         LOG("Not opening file");
         return ; 
@@ -335,6 +336,9 @@ void Thesis::UI::MainWindow::newFunctionFromFile(){
         else if ( decision.contains("discrete"))
             _type = Thesis::FunctionsProxy::eDiscrete;
         f.close() ;
+        QFileInfo info ( fileName ) ; 
+        QString fPath = info.absolutePath();
+        Settings::instance()->setValue(SettingsNames::UI::scLastDirectoryOpened,fPath);
         Thesis::FunctionsProxy prx ( fileName, _type) ; 
         m_pTabWidget->addFunction(prx);
     }
