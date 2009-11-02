@@ -62,8 +62,6 @@ QMainWindow(parent, flags), m_iNumberOfWorkspaces(0)
     setStatusBarStatus(tr( "Program is ready to use" ),false);
     
     setWindowState(Qt::WindowMaximized);
-    
-    
 //     newTab() ; 
 //     // first funct
 //     QStringList l1 ;
