@@ -22,6 +22,7 @@
 #include "plotwidget.h"
 #include "commons.h"
 #include "ioperation.h"
+#include "convolutionoperation.h"
 #include "settings.h"
 
 #include <QLayout>
@@ -141,12 +142,21 @@ void Thesis::UI::TabWidgetItem::addFunction(fl::FunctionBase* pFunction, const Q
     m_pPlotProxy->addFunction(pFunction,color);
 }
 void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl::FunctionBase* >& list, IOperation* pOperation )
-{
-	
+{	
     fl::FunctionBase *pFunction=NULL ; 
 	foreach( const fl::FunctionBase *pFunc, list){
         pOperation->addFunction(pFunc) ;
-	}	
+	}
+    QMessageBox b ;
+    QString msg = tr("Current operation is ");
+    b.setStandardButtons( QMessageBox::Yes | QMessageBox::No);
+    msg += pOperation->operation().c_str();
+    msg+=tr("\nWould you like to replace functions ? ");
+    b.setText( msg );
+    if ( b.exec() == QMessageBox::Yes){
+        ConvolutionOperation *pO = dynamic_cast<ConvolutionOperation*>(pOperation);
+        pO->swap() ; 
+    }
     pFunction = pOperation->calculate() ; 
     if ( pFunction== NULL ){
         if ( pOperation->error() == IOperation::eNotIntegratingToOne){

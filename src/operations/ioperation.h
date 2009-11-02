@@ -40,9 +40,12 @@ class IOperation
         
         virtual fl::FunctionBase * calculate() = 0 ; 
         Errors error () const { return m_error ; } 
+
+        virtual std::string operation() const =0; 
     protected:
         std::vector<FunctionBaseShPtr> m_functions ; 
         mutable Errors m_error ; 
+        std::string m_operation ; 
 };
 
 #endif // IOPERATION_H

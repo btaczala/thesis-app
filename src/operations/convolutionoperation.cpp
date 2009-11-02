@@ -200,6 +200,41 @@ bool ConvolutionOperation::areIntegratingToOne() const
     return false ; 
 }
 
+void ConvolutionOperation::swap()
+{
+    cLOG(); 
+    if ( m_functions.size() == 2 ) {
+        boost::shared_ptr<const fl::FunctionBase> pTemp = m_functions[0];
+        m_functions[0] = m_functions[1];
+        m_functions[1] = pTemp  ;
+    }
+
+}
+
+std::string ConvolutionOperation::operation() const
+{
+    if ( m_functions.size() != 2 ){
+        return "";
+    }
+    std::string strRet ; 
+    strRet = "f1(" + m_functions[0]->name() +")";
+    switch ( m_typeOp){
+        case eAdd:
+            strRet += " + ";
+            break ; 
+        case eMinus:
+            strRet += " - ";
+            break ; 
+        case eTimes:
+            strRet += " * ";
+            break ; 
+        case eDiv:
+            strRet += " / ";
+            break ; 
+    }
+    strRet += "f2(" + m_functions[1]->name() +")";
+    return strRet ; 
+}
 fl::FunctionBase* ConvolutionAdd::calculate()
 {
 	m_typeOp = eAdd ; 

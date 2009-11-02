@@ -39,6 +39,8 @@ class ConvolutionOperation : public IOperation
         ConvolutionOperation( ) ;
         virtual ~ConvolutionOperation() {}
         virtual void addFunction ( fl::FunctionBase* pPtr ) ;
+        void swap() ; 
+        std::string operation() const ; 
     protected:
         enum OperationType{
             eAdd=0,
