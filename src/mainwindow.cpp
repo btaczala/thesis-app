@@ -362,9 +362,18 @@ void Thesis::UI::MainWindow::convolutionOperation()
 {
     int i = m_pTabWidget->count();
     TabWidgetItem *pTab=NULL;
-    QStringList aa ; 
-    QMap<QString,const fl::FunctionBase*> tempMap ; 
     Thesis::UI::ConvolutionPicker picker ( this ) ; 
+    QStringList currentWorkspaceFunctions,allWorkspaceFunction; 
+    
+    pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget()); 
+    PlotWidgetProxy::FunctionsPlotMapType map = pTab->plotProxy()->plotMap() ; 
+    QList<fl::FunctionBase*> keysaa = map.keys();
+    Q_FOREACH ( const fl::FunctionBase *pFunc, keysaa ) {
+        currentWorkspaceFunctions << pFunc->name().c_str();
+    }
+    picker.setCurrentWorkspaceFunctions(currentWorkspaceFunctions);
+
+    QMap<QString,const fl::FunctionBase*> tempMap ; 
     for ( int j=0 ; j < i ; ++j)
     {
         pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->widget(j)); 
@@ -372,11 +381,10 @@ void Thesis::UI::MainWindow::convolutionOperation()
         QList<fl::FunctionBase*> keysaa = map.keys();
         Q_FOREACH ( const fl::FunctionBase *pFunc, keysaa ) {
             tempMap[pFunc->name().c_str()] = pFunc ; 
-            aa.push_back(QString( pFunc->name().c_str()) );
+            allWorkspaceFunction << pFunc->name().c_str();
         }
-        picker.addFunctions(j+1,aa);
-        aa.clear();
     }
+    picker.setAllWorkspaceFunctions(allWorkspaceFunction) ;
     if ( picker.show() == QDialog::Accepted ) {
         TabWidgetItem *pTab ; 
         if ( picker.whereToAdd() != Thesis::UI::ConvolutionPicker::eCurrentWorkspace ){
@@ -435,11 +443,14 @@ void Thesis::UI::MainWindow::approximate()
 	dlg.setCurrentWorkspaceFunctions(map.keys());
 	
 	if ( dlg.show() == QDialog::Accepted ) {
-		pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
+        if ( dlg.whereToAdd() != Thesis::UI::ApproximateDialog::eCurrentWorkspace ) {
+            newTab(true);
+        }
 		fl::Function2D::Function2DBase * aa = dlg.resultFunction() ;
 		if ( aa == NULL )
 			return ; 
 		fl::FunctionBase * pF = dynamic_cast<fl::FunctionBase *>(aa);
+        pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
 		pTab->addFunction(pF);
 	}
 }
@@ -451,6 +462,14 @@ void Thesis::UI::MainWindow::keyPressEvent( QKeyEvent * p)
         TabWidgetItem *pItem = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
         if ( pItem != NULL ){
             pItem->keyPressEvent(p);
+        }
+    }
+    if ( k == Qt::Key_Tab && p->modifiers() & Qt::ControlModifier){
+        int currentIndex = m_pTabWidget->currentIndex();
+        int count = m_pTabWidget->count() ; 
+        int nextTabIndex = currentIndex +1 ; 
+        if ( nextTabIndex < count ){
+            m_pTabWidget->setCurrentIndex(nextTabIndex);
         }
     }
 }

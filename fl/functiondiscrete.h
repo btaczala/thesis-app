@@ -36,14 +36,15 @@ namespace fl{
                 enum ApproximationType{
                     eWielAlg=0
                 };
-                typedef std::vector<std::pair<double,double> > DomainRange ;
+                typedef std::pair<double,double> Point ; 
+                typedef std::vector<Point> DomainRange ;
                 typedef DomainRange::iterator DomainRangeIterator  ;
                 
                 FunctionDiscrete(const std::vector< double >& _x, const std::vector< double >& _y, const std::string& _functionName = "unnamed");
                 virtual ~FunctionDiscrete();                
                 virtual double eval( double point, bool * pCorrect ) const;
                 
-                //virtual double integrate(double start, double stop,double dStep );
+                virtual double integrate(double start, double stop,double dStep ) const ;
                 
                 virtual double max() const ;
                 virtual double min() const ;

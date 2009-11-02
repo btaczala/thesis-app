@@ -39,7 +39,7 @@ Thesis::Settings* Thesis::Settings::instance()
 Thesis::Settings::Settings() : m_bInit(false),m_pSettings(NULL)
 {
 }
-bool Thesis::Settings::init()
+void Thesis::Settings::init()
 {
      QCoreApplication::setOrganizationName("bta");
      QCoreApplication::setOrganizationDomain("wi.ps.pl");

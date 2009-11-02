@@ -93,12 +93,15 @@ double fl::Function2D::FunctionMixed::xStartWhereIntegratingMakesSense() const
         double xStep = (xStop - xStart) / (double)nIloscProbek;
         for ( int i = 0 ; i < nIloscProbek ; ++i ) {
             iter = ((double)i) + xStep ;
-            val += it->m_spFunction->eval(iter,&bOk);
+            double d = it->m_spFunction->eval(iter,&bOk);
+            if ( bOk )
+                val += d;
         }
         if ( val != 0 ) {
             result = it-> m_start ; 
             results.push_back(result);
         }
+        val = 0 ; 
     }
     double r = *( std::min_element( results.begin(),results.end() ) );
     return r ;
@@ -127,15 +130,19 @@ double fl::Function2D::FunctionMixed::xStopWhereIntegratingMakesSense() const
         double xStep = (xStop - xStart) / (double)nIloscProbek;
         for ( int i = 0 ; i < nIloscProbek ; ++i ) {
             iter = ((double)i) + xStep ;
-            val += it->m_spFunction->eval(iter,&bOk);
+            double d ; 
+            d = it->m_spFunction->eval(iter,&bOk);
+            if ( bOk )
+                val += d;
         }
         if ( val != 0 ) {
             result = it-> m_stop ; 
             results.push_back(result);
         }
+        val = 0 ; 
     }
     double r = *(std::max_element(results.begin(),results.end()));
-    return result ;
+    return r ;
 
 }
 

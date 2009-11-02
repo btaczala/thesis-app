@@ -180,6 +180,8 @@ bool ConvolutionOperation::areIntegratingToOne() const
     
     double f1XStop  = pFirst->xStopWhereIntegratingMakesSense() ; 
     double f2XStop  = pSecond->xStopWhereIntegratingMakesSense() ;
+
+    LOG("stops" << f1XStop << " " << f2XStop );
     
     double dStep = Thesis::Settings::instance()->value(Thesis::SettingsNames::MathLib::scDefaultDiscreteStep).toDouble(); 
     
@@ -189,7 +191,7 @@ bool ConvolutionOperation::areIntegratingToOne() const
     LOG( pFirst->name().c_str() << " is integrating of range [" << f1XStart << " , " << f1XStop << "] to " << firstIntergral ) ; 
     LOG( pSecond->name().c_str() << " is integrating of range [" << f2XStart << " , " << f2XStop << "] to " << secondIntergral ) ; 
 
-    double delta = 0.01 ; 
+    double delta = 0.05 ; 
     // if firstIntegral - delta < 1 < firstIntergral + delta 
     if ( firstIntergral + delta > 1 && firstIntergral - delta < 1 && secondIntergral + delta > 1 && secondIntergral - delta < 1 )
         return true ; 

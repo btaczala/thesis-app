@@ -203,10 +203,57 @@ double fl::Function2D::FunctionDiscrete::xStartWhereIntegratingMakesSense() cons
 
 double fl::Function2D::FunctionDiscrete::xStopWhereIntegratingMakesSense() const 
 {
-    return xMin();
+    return xMax();
 }
 fl::Function2D::FunctionContinous * fl::Function2D::FunctionDiscrete::approximate( ) const
 {
     static const int m = 5 ; 
     return NULL ; 
+}
+bool sort_pred(const fl::Function2D::FunctionDiscrete::Point &x, const fl::Function2D::FunctionDiscrete::Point & x2){
+    return x.first < x.second ; 
+}
+double fl::Function2D::FunctionDiscrete::integrate( double start, double stop,double dStep ) const 
+{
+    DomainRange sorted ( m_xy.size());
+    std::copy(m_xy.begin(),m_xy.end(),sorted.begin());
+    std::sort(sorted.begin(),sorted.end(),sort_pred);
+    // sort with x's
+    double a ; 
+    double b ; 
+    double fa ; 
+    double fb ;
+    const double t = 2.0f ; 
+    double result = 0; 
+    DomainRangeIterator it = sorted.begin();
+    DomainRangeIterator itTmp ;
+    const DomainRangeIterator itEnd = sorted.end();
+
+    for ( it ; it != itEnd ; ++it  ){
+        a = it->first ; 
+        itTmp= it+1;
+        if ( itTmp == itEnd){
+            continue ; 
+        }
+        b = itTmp->first; 
+        fa = it->second ; 
+        fb = itTmp->second;
+
+        result += (b-a) * ((fa+fb)/t);
+
+    }
+
+    /*for ( double iterator = start ; iterator <= stop ; iterator += dStep ) {
+        a = iterator ; 
+        b = iterator + dStep ; 
+        fa = eval(a,&bOk);
+        if ( bOk ) 
+        {
+            fb = eval ( b, &bOk );
+            if ( bOk ){
+                result += (b-a) * ((fa+fb)/t);
+            }
+        }
+    }*/
+    return result ; 
 }

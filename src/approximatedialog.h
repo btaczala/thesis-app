@@ -43,21 +43,28 @@ namespace Thesis {
         {
             Q_OBJECT
             public:
+                enum WhereToAdd{
+                    eCurrentWorkspace=0,
+                    eCreateNewWorkspace
+                };
 				ApproximateDialog( QWidget *pParent = NULL);
 				~ApproximateDialog() ; 
+                virtual void accept();
 				void setCurrentWorkspaceFunctions(const QList<fl::FunctionBase*> & functionList ) { m_currentWorkspaceFunctions = functionList;}
 				void setAllFunctions(const QList<fl::FunctionBase*> & functionList ) { m_allWorkspaceFunctions = functionList ; } 
 				int show() ; 
 				fl::Function2D::Function2DBase * resultFunction(); 
+
+                const WhereToAdd whereToAdd() const { return m_whereToAdd ; } 
+
             protected:
                 boost::shared_ptr<Ui::ApproximateDialogUI> m_pDialog ; 
 				QList<fl::FunctionBase*> m_currentWorkspaceFunctions;
 				QList<fl::FunctionBase*> m_allWorkspaceFunctions;
 				fl::Function2D::Function2DBase  * m_calculatedFunc ;
-
 				boost::shared_ptr<KPlotWidget> m_pKPlotWidget ; 
-
 				fl::Function2D::Function2DBase * proxy() ; 
+                WhereToAdd m_whereToAdd ; 
 			private slots:
 				void populateList(int) ; 
 				void preview() ;

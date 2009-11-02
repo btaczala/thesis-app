@@ -38,7 +38,8 @@ namespace Thesis{
                 ConvolutionPicker ( QWidget* parent = 0, Qt::WindowFlags f = 0 );
                 virtual void accept();
                 virtual void reject();
-                void addFunctions ( int index, const QStringList & names ) ; 
+                void setCurrentWorkspaceFunctions ( const QStringList & functions);
+                void setAllWorkspaceFunctions ( const QStringList & functions);
                 int  show() ; 
                 
                 const QStringList & selectedFunctions() const { return m_selectedFunctions ; } 
@@ -48,14 +49,14 @@ namespace Thesis{
                 void populateTreeWidget(int index = -1 ) ; 
                 
                 boost::shared_ptr<Ui::ConvolutionPicker> m_pForm ; 
-                QMap<int,QStringList> m_functions ; 
+                QStringList m_currentWorkspaceFunctions ; 
+                QStringList m_allWorkspaceFunctions; 
                 QStringList m_selectedFunctions ; 
                 WhereToAdd m_whereToAdd ; 
                 
             private slots:
                 void comboBoxValueChanged( const QString & ) ; 
                 void comboBoxValueChanged( int ) ;
-                
         };
     }
 }

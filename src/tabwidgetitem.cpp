@@ -134,12 +134,10 @@ void Thesis::UI::TabWidgetItem::deleteFunction()
 void Thesis::UI::TabWidgetItem::itemDoubleClicked(const QListWidgetItem* pItem)
 {
     cLOG() ; 
-    LOG(pItem->text());
-    QString oldFunctionName = pItem->text();
+    showFunctionInformation();
 }
 void Thesis::UI::TabWidgetItem::addFunction(fl::FunctionBase* pFunction, const QColor& color)
 {
-	//m_mutex.lock();
     m_pPlotProxy->addFunction(pFunction,color);
 }
 void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl::FunctionBase* >& list, IOperation* pOperation )
@@ -150,10 +148,11 @@ void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl:
         pOperation->addFunction(pFunc) ;
 	}	
     pFunction = pOperation->calculate() ; 
-    if ( pOperation == NULL ){
+    if ( pFunction== NULL ){
         if ( pOperation->error() == IOperation::eNotIntegratingToOne){
             QErrorMessage em ; 
             em.showMessage(tr("One or both functions does not integrating to 1"));
+            em.exec();
         }
         return ; 
     }
@@ -163,7 +162,6 @@ void Thesis::UI::TabWidgetItem::addFunctionAndOperation ( const QList< const fl:
 void Thesis::UI::TabWidgetItem::showContextMenuForWidget( const QPoint & pos )
 {
 	cLOG() ; 
-
 	m_pContextMenu->exec(mapToGlobal(pos));
 }
 

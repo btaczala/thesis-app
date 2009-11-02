@@ -21,7 +21,7 @@
 #define THESIS_SETTINGS_H
 
 
-#include <auto_ptr.h>
+#include <memory>
 #include <QString>
 #include <QVariant>
 class QSettings;
@@ -36,7 +36,7 @@ namespace Thesis {
             QVariant value ( const QString & scValName ) ; 
         private:
             Settings() ;             
-            bool init() ;
+            void init() ;
             bool m_bInit ; 
             std::auto_ptr<QSettings> m_pSettings ;
             

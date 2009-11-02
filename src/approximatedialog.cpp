@@ -35,7 +35,8 @@
 Thesis::UI::ApproximateDialog::ApproximateDialog( QWidget *pParent /*= NULL*/ ) : QDialog(pParent),
 m_pDialog( new Ui::ApproximateDialogUI()),
 m_calculatedFunc( NULL ),
-m_pKPlotWidget( new KPlotWidget(this))
+m_pKPlotWidget( new KPlotWidget(this)),
+m_whereToAdd ( eCurrentWorkspace)
 {
     SET_MAIN_APPLICATION_ICON;
 	m_pDialog->setupUi(this);
@@ -131,4 +132,13 @@ fl::Function2D::Function2DBase  * Thesis::UI::ApproximateDialog::proxy()
 		m_calculatedFunc = fl::Function2D::IApproximation::cropFunction(m_calculatedFunc,pFunctionD->xMin(),pFunctionD->xMax());
 	}
 	return m_calculatedFunc ; 
+}
+
+void Thesis::UI::ApproximateDialog::accept()
+{
+    if ( m_pDialog->comboBox_2->currentIndex() == 0 )
+        m_whereToAdd = eCurrentWorkspace;
+    else if ( m_pDialog->comboBox_2->currentIndex() == 1 ) 
+        m_whereToAdd = eCreateNewWorkspace;
+    QDialog::accept();
 }
