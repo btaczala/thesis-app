@@ -237,6 +237,8 @@ namespace Thesis{
                 void showFunctionInformation() ; 
                 
                 void calculateCenterOfMass() ; 
+                
+                void takeScreenShot() ; 
         };
     }
 }

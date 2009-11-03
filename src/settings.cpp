@@ -48,11 +48,12 @@ void Thesis::Settings::init()
      
      m_defaults[SettingsNames::MathLib::scDefaultDiscreteStep] = 0.01;
      m_defaults[SettingsNames::UI::scLastDirectoryOpened] = QDir::homePath() ; 
-     
+     m_defaults[SettingsNames::UI::scLastDirectoryScreenshot] = QDir::homePath();
 }
 
 void Settings::setValue(const QString& scValName, const QVariant& variant)
 {
+    LOG( "Setting value " << scValName << " to: " << variant ) ; 
     m_pSettings->setValue(scValName,variant);
 }
 

@@ -164,6 +164,8 @@ void MainWindow::createUI()
     m_pToolBar->addAction(Thesis::Actions::workspaceZoomIn());
     m_pToolBar->addAction(Thesis::Actions::workspaceZoomOut());
     
+    m_pToolBar->addAction(Thesis::Actions::screenShot());
+    
     
     m_pStatusBar->addPermanentWidget(m_pStatusBarWidget);
     
@@ -228,6 +230,8 @@ void MainWindow::initSignals()
     connect ( Thesis::Actions::convolutionDevideOperation(),SIGNAL(triggered()),this,SLOT(convolutionOperation()));
 
 	connect ( Thesis::Actions::approximateOperation(), SIGNAL(triggered()), this, SLOT(approximate()));
+    
+    connect ( Thesis::Actions::screenShot(),SIGNAL(triggered()),this,SLOT(takeScreenshot()));
     
 }
 
@@ -470,4 +474,37 @@ void Thesis::UI::MainWindow::keyPressEvent( QKeyEvent * p)
             m_pTabWidget->setCurrentIndex(nextTabIndex);
         }
     }
+}
+
+void Thesis::UI::MainWindow::takeScreenshot()
+{
+    TabWidgetItem *pTab = qobject_cast<TabWidgetItem*>(m_pTabWidget->currentWidget());
+    if ( pTab == NULL ) {
+        LOG("Trying to take screenshot with no workspace") ; 
+        return ;
+    }
+    QPixmap p = QPixmap::grabWidget(pTab->plotProxy()->plotWidget()) ;
+    QFileDialog dlg ; 
+    QString directory = Settings::instance()->value(SettingsNames::UI::scLastDirectoryScreenshot).toString();
+    dlg.setWindowTitle(tr("Pick a file to save screenshot"));
+    dlg.setFileMode(QFileDialog::AnyFile);
+    dlg.setViewMode(QFileDialog::Detail);
+    dlg.setConfirmOverwrite(true);
+    dlg.setLabelText(QFileDialog::LookIn,tr("Look in"));
+    dlg.setLabelText(QFileDialog::FileName,tr("File name"));
+    dlg.setLabelText(QFileDialog::FileType,tr("File type"));
+    dlg.setLabelText(QFileDialog::Accept,tr("Accept"));
+    dlg.setLabelText(QFileDialog::Reject,tr("Reject"));
+    dlg.setNameFilters(QStringList() << tr("Image files (*.png *.xpm *.jpg)"));
+    QStringList fNames ;
+    if ( dlg.exec()){
+        
+        fNames = dlg.selectedFiles();
+        QString fName = fNames.at(0);
+        LOG("Saving file to " << fName ) ; 
+        p.save(fName) ;
+        QFileInfo info ( fName ) ; 
+        Settings::instance()->setValue(SettingsNames::UI::scLastDirectoryScreenshot,info.absolutePath());
+    }
+
 }

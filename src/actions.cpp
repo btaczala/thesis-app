@@ -52,6 +52,12 @@ void Actions::addDefaultActions()
     m_pnewTab->setShortcut( QKeySequence( "Ctrl+N") );
     m_pnewTab->setIcon(QIcon(":/new.png"));
     
+    m_pScreenShot.reset( new QAction(NULL) ) ; 
+    m_pScreenShot->setText(QObject::tr("Take screenshot") ) ;
+    m_pScreenShot->setShortcut( QKeySequence( "Ctrl+Alt+P") );
+    m_pScreenShot->setIcon(QIcon(":/new.png"));
+    
+    
     m_pabout.reset( new QAction(NULL) ) ; 
     m_pabout->setText(QObject::tr("&About") );
     m_pabout->setIcon(QIcon(":/about.png"));

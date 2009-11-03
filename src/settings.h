@@ -39,7 +39,6 @@ namespace Thesis {
             void init() ;
             bool m_bInit ; 
             std::auto_ptr<QSettings> m_pSettings ;
-            
             QMap<QString,QVariant> m_defaults ; 
     };
     namespace SettingsNames{
@@ -49,6 +48,7 @@ namespace Thesis {
         namespace UI{
             static const QString scMaximizedWindow = "UI/maximizedWindow";
             static const QString scLastDirectoryOpened = "UI/lastDirOpened" ; 
+            static const QString scLastDirectoryScreenshot="UI/lastDirScreenShot";
         }
     }
 

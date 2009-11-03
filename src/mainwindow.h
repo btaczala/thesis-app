@@ -197,6 +197,8 @@ namespace Thesis {
                 void convolutionOperation() ; 
 
 				void approximate();
+                
+                void takeScreenshot() ; 
             private:
                 Q_DISABLE_COPY(MainWindow) ;
                 

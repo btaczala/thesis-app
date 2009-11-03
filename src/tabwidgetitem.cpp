@@ -39,6 +39,8 @@
 #include <QMessageBox>
 
 #include <fl/function2dbase.h>
+#include <QFileDialog>
+#include "actions.h"
 
 
 
@@ -93,6 +95,8 @@ m_pContextMenu( new ContextMenu(this,m_pListWidget))
     connect ( m_pContextMenu->_showInfo, SIGNAL(triggered()),this,SLOT(showFunctionInformation()));
     
     connect ( m_pContextMenu->_calculateCenterOfMass, SIGNAL(triggered()),this,SLOT(calculateCenterOfMass()));
+    
+    
 }
 TabWidgetItem::~TabWidgetItem()
 {
@@ -104,7 +108,6 @@ PlotWidgetProxy* TabWidgetItem::plotProxy()
     cLOG();
     return m_pPlotProxy.get();
 }
-
 
 void Thesis::UI::TabWidgetItem::functionAdded(const FunctionInfo & fInfo )
 {
@@ -251,6 +254,11 @@ void Thesis::UI::TabWidgetItem::keyPressEvent( QKeyEvent *pKeyEvent )
         m_pPlotProxy->moveUp();
     }
 }
+
+void Thesis::UI::TabWidgetItem::takeScreenShot()
+{
+}
+
 Thesis::UI::TabWidgetItem::ContextMenu::ContextMenu( QWidget *pParent, const QListWidget  *pW ) : QMenu(pParent),_pListWidget(pW) 
 {
 }
