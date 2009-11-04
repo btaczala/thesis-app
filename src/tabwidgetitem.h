@@ -161,8 +161,9 @@ namespace Thesis{
 
                 void addFunction( fl::FunctionBase* pFunction, const QColor & color = QColor() ) ; 
                 
-                
                 void addFunctionAndOperation( const QList<const fl::FunctionBase*> & list, IOperation * pOperation ) ; 
+                
+                void addSomePlot( KPlotObject * pObj ) ;
                 
             protected:
                 QString m_text ; 
