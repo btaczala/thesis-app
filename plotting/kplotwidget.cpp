@@ -732,9 +732,12 @@ void KPlotWidget::paintEvent( QPaintEvent *e ) {
 
 void KPlotWidget::drawAxes( QPainter *p ) {
     if ( d->showGrid ) {
-	
-        p->setPen( gridColor() );
-	p->setBrush(Qt::Dense7Pattern);
+        QPen pen ; 
+        //pen.setColor(QColor(211,211,211));
+        pen.setStyle(Qt::DashDotLine);
+        pen.setBrush(QColor(211,211,211));
+        p->setPen( pen );
+        //p->setBrush(QColor(0,211,211));
 
         //Grid lines are placed at locations of primary axes' major tickmarks
         //vertical grid lines

@@ -189,19 +189,19 @@ void Thesis::UI::TabWidgetItem::changeColorForFunction()
 
 	QColor c = QColorDialog::getColor(pObj->brush().color(),this,tr("Pick a color"));
 	if ( c.isValid()){
-		pObj->setBrush(c);
+        pObj->setBrush(c);
         QPen p = pObj->linePen() ; 
         p.setColor(c);
         pObj->setLinePen(p);
-		m_pPlotProxy->plotWidget()->update();
-	}
+        m_pPlotProxy->plotWidget()->update();
+    }
 }
 void Thesis::UI::TabWidgetItem::showFunctionInformation()
 {
-	cLOG() ; 
-	QListWidgetItem *pItem = m_pListWidget->currentItem() ;
-	if ( pItem == NULL)
-		return ; 
+    cLOG() ; 
+    QListWidgetItem *pItem = m_pListWidget->currentItem() ;
+    if ( pItem == NULL)
+        return ; 
     const fl::FunctionBase * pF = m_pPlotProxy->plot(pItem->text());
     if ( pF ) {
         Thesis::UI::FunctionInfoDialog dlg ; 

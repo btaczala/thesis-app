@@ -68,6 +68,7 @@ m_pLastAddedFunction(NULL)
     m_pKPlotWidget->setObjectToolTipShown(true);
     m_pKPlotWidget->setBackgroundColor(Qt::white);
     m_pKPlotWidget->setForegroundColor(Qt::black);
+    //m_pKPlotWidget->setGridColor(QColor(211,211,211));
     m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->setLabel("x");
     m_pKPlotWidget->axis(KPlotWidget::LeftAxis)->setLabel("y");
     //m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->
@@ -110,7 +111,7 @@ void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction, const QColor & co
     else if ( pFunction2D->type() == fl::FunctionBase::eContinous || pFunction2D->type() == fl::FunctionBase::eMixed ) {
         pPlotObject = new KPlotObject( fnColor, KPlotObject::Lines, 2 );
         QPen p = pPlotObject->linePen();
-        p.setWidth(2);
+        p.setWidth(3);
         pPlotObject->setLinePen(p);
     }
     QList<KPlotPoint*> points = pPlotObject->points();
