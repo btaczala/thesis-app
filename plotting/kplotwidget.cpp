@@ -160,8 +160,8 @@ void KPlotWidget::Private::calcDataRectLimits( double x1, double x2, double y1, 
     }
     dataRect = QRectF( XA1, YA1, XA2 - XA1, YA2 - YA1 );
 
-    q->axis( LeftAxis )->setTickMarks( dataRect.y(), dataRect.height() );
-    q->axis( BottomAxis )->setTickMarks( dataRect.x(), dataRect.width() );
+    q->axis( LeftAxis )->setTickMarks( dataRect.y(), dataRect.height());
+    q->axis( BottomAxis )->setTickMarks( dataRect.x(), dataRect.width());
 
     if ( secondDataRect.isNull() )
     {
@@ -732,7 +732,9 @@ void KPlotWidget::paintEvent( QPaintEvent *e ) {
 
 void KPlotWidget::drawAxes( QPainter *p ) {
     if ( d->showGrid ) {
+	
         p->setPen( gridColor() );
+	p->setBrush(Qt::Dense7Pattern);
 
         //Grid lines are placed at locations of primary axes' major tickmarks
         //vertical grid lines
@@ -753,7 +755,7 @@ void KPlotWidget::drawAxes( QPainter *p ) {
     //set small font for tick labels
     QFont f = p->font();
     int s = f.pointSize();
-    f.setPointSize( s - 2 );
+    f.setPointSize( s+1 );
     p->setFont( f );
 
     /*** BottomAxis ***/

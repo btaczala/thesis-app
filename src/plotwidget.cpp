@@ -35,6 +35,7 @@
 #include "fl/functionException.h"
 #include "fl/functiondiscrete.h"
 #include <QVBoxLayout>
+#include <qpen.h>
 
 using namespace Thesis::UI;
 
@@ -69,6 +70,7 @@ m_pLastAddedFunction(NULL)
     m_pKPlotWidget->setForegroundColor(Qt::black);
     m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->setLabel("x");
     m_pKPlotWidget->axis(KPlotWidget::LeftAxis)->setLabel("y");
+    //m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->
     
 //     m_pKPlotWidget->axis(KPlotWidget::BottomAxis)->set
     
@@ -105,14 +107,17 @@ void PlotWidgetProxy::addFunction(fl::FunctionBase* pFunction, const QColor & co
         fnColor = color ; 
     if ( pFunction2D->type() == fl::FunctionBase::eDiscrete ) 
         pPlotObject = new KPlotObject( fnColor, KPlotObject::Points, 2 );
-    else if ( pFunction2D->type() == fl::FunctionBase::eContinous || pFunction2D->type() == fl::FunctionBase::eMixed ) 
+    else if ( pFunction2D->type() == fl::FunctionBase::eContinous || pFunction2D->type() == fl::FunctionBase::eMixed ) {
         pPlotObject = new KPlotObject( fnColor, KPlotObject::Lines, 2 );
-	QList<KPlotPoint*> points = pPlotObject->points();
-	foreach ( KPlotPoint *onePoint, points)
-		
-		onePoint->setLabel(pFunction2D->name().c_str());
+        QPen p = pPlotObject->linePen();
+        p.setWidth(2);
+        pPlotObject->setLinePen(p);
+    }
+    QList<KPlotPoint*> points = pPlotObject->points();
+    foreach ( KPlotPoint *onePoint, points)
+        onePoint->setLabel(pFunction2D->name().c_str());
     m_pLastAddedFunction = pFunction ; 
-	LOG("inserting :" <<pFunction <<pPlotObject);
+    LOG("inserting :" <<pFunction <<pPlotObject);
     m_PlotsFunctions.insert(pFunction,pPlotObject);
     
     //m_pKPlotWidget->addPlotObject(pPlotObject);

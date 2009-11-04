@@ -41,6 +41,7 @@
 #include <fl/function2dbase.h>
 #include <QFileDialog>
 #include "actions.h"
+#include <qpen.h>
 
 
 
@@ -189,6 +190,9 @@ void Thesis::UI::TabWidgetItem::changeColorForFunction()
 	QColor c = QColorDialog::getColor(pObj->brush().color(),this,tr("Pick a color"));
 	if ( c.isValid()){
 		pObj->setBrush(c);
+        QPen p = pObj->linePen() ; 
+        p.setColor(c);
+        pObj->setLinePen(p);
 		m_pPlotProxy->plotWidget()->update();
 	}
 }
